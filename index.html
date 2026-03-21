@@ -700,6 +700,144 @@
       border-top: 1px solid var(--border);
     }
 
+    /* ==================== FAVORITES ==================== */
+    .fav-star {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+      font-size: 1rem;
+      cursor: pointer;
+      opacity: 0.4;
+      transition: var(--transition);
+      background: none;
+      border: none;
+      color: inherit;
+      padding: 2px;
+    }
+
+    .fav-star:hover,
+    .fav-star.is-fav {
+      opacity: 1;
+    }
+
+    .fav-section {
+      margin-bottom: 8px;
+    }
+
+    .fav-divider {
+      font-size: 0.78rem;
+      color: var(--warning);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ==================== PHONE PANEL ==================== */
+    .phone-panel {
+      display: none;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .phone-panel.show {
+      display: block;
+    }
+
+    .phone-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 8px;
+    }
+
+    .phone-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      text-decoration: none;
+      color: var(--text);
+      transition: var(--transition);
+    }
+
+    .phone-card:hover {
+      border-color: var(--info);
+      background: var(--info-bg);
+    }
+
+    .phone-card .phone-labo {
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .phone-card .phone-num {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--info);
+    }
+
+    /* ==================== CHANGELOG ==================== */
+    .changelog {
+      max-width: 1200px;
+      margin: 0 auto 20px;
+      padding: 0 24px;
+    }
+
+    .changelog-toggle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      user-select: none;
+    }
+
+    .changelog-toggle:hover {
+      color: var(--text-secondary);
+    }
+
+    .changelog-body {
+      display: none;
+      margin-top: 8px;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .changelog-body.show {
+      display: block;
+    }
+
+    .changelog-body .cl-date {
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 8px;
+    }
+
+    .changelog-body .cl-date:first-child {
+      margin-top: 0;
+    }
+
+    .changelog-body ul {
+      margin-left: 16px;
+      margin-bottom: 6px;
+    }
+
     /* ==================== PRINT ==================== */
     @media print {
       .header-actions,
@@ -723,978 +861,1117 @@
 
 <body>
 
-<!-- ==================== HEADER ==================== -->
-<header class="header">
-  <div class="header-inner">
-    <div>
-      <h1>Gestion des échantillons au soutien laboratoires</h1>
+  <!-- ==================== HEADER ==================== -->
+  <header class="header">
+    <div class="header-inner">
+      <div>
+        <h1>Gestion des échantillons au soutien laboratoires</h1>
+        <div class="header-meta">Basé sur PR-6387 & Mémo Poste C</div>
+      </div>
+      <div class="header-actions">
+        <button onclick="document.querySelector('[onclick*=telephones]').click(); document.querySelector('.tabs').scrollIntoView({behavior:'smooth'})">📞 Téléphones</button>
+        <button onclick="toggleTheme()" id="themeBtn">🌙 Mode sombre</button>
+      </div>
     </div>
-    <div class="header-actions">
-      <button onclick="toggleTheme()" id="themeBtn">🌙 Mode sombre</button>
+  </header>
+
+  <!-- ==================== CONTROLES BANNER ==================== -->
+  <div class="controles-banner">
+    <div class="controles-toggle" onclick="toggleControles(this)">
+      <span class="chevron">▶</span> Contrôles avant enregistrement — rappel rapide
+    </div>
+    <div class="controles-content" id="controlesContent">
+      <ul>
+        <li>Vérifier identité tubes = feuille de demande (y.c. micro-tubes)</li>
+        <li>Lecteur optique : nb codes enregistrés = nb coches sur la feuille</li>
+        <li>Prescription connectée : nb tubes reçus = nb notés/écran</li>
+        <li>Étiquettes bien collées, sans pli, bon tube, bon sens, bon état</li>
+        <li>NLab de l'étiquette = NLab de la feuille</li>
+        <li>Annotations manuscrites → Données cliniques > Libellé</li>
+        <li>Texte illisible → transmettre la feuille au labo concerné</li>
+        <li>Visa HAUT feuille = étiquetage · Visa BAS feuille = enregistrement</li>
+        <li>Vérifier Post-it actif (billet jaune) dans le patient</li>
+        <li>Codes manuscrits → ajouter manuellement. Si doute → voir labo</li>
+        <li>Code introuvable DGLab → fichier Excel « envois ANASPB »</li>
+        <li>Hôpitaux : vérifier nom, prénom, DDN (facturation requérant)</li>
+        <li>Privé : vérifier nom, prénom, DDN + adresse (facturation patient)</li>
+        <li>Vérifier le remplissage des tubes</li>
+        <li>Échantillon manquant → prévenir requérant, imprimer étiquette, inscrire ∅</li>
+      </ul>
     </div>
   </div>
-</header>
 
-<!-- ==================== CONTROLES BANNER ==================== -->
-<div class="controles-banner">
-  <div class="controles-toggle" onclick="toggleControles(this)">
-    <span class="chevron">▶</span> Contrôles avant enregistrement — rappel rapide
+  <!-- ==================== SEARCH BAR ==================== -->
+  <div class="search-bar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Rechercher un tube, une couleur, un code..." oninput="filterTubes()">
+    </div>
   </div>
-  <div class="controles-content" id="controlesContent">
-    <ul>
-      <li>Vérifier identité tubes = feuille de demande (y.c. micro-tubes)</li>
-      <li>Lecteur optique : nb codes enregistrés = nb coches sur la feuille</li>
-      <li>Prescription connectée : nb tubes reçus = nb notés/écran</li>
-      <li>Étiquettes bien collées, sans pli, bon tube, bon sens, bon état</li>
-      <li>NLab de l'étiquette = NLab de la feuille</li>
-      <li>Annotations manuscrites → Données cliniques > Libellé</li>
-      <li>Texte illisible → transmettre la feuille au labo concerné</li>
-      <li>Visa HAUT feuille = étiquetage · Visa BAS feuille = enregistrement</li>
-      <li>Vérifier Post-it actif (billet jaune) dans le patient</li>
-      <li>Codes manuscrits → ajouter manuellement. Si doute → voir labo</li>
-      <li>Code introuvable DGLab → fichier Excel « envois ANASPB »</li>
-      <li>Hôpitaux : vérifier nom, prénom, DDN (facturation requérant)</li>
-      <li>Privé : vérifier nom, prénom, DDN + adresse (facturation patient)</li>
-      <li>Vérifier le remplissage des tubes</li>
-      <li>Échantillon manquant → prévenir requérant, imprimer étiquette, inscrire ∅</li>
-    </ul>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <div class="main">
+
+    <!-- Favorites -->
+    <div class="fav-section" id="favSection" style="display:none">
+      <div class="fav-divider">⭐ Favoris</div>
+      <div class="tubes-grid" id="tubesGridFav"></div>
+    </div>
+
+    <!-- Tubes sanguins -->
+    <div class="section-title" id="titleSang">Tubes sanguins</div>
+    <div class="tubes-grid" id="tubesGridSang"></div>
+
+    <!-- Autres échantillons -->
+    <div class="section-title">Autres échantillons</div>
+    <div class="tubes-grid" id="tubesGridAutres"></div>
+
+    <!-- ==================== TABS ==================== -->
+    <div class="tabs">
+      <div class="tab-headers">
+        <button class="tab-btn active" onclick="switchTab('enregistrement',this)">Enregistrement</button>
+        <button class="tab-btn" onclick="switchTab('feuilles',this)">Feuilles à transmettre</button>
+        <button class="tab-btn" onclick="switchTab('statifs',this)">Statifs de tri</button>
+        <button class="tab-btn" onclick="switchTab('etiquettes',this)">Étiquettes</button>
+        <button class="tab-btn" onclick="switchTab('checkin',this)">Check-in</button>
+        <button class="tab-btn" onclick="switchTab('serotheque',this)">Sérothèque</button>
+        <button class="tab-btn" onclick="switchTab('gestion',this)">Gestion par labo</button>
+        <button class="tab-btn" onclick="switchTab('cas',this)">Cas particuliers</button>
+        <button class="tab-btn" onclick="switchTab('telephones',this)">📞 Téléphones</button>
+      </div>
+
+      <!-- ========== TAB: ENREGISTREMENT ========== -->
+      <div class="tab-panel active" id="tab-enregistrement">
+
+        <div class="accordion">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            1.1 Demande des hôpitaux <span>▶</span>
+          </div>
+          <div class="accordion-body">
+            <p>Un dito doit être lu informatiquement. Si ce n'est pas le cas :</p>
+            <ul>
+              <li>Vérifier que l'établissement soit correct (ex. hop. Sion : RCEN CHCVs)</li>
+              <li>Si incorrect → dérouler le menu, chercher l'établissement correct, doucher le n° d'admission</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            1.2 Demande requérant privé <span>▶</span>
+          </div>
+          <div class="accordion-body">
+            <ul>
+              <li>Ligne de cas existe déjà (écran 309) → sélectionner celle-là</li>
+              <li>Petits ditos (liste dans Établissements) → sélectionner établissement, doucher code-barre ou N° patient</li>
+              <li>N°admission avec # → modifier et changer avec N° patient du dito</li>
+              <li>Labo privé avec N° référence → écran 100, Généralité → Référence</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            1.4 Rajout d'analyses <span>▶</span>
+          </div>
+          <div class="accordion-body">
+            <p>Feuilles sans prélèvement = rajout. Toujours sur demande contenant le matériel.</p>
+            <p><strong>Non facturée :</strong></p>
+            <ul>
+              <li>Prescr. connectée : ajouter codes, enregistrer, imprimer étoile, tracer NLab, coller</li>
+              <li>Lecteur optique : cocher « B », passer au lecteur, choisir demande avec matériel</li>
+            </ul>
+            <p><strong>Facturée :</strong></p>
+            <ul>
+              <li>Nouvelle demande, même date prélèvement</li>
+              <li>« rajout sur NLAB XXX-XXXXX » dans Données cliniques > Libellé</li>
+              <li>Transmettre étiquettes au labo</li>
+            </ul>
+            <p><em>Requérant différent → mettre en copie. Étiq. « rajout » pour hémato et MM uniquement.</em></p>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            1.5 Demande activée ou inexistante <span>▶</span>
+          </div>
+          <div class="accordion-body">
+            <ol>
+              <li>Pré-demandes (écran 114) ou effacées (écran 117)</li>
+              <li>Appeler service : &lt;5-6 analyses → nouvelle demande · &gt;5-6 → nouvelle feuille ou tubes en réserve</li>
+              <li>Requérant injoignable → sérum <span class="code">S-TUB</span>, tube hémato → voir hématologie</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            1.6 Copies <span>▶</span>
+          </div>
+          <div class="accordion-body">
+            <ul>
+              <li><strong>Par mail</strong> : Diffusion → croix jaune → « + ». Introuvable → copies libres</li>
+              <li><strong>Privé → méd. hospitalier</strong> : copie libre + mail annuaire</li>
+              <li><strong>Service → méd. hospitalier</strong> : pas nécessaire</li>
+              <li><strong>Service → privé</strong> : « + ». Introuvable → bac feuilles à problème</li>
+              <li><strong>Copie patient</strong> : « 1 » sous Patient, onglet Diffusion</li>
+              <li><strong>Patient par mail</strong> : écran 310, Transmission résultats, Diffusion 1 = mail</li>
+            </ul>
+            <p><em>Introuvable → enregistrer sans copie + bac vert feuilles à problème.</em></p>
+          </div>
+        </div>
+
+        <div class="accordion">
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            ⚠ Demandes à NE PAS enregistrer <span>▶</span>
+          </div>
+          <div class="accordion-body">
+            <ul>
+              <li>Bactériologie (sauf codes GeneXpert)</li>
+              <li>Produits sanguins sans tube → Immunohématologie</li>
+            </ul>
+            <p><em>Doute requérant → temporaire 02 + bac vert. Attention multiples feuilles.</em></p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ========== TAB: FEUILLES À TRANSMETTRE ========== -->
+      <div class="tab-panel" id="tab-feuilles">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Labo</th>
+              <th>Condition</th>
+              <th>Où déposer</th>
+              <th>Action spéciale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>HÉMATO</strong></td><td>Commande produits sanguins</td><td>Entrée labo hémato</td><td>Pas de tube → transmettre sans enregistrer</td></tr>
+            <tr><td><strong>HÉMATO</strong></td><td>Étiquette He></td><td>Entrée labo hémato</td><td>Copie + originale en hémato</td></tr>
+            <tr><td><strong>HÉMATO</strong></td><td>Immunohémato + commande PSL</td><td>Entrée labo hémato</td><td>⚠ Vérifier signature ! Sinon copie + renvoyer + incident</td></tr>
+            <tr><td><strong>CHIMIE</strong></td><td>LCR, micro-tubes, temps prélèv., tests spéciaux</td><td>Table du 8100</td><td>Micro-tubes : dans pochette</td></tr>
+            <tr><td><strong>MM</strong></td><td>Toujours</td><td>Bac sous statif violet</td><td>—</td></tr>
+            <tr><td><strong>IS</strong></td><td>Toujours</td><td>Bac sous statif orange</td><td>—</td></tr>
+            <tr><td><strong>TOXICOLOGIE</strong></td><td>Étiq. « C Copie> » « Tox ! »</td><td>Bac Toxicologie</td><td>—</td></tr>
+            <tr><td><strong>FERTILITÉ</strong></td><td>Dépistages prénataux 1er+2ème trim.</td><td>Bac prénataux</td><td>Copie → bac feuilles à contrôler</td></tr>
+            <tr><td><strong>GÉNÉTIQUE</strong></td><td>Toujours</td><td>Bac génétique frigo côté 8100</td><td>T° ambiante → panier blanc. Commun → copie</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ========== TAB: STATIFS DE TRI ========== -->
+      <div class="tab-panel" id="tab-statifs">
+        <div class="statifs-grid">
+          <div class="statif-card" style="background:#2196F3"><div>🔵 Bleu</div><div class="statif-dest">Non 8100 → table du 8100</div></div>
+          <div class="statif-card" style="background:#9C27B0"><div>🟣 Violet</div><div class="statif-dest">MM → poste 1 enreg.</div></div>
+          <div class="statif-card" style="background:#FF9800"><div>🟠 Orange</div><div class="statif-dest">IS → poste 1 enreg.</div></div>
+          <div class="statif-card" style="background:#F44336"><div>🔴 Rouge</div><div class="statif-dest">Hémato → entrée labo</div></div>
+          <div class="statif-card" style="background:#FDD835; color:#333"><div>🟡 Jaune</div><div class="statif-dest">Archivage → table poste 1</div></div>
+          <div class="statif-card" style="background:#78909C"><div>⚪ Gris</div><div class="statif-dest">Envois → frigo côté 8100</div></div>
+        </div>
+      </div>
+
+      <!-- ========== TAB: ÉTIQUETTES (FP-7679) ========== -->
+      <div class="tab-panel" id="tab-etiquettes">
+
+        <div class="section-title" style="margin-top:0">Description des étiquettes (FP-7679 v3)</div>
+        <div class="info-cards">
+          <div class="info-card"><h4>Chiffre → Tube primaire</h4><p>Les tubes mères sont étiquetés avec des étiquettes commençant par un <strong>chiffre</strong> (1, 4, 5, 6, 7, 8...)</p></div>
+          <div class="info-card"><h4>Lettre → Tube secondaire</h4><p>Indique le labo destinataire :<br><span class="code">H</span> Hémato · <span class="code">C</span> Chimie (plateforme automates) · <span class="code">IS</span> Immuno · <span class="code">MM</span> Microbio mol. · <span class="code">G</span> Génétique<br>L'extension sur le tube (XXXXX.61) aide à identifier quelle étiquette secondaire va avec quel tube.</p></div>
+          <div class="info-card"><h4>Avec <span class="code">></span> → Ne pas décanter</h4><p>Transférer l'étiquette à l'unité concernée (pour Sion).</p></div>
+          <div class="info-card"><h4>Avec <span class="code">!</span> → Avertir</h4><p>Avertir le laboratoire concerné <strong>oralement ou par téléphone</strong> immédiatement.</p></div>
+          <div class="info-card"><h4>Transferts par labo</h4><p><span class="code">C XXX></span> → Chimie<br><span class="code">H XXX></span> → Hématologie<br><span class="code">IS XXX></span> → Immuno-Sérologie<br><span class="code">MM XXX></span> → Microbiologie moléculaire<br><span class="code">G XXX></span> → Génétique</p></div>
+          <div class="info-card"><h4><span class="code">LSITE</span></h4><p>Site exécutant des analyses liées à cette étiquette.</p></div>
+          <div class="info-card"><h4>Infos diverses</h4><p>Au fond à gauche de l'étiquette : textes d'info (<span class="code">LCR</span>, <span class="code">Pas_8100</span>, etc.)</p></div>
+        </div>
+
+        <div class="section-title">Format visuel des étiquettes</div>
+        <div class="info-cards">
+          <div class="info-card"><h4>✅ À centrifuger</h4><p>Format standard, chiffres sur fond blanc.</p></div>
+          <div class="info-card"><h4>⛔ Ne pas centrifuger</h4><p>N° d'étiquette sur <strong>fond noir</strong>.</p></div>
+          <div class="info-card"><h4>❄ Centrifuger à froid</h4><p><span class="code">***</span> visible sur l'étiquette.</p></div>
+          <div class="info-card"><h4>🌑 Abri de la lumière</h4><p><strong>Identité sur fond noir</strong>.</p></div>
+          <div class="info-card"><h4>🌑⛔ Ne pas centrifuger + Abri lumière</h4><p><strong>Identité + N° d'étiquette sur fond noir</strong>.</p></div>
+          <div class="info-card"><h4>🔄 Décantage</h4><p>Étiquette spécifique de décantage.</p></div>
+          <div class="info-card"><h4>📦 Envois</h4><p>Étiquette spécifique pour les envois externes.</p></div>
+          <div class="info-card"><h4>ℹ️ Information</h4><p>Étiquette d'information (ex : FORMULAIRE/COPIE).</p></div>
+        </div>
+
+        <div class="section-title">Ré-impression d'étiquettes sur DGLab (écran 105)</div>
+        <table class="data-table">
+          <thead><tr><th>Étiquette</th><th>N° à saisir</th></tr></thead>
+          <tbody>
+            <tr><td><span class="code">1</span></td><td>101</td></tr>
+            <tr><td><span class="code">1'</span></td><td>115</td></tr>
+            <tr><td><span class="code">2</span></td><td>102</td></tr>
+            <tr><td><span class="code">5</span></td><td>150</td></tr>
+            <tr><td><span class="code">6 non centri</span></td><td>161</td></tr>
+            <tr><td><span class="code">6 centri</span></td><td>160</td></tr>
+            <tr><td><span class="code">SERO 9</span></td><td>909</td></tr>
+            <tr><td><span class="code">IS AUT</span></td><td>901</td></tr>
+            <tr><td><span class="code">IS PRUN</span></td><td>902</td></tr>
+            <tr><td><span class="code">IS IF</span></td><td>903</td></tr>
+            <tr><td><span class="code">M-AER</span></td><td>951</td></tr>
+            <tr><td><span class="code">M-ANA</span></td><td>952</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px; font-size:0.78rem; color:var(--text-muted)">Cocher « Seul. suppl. » et saisir le N° dans le champ « Supplémentaires ».</p>
+
+        <div class="section-title">Règles de collage & vérifications</div>
+        <div class="info-cards">
+          <div class="info-card"><h4>📌 Positionnement</h4><p>Coller en laissant visibles le <strong>nom et prénom</strong> inscrits sur le tube. Tubes <strong>bleu clair → laisser une fenêtre visible</strong>.</p></div>
+          <div class="info-card"><h4>✱ Feuille lecteur optique</h4><p>Coller une étiquette ✱ sur la demande (verticalement en haut à gauche).</p></div>
+          <div class="info-card"><h4>∅ Échantillon manquant</h4><p><strong>Prévenir immédiatement le requérant</strong> → imprimer l'étiquette du tube manquant, inscrire « ∅ » → transmettre au labo concerné.</p></div>
+          <div class="info-card"><h4>🗑 Confidentialité</h4><p>Étiquettes surnuméraires + ruban encreur → <strong>poubelles jaunes</strong>.</p></div>
+          <div class="info-card"><h4>✓ Vérifications</h4><p>Concordance <strong>nom, prénom et NLab</strong> entre étiquettes, feuille et tube. <strong>Vérifier le remplissage des tubes</strong>. Viser la feuille de demande.</p></div>
+        </div>
+
+      </div>
+
+      <!-- ========== TAB: CHECK-IN ========== -->
+      <div class="tab-panel" id="tab-checkin">
+        <div class="info-cards">
+          <div class="info-card"><h4>✓ Automatique</h4><p>Tubes conformes 8100 sans pré-analytique particulière.</p></div>
+          <div class="info-card"><h4>✋ Manuel</h4><p>Tous les autres tubes.</p></div>
+          <div class="info-card"><h4>❄ Congelés IS/MM/Tox</h4><p>Sortir sagex → congélateur poste envois → étiq. au labo.</p></div>
+          <div class="info-card"><h4>❄ Congelés Chimie/Hémato</h4><p>Laisser dans sagex → statif du labo.</p></div>
+        </div>
+      </div>
+
+      <!-- ========== TAB: SÉROTHÈQUE ========== -->
+      <div class="tab-panel" id="tab-serotheque">
+        <div class="info-cards">
+          <div class="info-card"><h4>Sérum réserve</h4><p><span class="code">SRES</span></p></div>
+          <div class="info-card"><h4>LCR réserve</h4><p><span class="code">LQRES</span></p></div>
+          <div class="info-card"><h4>Tous tubes sérum</h4><p>(Neuro, Hôp. jour) <span class="code">SREST</span> · Étiq. « 1 » + feuille/étiq/tubes → poste 8100.</p></div>
+        </div>
+      </div>
+
+      <!-- ========== TAB: GESTION PAR LABO ========== -->
+      <div class="tab-panel" id="tab-gestion">
+        <div class="info-cards">
+          <div class="info-card">
+            <h4>🔬 Chimie</h4>
+            <ul>
+              <li>Conformes → 8100 (sauf: pas centri., pré-analytique spéc., étiq. sec., matériel insuffisant)</li>
+              <li>Non conformes → statif bleu</li>
+              <li>Micro-tubes : étiq. « 1 » (ne PAS coller), pochette côté statif bleu, avertir 8100</li>
+              <li>Thermos → statif bleu + avertir TAB chimie</li>
+              <li><strong>Pas sur 8100 si :</strong> matériel insuffisant, surnageant rougeâtre, gel oblique, étiq. fond noir, non conforme, étiq. secondaire</li>
+              <li><strong>Tiroirs :</strong> Non centri. → « Non-Centrifugés » · Centri. → « Centrifugés » · Faux-fond → « B-lines avec bouchons »</li>
+              <li>Faux-fond + brun même patient → faux-fond chaîne, brun statif jaune</li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h4>🩸 Hématologie</h4>
+            <ul>
+              <li>EDTA sans étiq. sec. + gris foncés → rouleau</li>
+              <li>Bleu clair, stérile, autres → statif rouge</li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h4>🧫 Immuno-sérologie</h4>
+            <ul>
+              <li>Sérum conforme → 8100 si assez matériel</li>
+              <li>Autres sérum → statif bleu · Autre tube → statif orange</li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h4>🧬 MM</h4>
+            <ul><li>Tous → statif violet</li></ul>
+          </div>
+          <div class="info-card">
+            <h4>🦠 Bactério</h4>
+            <ul><li>Pochette+feuille → bac noir · LCR → tél. (heures ouverture)</li></ul>
+          </div>
+          <div class="info-card">
+            <h4>🧪 Génétique</h4>
+            <ul><li>T° ambiante → panier blanc · Sinon → chambre froide · « Tel gen » → contacter</li></ul>
+          </div>
+          <div class="info-card">
+            <h4>📦 Envois</h4>
+            <ul>
+              <li>Selon étiq.: chaîne, frigo, congélateur ou T° ambiante · ANASPB si besoin</li>
+              <li>WE/nuit : frigo statif gris · Congelés → congélateur envois · T° amb. → bac Centralisation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== TAB: CAS PARTICULIERS ========== -->
+      <div class="tab-panel" id="tab-cas">
+        <div class="info-cards">
+          <div class="info-card"><h4>🔬 Cytologie</h4><p>Tubes coniques jaunes → <strong>codes CXXX</strong> (pas FXXX).</p></div>
+          <div class="info-card"><h4>🏥 CHUV neuro-immuno</h4><p>Si seul → pochette <strong>frigo</strong> + message bac feuilles à problème.</p></div>
+          <div class="info-card"><h4>💰 LAI, LAA, LAM</h4><p>Maternité, invalidité, accident, militaire → <strong>enregistrer</strong> + bac feuilles à problème.</p></div>
+          <div class="info-card"><h4>🚑 Accidents professionnels</h4><p>→ <strong>Procédure Wiki</strong></p></div>
+        </div>
+      </div>
+
+      <!-- ========== TAB: TÉLÉPHONES ========== -->
+      <div class="tab-panel" id="tab-telephones">
+        <div style="margin-bottom:12px">
+          <input type="text" id="phoneSearch" placeholder="Rechercher un labo, un nom, un numéro..."
+            oninput="filterPhones()"
+            style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:0.9rem;background:var(--surface);color:var(--text);outline:none">
+        </div>
+        <!--
+          POUR AJOUTER UN NUMÉRO :
+          Copier une ligne <tr> ci-dessous et modifier le nom, le service et le numéro.
+          Le numéro dans href="tel:XXXX" permet l'appel direct sur mobile.
+        -->
+        <table class="data-table" id="phoneTable">
+          <thead>
+            <tr>
+              <th>Service / Labo</th>
+              <th>Contact</th>
+              <th>Numéro</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- REMPLACER XXXX PAR LES VRAIS NUMÉROS -->
+            <tr><td><strong>Chimie</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Chimie</strong></td><td>Poste 8100</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Hématologie</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Immuno-sérologie</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Microbiologie moléculaire</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Bactériologie</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Génétique</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Toxicologie</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Fertilité</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Envois</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Soutien laboratoire</strong></td><td>Poste 1 enregistrement</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <tr><td><strong>Soutien laboratoire</strong></td><td>Poste 2 enregistrement</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
+            <!-- AJOUTER D'AUTRES LIGNES ICI -->
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- /tabs -->
+  </div><!-- /main -->
+
+  <!-- ==================== CHANGELOG ==================== -->
+  <div class="changelog">
+    <div class="changelog-toggle" onclick="toggleChangelog()">
+      <span id="clChevron">▶</span> Historique des modifications
+    </div>
+    <div class="changelog-body" id="changelogBody">
+      <div class="cl-date">21.03.2026 — v1.3</div>
+      <ul>
+        <li>Ajout du mode « J'ai un tube dans la main » (filtrage par couleur)</li>
+        <li>Ajout du système de favoris (épingler les tubes fréquents)</li>
+        <li>Ajout du panneau téléphones internes des labos</li>
+        <li>Ajout du changelog</li>
+      </ul>
+      <div class="cl-date">20.03.2026 — v1.2</div>
+      <ul>
+        <li>Intégration du contenu FP-7679 (étiquettes DGLab) dans l'onglet Étiquettes</li>
+        <li>Séparation centrifugation / destinations dans les fiches tubes</li>
+        <li>Police changée en Source Sans 3</li>
+      </ul>
+      <div class="cl-date">20.03.2026 — v1.1</div>
+      <ul>
+        <li>Intégration complète du Mémo Poste C (enregistrement, transmission chimie, cas particuliers)</li>
+        <li>Ajout des échantillons spéciaux (selles, buvard, JC Virus, etc.)</li>
+      </ul>
+      <div class="cl-date">20.03.2026 — v1.0</div>
+      <ul>
+        <li>Version initiale basée sur PR-6387 v4</li>
+        <li>11 tubes courants + 7 onglets d'information</li>
+      </ul>
+    </div>
   </div>
-</div>
 
-<!-- ==================== SEARCH BAR ==================== -->
-<div class="search-bar">
-  <div class="search-wrap">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="Rechercher un tube, une couleur, un code..." oninput="filterTubes()">
+  <!-- ==================== MODAL ==================== -->
+  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal" id="modal"></div>
   </div>
-</div>
 
-<!-- ==================== MAIN CONTENT ==================== -->
-<div class="main">
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
 
-  <!-- Tubes sanguins -->
-  <div class="section-title">Tubes sanguins</div>
-  <div class="tubes-grid" id="tubesGridSang"></div>
+    // ==================== TUBES DATA ====================
 
-  <!-- Autres échantillons -->
-  <div class="section-title">Autres échantillons</div>
-  <div class="tubes-grid" id="tubesGridAutres"></div>
+    const T = {
+      "sang": [
+        {
+          "id": "brun",
+          "name": "Brun",
+          "sub": "Sérum",
+          "etiq": "1 ou 1XXX",
+          "color": "#6D4C2A",
+          "tc": "#fff",
+          "c": "oui",
+          "cl": "Peut être centrifugé",
+          "d": [
+            {"l": "8100", "dt": "Centrifugé → tiroir Centrifugés", "t": "dest-8100"},
+            {"l": "8100", "dt": "Non centrifugé → tiroir Non-Centrifugés", "t": "dest-8100"},
+            {"l": "Statif bleu", "dt": "Non conforme ou étiq. secondaire", "t": "dest-bleu"}
+          ],
+          "sup": "S-SUP / S-SUP2",
+          "tub": "S-TUB",
+          "res": "SRES",
+          "n": [
+            "Plusieurs S-SUP/S-SUP2 → « D » sur chaque tube",
+            "Faux-fond + brun même patient → faux-fond chaîne, brun statif jaune"
+          ],
+          "a": [],
+          "s": [],
+          "kw": "brun sérum serum s-sup s-tub sres"
+        },
+        {
+          "id": "corail",
+          "name": "Corail / Blanc",
+          "sub": "Sérum sans gel",
+          "etiq": "80 ou 1",
+          "color": "#E8734A",
+          "tc": "#fff",
+          "c": "oui",
+          "cl": "Peut être centrifugé",
+          "d": [
+            {"l": "8100", "dt": "Centrifugé → tiroir Centrifugés", "t": "dest-8100"},
+            {"l": "8100", "dt": "Non centrifugé → tiroir Non-Centrifugés", "t": "dest-8100"},
+            {"l": "Statif bleu", "dt": "Non conforme ou étiq. secondaire", "t": "dest-bleu"}
+          ],
+          "sup": "S-SUPSG (pédia→S-SUP)",
+          "tub": "S-TUBSG (pédia→S-TUB)",
+          "res": "",
+          "n": [
+            "Plusieurs S-SUPSG → « D »",
+            "Tube abri lumière → TAB chimie"
+          ],
+          "a": [],
+          "s": [],
+          "kw": "corail blanc sérum sans gel s-supsg pédiatrie"
+        },
+        {
+          "id": "vert",
+          "name": "Vert",
+          "sub": "Plasma hépariné",
+          "etiq": "80 ou 1",
+          "color": "#2E7D32",
+          "tc": "#fff",
+          "c": "oui",
+          "cl": "Peut être centrifugé",
+          "d": [
+            {"l": "8100", "dt": "Étiq. chiffre blanc sans sec.", "t": "dest-8100"},
+            {"l": "Statif bleu", "dt": "Étiq. chiffre noir ou sec.", "t": "dest-bleu"},
+            {"l": "Hémato", "dt": "", "t": "dest-hemato"},
+            {"l": "Envoi", "dt": "", "t": "dest-envoi"}
+          ],
+          "sup": "PHSUP (tox→BHTOX)",
+          "tub": "PHTUB",
+          "res": "",
+          "n": ["Plusieurs PHSUP → « D »"],
+          "a": [],
+          "s": [],
+          "kw": "vert hépariné plasma phsup phtub bhtox"
+        },
+        {
+          "id": "gris-clair",
+          "name": "Gris clair",
+          "sub": "Plasma fluoré",
+          "etiq": "4 ou 4TXX",
+          "color": "#90A4AE",
+          "tc": "#1a1a1a",
+          "c": "obligatoire",
+          "cl": "Obligatoirement centrifugé",
+          "d": [
+            {"l": "8100", "dt": "", "t": "dest-8100"}
+          ],
+          "sup": "PFSUP",
+          "tub": "PFTUB",
+          "res": "",
+          "n": [],
+          "a": [],
+          "s": [],
+          "kw": "gris clair fluoré pfsup pftub"
+        },
+        {
+          "id": "violet-petit",
+          "name": "Violet petit",
+          "sub": "EDTA 2,6mL",
+          "etiq": "6",
+          "color": "#7B1FA2",
+          "tc": "#fff",
+          "c": "oui",
+          "cl": "Peut être centrifugé",
+          "d": [
+            {"l": "8100", "dt": "Étiq. chiffre blanc sans sec.", "t": "dest-8100"},
+            {"l": "Statif bleu", "dt": "Étiq. chiffre noir ou sec.", "t": "dest-bleu"},
+            {"l": "Hémato", "dt": "Rouleau (pas sec.) · Statif rouge sinon", "t": "dest-hemato"},
+            {"l": "Génétique", "dt": "", "t": "dest-genetique"},
+            {"l": "Envoi", "dt": "", "t": "dest-envoi"}
+          ],
+          "sup": "BESUP",
+          "tub": "BETUB",
+          "res": "",
+          "n": [],
+          "a": [],
+          "s": [
+            "1 tube hémato+chimie/tox → en hémato, noter « hémato » sur étiq. chimie → statif bleu",
+            "1 EDTA + 1 thromboexact → les 2 en hémato + même marquage",
+            "1 EDTA + autres labos → voir TABs, sinon contacter requérant"
+          ],
+          "kw": "violet petit edta besup betub hémato"
+        },
+        {
+          "id": "violet-grand",
+          "name": "Violet grand",
+          "sub": "EDTA 7,5mL",
+          "etiq": "7",
+          "color": "#6A1B9A",
+          "tc": "#fff",
+          "c": "variable",
+          "cl": "Selon destination et volume",
+          "d": [
+            {"l": "Hémato", "dt": "", "t": "dest-hemato"},
+            {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
+            {"l": "Envoi", "dt": "Bac/Frigo/Congélateur", "t": "dest-envoi"}
+          ],
+          "sup": "BESUP (urg/ext)",
+          "tub": "CE-00",
+          "res": "",
+          "n": [
+            "Feuilles lecteur optique → signature préleveur",
+            "Étiq. 6 collable sur grand si pas petit EDTA"
+          ],
+          "a": [
+            "Urgences/externes → BESUP (pas CE-00) si déjà petit EDTA/BETUB"
+          ],
+          "s": [
+            "Envoi Cery 7,5ml → 8100 ok",
+            "Envoi Cery 2,6ml → centrifuger+décanter manuellement"
+          ],
+          "kw": "violet grand edta ce-00 besup cery envoi mm hémato"
+        },
+        {
+          "id": "rouge",
+          "name": "Rouge foncé",
+          "sub": "Thromboexact",
+          "etiq": "6",
+          "color": "#8B0000",
+          "tc": "#fff",
+          "c": "non",
+          "cl": "Ne peut pas être centrifugé",
+          "d": [
+            {"l": "Hémato", "dt": "", "t": "dest-hemato"}
+          ],
+          "sup": "",
+          "tub": "",
+          "res": "",
+          "n": ["Thromboexact + petit EDTA chimie+hémato → 2 en hémato, indiquer chimie"],
+          "a": [],
+          "s": [],
+          "kw": "rouge foncé thromboexact hémato"
+        },
+        {
+          "id": "bleu",
+          "name": "Bleu",
+          "sub": "Plasma citraté",
+          "etiq": "5",
+          "color": "#1565C0",
+          "tc": "#fff",
+          "c": "non",
+          "cl": "Ne peut pas être centrifugé",
+          "d": [
+            {"l": "Hémato", "dt": "Statif rouge", "t": "dest-hemato"}
+          ],
+          "sup": "PCSUP",
+          "tub": "PCTUB",
+          "res": "",
+          "n": [
+            "Plusieurs PCSUP → marque bouchons",
+            "Fenêtre visible au collage"
+          ],
+          "a": [],
+          "s": [],
+          "kw": "bleu citraté pcsup pctub hémato"
+        },
+        {
+          "id": "gris-fonce",
+          "name": "Gris foncé / Noir",
+          "sub": "Sang citraté (VS)",
+          "etiq": "8",
+          "color": "#37474F",
+          "tc": "#fff",
+          "c": "non",
+          "cl": "Ne peut pas être centrifugé",
+          "d": [
+            {"l": "Hémato", "dt": "Rouleau", "t": "dest-hemato"}
+          ],
+          "sup": "BCSUP",
+          "tub": "BCTUB",
+          "res": "",
+          "n": [],
+          "a": ["NE PAS coller étiq. « 8 ». Donner « 8 » + « Hv » en hémato."],
+          "s": [],
+          "kw": "gris foncé noir sang citraté bcsup bctub hv"
+        },
+        {
+          "id": "lcr",
+          "name": "LCR",
+          "sub": "Liquide céphalo-rachidien",
+          "etiq": "10",
+          "color": "#00838F",
+          "tc": "#fff",
+          "c": "non",
+          "cl": "Ne peut pas être centrifugé",
+          "d": [
+            {"l": "Chimie", "dt": "Tube N°1", "t": "dest-chimie"},
+            {"l": "Bactério/MM/IS", "dt": "Tube N°2", "t": "dest-mm"},
+            {"l": "Hémato", "dt": "Tube N°3", "t": "dest-hemato"},
+            {"l": "Immunochimie", "dt": "N°4 (« C Pl> ») → statif bleu", "t": "dest-bleu"},
+            {"l": "IS", "dt": "Tube N°5", "t": "dest-is"},
+            {"l": "Statif violet", "dt": "Suppl. → LQRES", "t": "dest-mm"}
+          ],
+          "sup": "LQRES",
+          "tub": "",
+          "res": "LQRES",
+          "n": ["Tube stérile PP → FP-7711", "Répartition → FP-11538"],
+          "a": [
+            "Cytologie 07h30-16h30 → téléphoner",
+            "Après 16h30 → feuille+tube en hémato",
+            "Tube abri lumière → TAB chimie rapidement"
+          ],
+          "s": [],
+          "kw": "lcr liquide céphalo rachidien lqres cytologie"
+        },
+        {
+          "id": "urine",
+          "name": "Urine (Vacutainer)",
+          "sub": "",
+          "etiq": "30",
+          "color": "#9E9D24",
+          "tc": "#fff",
+          "c": "oui",
+          "cl": "Peut être centrifugé",
+          "d": [
+            {"l": "8100", "dt": "Si centrifugeable", "t": "dest-8100"},
+            {"l": "Statif bleu", "dt": "Début 8100", "t": "dest-bleu"},
+            {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
+            {"l": "Bactério", "dt": "", "t": "dest-bacterio"}
+          ],
+          "sup": "U-SUP",
+          "tub": "U-TUB",
+          "res": "",
+          "n": [],
+          "a": [],
+          "s": [
+            "Sédiment (30 SED) → statif bleu + étiq. réserve",
+            "Dosages+sédiment → répartir selon étiquettes",
+            "1 tube / étiq. pH → statif bleu",
+            "Commun chimie+bactério → si rapide sinon 2ème tube",
+            "Urines 24h → volume+période. Clearance → poids+taille → table 8100"
+          ],
+          "kw": "urine vacutainer sédiment u-sup u-tub clearance 24h"
+        }
+      ],
 
-  <!-- ==================== TABS ==================== -->
-  <div class="tabs">
-    <div class="tab-headers">
-      <button class="tab-btn active" onclick="switchTab('enregistrement',this)">Enregistrement</button>
-      <button class="tab-btn" onclick="switchTab('feuilles',this)">Feuilles à transmettre</button>
-      <button class="tab-btn" onclick="switchTab('statifs',this)">Statifs de tri</button>
-      <button class="tab-btn" onclick="switchTab('etiquettes',this)">Étiquettes</button>
-      <button class="tab-btn" onclick="switchTab('checkin',this)">Check-in</button>
-      <button class="tab-btn" onclick="switchTab('serotheque',this)">Sérothèque</button>
-      <button class="tab-btn" onclick="switchTab('gestion',this)">Gestion par labo</button>
-      <button class="tab-btn" onclick="switchTab('cas',this)">Cas particuliers</button>
-    </div>
+      "autres": [
+        {
+          "id": "urine-st",
+          "name": "Urine (Flacon stérile)",
+          "sub": "",
+          "etiq": "30",
+          "color": "#827717",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [
+            {"l": "Chimie", "dt": "Statif bleu", "t": "dest-chimie"},
+            {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
+            {"l": "Bactério", "dt": "", "t": "dest-bacterio"}
+          ],
+          "sup": "", "tub": "", "res": "",
+          "n": [], "a": [], "s": [],
+          "kw": "urine flacon stérile chimie mm bactério"
+        },
+        {
+          "id": "urine-24h",
+          "name": "Urine 24h",
+          "sub": "Flacon brun",
+          "etiq": "39",
+          "color": "#5D4037",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [{"l": "Chimie", "dt": "Statif bleu", "t": "dest-chimie"}],
+          "sup": "", "tub": "", "res": "",
+          "n": ["Vérifier volume+période", "Clearance → poids+taille"],
+          "a": [], "s": [],
+          "kw": "urine 24h flacon brun 39 chimie clearance"
+        },
+        {
+          "id": "urine-bor",
+          "name": "Urine ac. borique",
+          "sub": "Vacutrainer",
+          "etiq": "65",
+          "color": "#F57F17",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [{"l": "Bactério", "dt": "", "t": "dest-bacterio"}],
+          "sup": "", "tub": "", "res": "",
+          "n": [], "a": [], "s": [],
+          "kw": "urine acide borique 65 bactériologie"
+        },
+        {
+          "id": "selles",
+          "name": "Pot à selles",
+          "sub": "Selles",
+          "etiq": "45",
+          "color": "#6D4C41",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [
+            {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
+            {"l": "Bactério", "dt": "", "t": "dest-bacterio"}
+          ],
+          "sup": "", "tub": "", "res": "",
+          "n": [], "a": [], "s": [],
+          "kw": "selles pot 45 mm bactério"
+        },
+        {
+          "id": "occulte",
+          "name": "Sang occulte",
+          "sub": "Selles",
+          "etiq": "50",
+          "color": "#4E342E",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [{"l": "MM", "dt": "", "t": "dest-mm"}],
+          "sup": "", "tub": "", "res": "",
+          "n": [], "a": [], "s": [],
+          "kw": "sang occulte selles 50 mm"
+        },
+        {
+          "id": "buvard",
+          "name": "Buvard",
+          "sub": "Spot sang séché",
+          "etiq": "60",
+          "color": "#BF360C",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [{"l": "Envoi", "dt": "", "t": "dest-envoi"}],
+          "sup": "", "tub": "", "res": "",
+          "n": [], "a": [], "s": [],
+          "kw": "buvard spot sang séché 60 envoi"
+        },
+        {
+          "id": "jcv",
+          "name": "JC Virus",
+          "sub": "Sang",
+          "etiq": "49",
+          "color": "#880E4F",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [{"l": "Envoi", "dt": "", "t": "dest-envoi"}],
+          "sup": "", "tub": "", "res": "",
+          "n": [], "a": [], "s": [],
+          "kw": "jc virus sang 49 envoi"
+        },
+        {
+          "id": "perch",
+          "name": "Sang perchloré",
+          "sub": "Tube pyr/lac",
+          "etiq": "3",
+          "color": "#B71C1C",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [{"l": "Envoi", "dt": "Chambre froide", "t": "dest-envoi"}],
+          "sup": "", "tub": "", "res": "",
+          "n": ["Protocole+tube chambre froide"],
+          "a": [], "s": [],
+          "kw": "perchloré pyr lac 3 envoi chambre froide"
+        },
+        {
+          "id": "azath",
+          "name": "Azathioprine",
+          "sub": "Sg hép+DTT+Hémogr.",
+          "etiq": "12",
+          "color": "#311B92",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [{"l": "Envoi", "dt": "Congélateur", "t": "dest-envoi"}],
+          "sup": "", "tub": "", "res": "",
+          "n": ["Imurek"],
+          "a": [], "s": [],
+          "kw": "azathioprine imurek 12 envoi congélateur"
+        },
+        {
+          "id": "streck",
+          "name": "Streck Cell-Free DNA",
+          "sub": "Sang Streck",
+          "etiq": "70",
+          "color": "#1A237E",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [{"l": "Envoi", "dt": "Pour DPNI", "t": "dest-envoi"}],
+          "sup": "", "tub": "", "res": "",
+          "n": [], "a": [], "s": [],
+          "kw": "streck cell-free dna 70 envoi dpni"
+        },
+        {
+          "id": "tau",
+          "name": "Protéine Tau/14-3-3",
+          "sub": "LCR (tube PP)",
+          "etiq": "22",
+          "color": "#004D40",
+          "tc": "#fff",
+          "c": "na",
+          "cl": "Non applicable",
+          "d": [{"l": "Envoi", "dt": "FP-7711 · TAB pour microtubes", "t": "dest-envoi"}],
+          "sup": "", "tub": "", "res": "",
+          "n": [], "a": [], "s": [],
+          "kw": "protéine tau 14-3-3 lcr pp 22 envoi"
+        }
+      ]
+    };
 
-    <!-- ========== TAB: ENREGISTREMENT ========== -->
-    <div class="tab-panel active" id="tab-enregistrement">
+    // ==================== FAVORITES ====================
 
-      <div class="accordion">
-        <div class="accordion-header" onclick="toggleAccordion(this)">
-          1.1 Demande des hôpitaux <span>▶</span>
-        </div>
-        <div class="accordion-body">
-          <p>Un dito doit être lu informatiquement. Si ce n'est pas le cas :</p>
-          <ul>
-            <li>Vérifier que l'établissement soit correct (ex. hop. Sion : RCEN CHCVs)</li>
-            <li>Si incorrect → dérouler le menu, chercher l'établissement correct, doucher le n° d'admission</li>
-          </ul>
-        </div>
-      </div>
+    function getFavorites() {
+      try {
+        return JSON.parse(localStorage.getItem('tube-favs') || '[]');
+      } catch(e) { return []; }
+    }
 
-      <div class="accordion">
-        <div class="accordion-header" onclick="toggleAccordion(this)">
-          1.2 Demande requérant privé <span>▶</span>
-        </div>
-        <div class="accordion-body">
-          <ul>
-            <li>Ligne de cas existe déjà (écran 309) → sélectionner celle-là</li>
-            <li>Petits ditos (liste dans Établissements) → sélectionner établissement, doucher code-barre ou N° patient</li>
-            <li>N°admission avec # → modifier et changer avec N° patient du dito</li>
-            <li>Labo privé avec N° référence → écran 100, Généralité → Référence</li>
-          </ul>
-        </div>
-      </div>
+    function saveFavorites(favs) {
+      try {
+        localStorage.setItem('tube-favs', JSON.stringify(favs));
+      } catch(e) {}
+    }
 
-      <div class="accordion">
-        <div class="accordion-header" onclick="toggleAccordion(this)">
-          1.4 Rajout d'analyses <span>▶</span>
-        </div>
-        <div class="accordion-body">
-          <p>Feuilles sans prélèvement = rajout. Toujours sur demande contenant le matériel.</p>
-          <p><strong>Non facturée :</strong></p>
-          <ul>
-            <li>Prescr. connectée : ajouter codes, enregistrer, imprimer étoile, tracer NLab, coller</li>
-            <li>Lecteur optique : cocher « B », passer au lecteur, choisir demande avec matériel</li>
-          </ul>
-          <p><strong>Facturée :</strong></p>
-          <ul>
-            <li>Nouvelle demande, même date prélèvement</li>
-            <li>« rajout sur NLAB XXX-XXXXX » dans Données cliniques > Libellé</li>
-            <li>Transmettre étiquettes au labo</li>
-          </ul>
-          <p><em>Requérant différent → mettre en copie. Étiq. « rajout » pour hémato et MM uniquement.</em></p>
-        </div>
-      </div>
-
-      <div class="accordion">
-        <div class="accordion-header" onclick="toggleAccordion(this)">
-          1.5 Demande activée ou inexistante <span>▶</span>
-        </div>
-        <div class="accordion-body">
-          <ol>
-            <li>Pré-demandes (écran 114) ou effacées (écran 117)</li>
-            <li>Appeler service : &lt;5-6 analyses → nouvelle demande · &gt;5-6 → nouvelle feuille ou tubes en réserve</li>
-            <li>Requérant injoignable → sérum <span class="code">S-TUB</span>, tube hémato → voir hématologie</li>
-          </ol>
-        </div>
-      </div>
-
-      <div class="accordion">
-        <div class="accordion-header" onclick="toggleAccordion(this)">
-          1.6 Copies <span>▶</span>
-        </div>
-        <div class="accordion-body">
-          <ul>
-            <li><strong>Par mail</strong> : Diffusion → croix jaune → « + ». Introuvable → copies libres</li>
-            <li><strong>Privé → méd. hospitalier</strong> : copie libre + mail annuaire</li>
-            <li><strong>Service → méd. hospitalier</strong> : pas nécessaire</li>
-            <li><strong>Service → privé</strong> : « + ». Introuvable → bac feuilles à problème</li>
-            <li><strong>Copie patient</strong> : « 1 » sous Patient, onglet Diffusion</li>
-            <li><strong>Patient par mail</strong> : écran 310, Transmission résultats, Diffusion 1 = mail</li>
-          </ul>
-          <p><em>Introuvable → enregistrer sans copie + bac vert feuilles à problème.</em></p>
-        </div>
-      </div>
-
-      <div class="accordion">
-        <div class="accordion-header" onclick="toggleAccordion(this)">
-          ⚠ Demandes à NE PAS enregistrer <span>▶</span>
-        </div>
-        <div class="accordion-body">
-          <ul>
-            <li>Bactériologie (sauf codes GeneXpert)</li>
-            <li>Produits sanguins sans tube → Immunohématologie</li>
-          </ul>
-          <p><em>Doute requérant → temporaire 02 + bac vert. Attention multiples feuilles.</em></p>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ========== TAB: FEUILLES À TRANSMETTRE ========== -->
-    <div class="tab-panel" id="tab-feuilles">
-      <table class="data-table">
-        <thead>
-        <tr>
-          <th>Labo</th>
-          <th>Condition</th>
-          <th>Où déposer</th>
-          <th>Action spéciale</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr><td><strong>HÉMATO</strong></td><td>Commande produits sanguins</td><td>Entrée labo hémato</td><td>Pas de tube → transmettre sans enregistrer</td></tr>
-        <tr><td><strong>HÉMATO</strong></td><td>Étiquette He></td><td>Entrée labo hémato</td><td>Copie + originale en hémato</td></tr>
-        <tr><td><strong>HÉMATO</strong></td><td>Immunohémato + commande PSL</td><td>Entrée labo hémato</td><td>⚠ Vérifier signature ! Sinon copie + renvoyer + incident</td></tr>
-        <tr><td><strong>CHIMIE</strong></td><td>LCR, micro-tubes, temps prélèv., tests spéciaux</td><td>Table du 8100</td><td>Micro-tubes : dans pochette</td></tr>
-        <tr><td><strong>MM</strong></td><td>Toujours</td><td>Bac sous statif violet</td><td>—</td></tr>
-        <tr><td><strong>IS</strong></td><td>Toujours</td><td>Bac sous statif orange</td><td>—</td></tr>
-        <tr><td><strong>TOXICOLOGIE</strong></td><td>Étiq. « C Copie> » « Tox ! »</td><td>Bac Toxicologie</td><td>—</td></tr>
-        <tr><td><strong>FERTILITÉ</strong></td><td>Dépistages prénataux 1er+2ème trim.</td><td>Bac prénataux</td><td>Copie → bac feuilles à contrôler</td></tr>
-        <tr><td><strong>GÉNÉTIQUE</strong></td><td>Toujours</td><td>Bac génétique frigo côté 8100</td><td>T° ambiante → panier blanc. Commun → copie</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- ========== TAB: STATIFS DE TRI ========== -->
-    <div class="tab-panel" id="tab-statifs">
-      <div class="statifs-grid">
-        <div class="statif-card" style="background:#2196F3"><div>🔵 Bleu</div><div class="statif-dest">Non 8100 → table du 8100</div></div>
-        <div class="statif-card" style="background:#9C27B0"><div>🟣 Violet</div><div class="statif-dest">MM → poste 1 enreg.</div></div>
-        <div class="statif-card" style="background:#FF9800"><div>🟠 Orange</div><div class="statif-dest">IS → poste 1 enreg.</div></div>
-        <div class="statif-card" style="background:#F44336"><div>🔴 Rouge</div><div class="statif-dest">Hémato → entrée labo</div></div>
-        <div class="statif-card" style="background:#FDD835; color:#333"><div>🟡 Jaune</div><div class="statif-dest">Archivage → table poste 1</div></div>
-        <div class="statif-card" style="background:#78909C"><div>⚪ Gris</div><div class="statif-dest">Envois → frigo côté 8100</div></div>
-      </div>
-    </div>
-
-    <!-- ========== TAB: ÉTIQUETTES (FP-7679) ========== -->
-    <div class="tab-panel" id="tab-etiquettes">
-
-      <div class="section-title" style="margin-top:0">Description des étiquettes (FP-7679 v3)</div>
-      <div class="info-cards">
-        <div class="info-card"><h4>Chiffre → Tube primaire</h4><p>Les tubes mères sont étiquetés avec des étiquettes commençant par un <strong>chiffre</strong> (1, 4, 5, 6, 7, 8...)</p></div>
-        <div class="info-card"><h4>Lettre → Tube secondaire</h4><p>Indique le labo destinataire :<br><span class="code">H</span> Hémato · <span class="code">C</span> Chimie (plateforme automates) · <span class="code">IS</span> Immuno · <span class="code">MM</span> Microbio mol. · <span class="code">G</span> Génétique<br>L'extension sur le tube (XXXXX.61) aide à identifier quelle étiquette secondaire va avec quel tube.</p></div>
-        <div class="info-card"><h4>Avec <span class="code">></span> → Ne pas décanter</h4><p>Transférer l'étiquette à l'unité concernée (pour Sion).</p></div>
-        <div class="info-card"><h4>Avec <span class="code">!</span> → Avertir</h4><p>Avertir le laboratoire concerné <strong>oralement ou par téléphone</strong> immédiatement.</p></div>
-        <div class="info-card"><h4>Transferts par labo</h4><p><span class="code">C XXX></span> → Chimie<br><span class="code">H XXX></span> → Hématologie<br><span class="code">IS XXX></span> → Immuno-Sérologie<br><span class="code">MM XXX></span> → Microbiologie moléculaire<br><span class="code">G XXX></span> → Génétique</p></div>
-        <div class="info-card"><h4><span class="code">LSITE</span></h4><p>Site exécutant des analyses liées à cette étiquette.</p></div>
-        <div class="info-card"><h4>Infos diverses</h4><p>Au fond à gauche de l'étiquette : textes d'info (<span class="code">LCR</span>, <span class="code">Pas_8100</span>, etc.)</p></div>
-      </div>
-
-      <div class="section-title">Format visuel des étiquettes</div>
-      <div class="info-cards">
-        <div class="info-card"><h4>✅ À centrifuger</h4><p>Format standard, chiffres sur fond blanc.</p></div>
-        <div class="info-card"><h4>⛔ Ne pas centrifuger</h4><p>N° d'étiquette sur <strong>fond noir</strong>.</p></div>
-        <div class="info-card"><h4>❄ Centrifuger à froid</h4><p><span class="code">***</span> visible sur l'étiquette.</p></div>
-        <div class="info-card"><h4>🌑 Abri de la lumière</h4><p><strong>Identité sur fond noir</strong>.</p></div>
-        <div class="info-card"><h4>🌑⛔ Ne pas centrifuger + Abri lumière</h4><p><strong>Identité + N° d'étiquette sur fond noir</strong>.</p></div>
-        <div class="info-card"><h4>🔄 Décantage</h4><p>Étiquette spécifique de décantage.</p></div>
-        <div class="info-card"><h4>📦 Envois</h4><p>Étiquette spécifique pour les envois externes.</p></div>
-        <div class="info-card"><h4>ℹ️ Information</h4><p>Étiquette d'information (ex : FORMULAIRE/COPIE).</p></div>
-      </div>
-
-      <div class="section-title">Ré-impression d'étiquettes sur DGLab (écran 105)</div>
-      <table class="data-table">
-        <thead><tr><th>Étiquette</th><th>N° à saisir</th></tr></thead>
-        <tbody>
-        <tr><td><span class="code">1</span></td><td>101</td></tr>
-        <tr><td><span class="code">1'</span></td><td>115</td></tr>
-        <tr><td><span class="code">2</span></td><td>102</td></tr>
-        <tr><td><span class="code">5</span></td><td>150</td></tr>
-        <tr><td><span class="code">6 non centri</span></td><td>161</td></tr>
-        <tr><td><span class="code">6 centri</span></td><td>160</td></tr>
-        <tr><td><span class="code">SERO 9</span></td><td>909</td></tr>
-        <tr><td><span class="code">IS AUT</span></td><td>901</td></tr>
-        <tr><td><span class="code">IS PRUN</span></td><td>902</td></tr>
-        <tr><td><span class="code">IS IF</span></td><td>903</td></tr>
-        <tr><td><span class="code">M-AER</span></td><td>951</td></tr>
-        <tr><td><span class="code">M-ANA</span></td><td>952</td></tr>
-        </tbody>
-      </table>
-      <p style="margin-top:12px; font-size:0.78rem; color:var(--text-muted)">Cocher « Seul. suppl. » et saisir le N° dans le champ « Supplémentaires ».</p>
-
-      <div class="section-title">Règles de collage & vérifications</div>
-      <div class="info-cards">
-        <div class="info-card"><h4>📌 Positionnement</h4><p>Coller en laissant visibles le <strong>nom et prénom</strong> inscrits sur le tube. Tubes <strong>bleu clair → laisser une fenêtre visible</strong>.</p></div>
-        <div class="info-card"><h4>✱ Feuille lecteur optique</h4><p>Coller une étiquette ✱ sur la demande (verticalement en haut à gauche).</p></div>
-        <div class="info-card"><h4>∅ Échantillon manquant</h4><p><strong>Prévenir immédiatement le requérant</strong> → imprimer l'étiquette du tube manquant, inscrire « ∅ » → transmettre au labo concerné.</p></div>
-        <div class="info-card"><h4>🗑 Confidentialité</h4><p>Étiquettes surnuméraires + ruban encreur → <strong>poubelles jaunes</strong>.</p></div>
-        <div class="info-card"><h4>✓ Vérifications</h4><p>Concordance <strong>nom, prénom et NLab</strong> entre étiquettes, feuille et tube. <strong>Vérifier le remplissage des tubes</strong>. Viser la feuille de demande.</p></div>
-      </div>
-
-    </div>
-
-    <!-- ========== TAB: CHECK-IN ========== -->
-    <div class="tab-panel" id="tab-checkin">
-      <div class="info-cards">
-        <div class="info-card"><h4>✓ Automatique</h4><p>Tubes conformes 8100 sans pré-analytique particulière.</p></div>
-        <div class="info-card"><h4>✋ Manuel</h4><p>Tous les autres tubes.</p></div>
-        <div class="info-card"><h4>❄ Congelés IS/MM/Tox</h4><p>Sortir sagex → congélateur poste envois → étiq. au labo.</p></div>
-        <div class="info-card"><h4>❄ Congelés Chimie/Hémato</h4><p>Laisser dans sagex → statif du labo.</p></div>
-      </div>
-    </div>
-
-    <!-- ========== TAB: SÉROTHÈQUE ========== -->
-    <div class="tab-panel" id="tab-serotheque">
-      <div class="info-cards">
-        <div class="info-card"><h4>Sérum réserve</h4><p><span class="code">SRES</span></p></div>
-        <div class="info-card"><h4>LCR réserve</h4><p><span class="code">LQRES</span></p></div>
-        <div class="info-card"><h4>Tous tubes sérum</h4><p>(Neuro, Hôp. jour) <span class="code">SREST</span> · Étiq. « 1 » + feuille/étiq/tubes → poste 8100.</p></div>
-      </div>
-    </div>
-
-    <!-- ========== TAB: GESTION PAR LABO ========== -->
-    <div class="tab-panel" id="tab-gestion">
-      <div class="info-cards">
-        <div class="info-card">
-          <h4>🔬 Chimie</h4>
-          <ul>
-            <li>Conformes → 8100 (sauf: pas centri., pré-analytique spéc., étiq. sec., matériel insuffisant)</li>
-            <li>Non conformes → statif bleu</li>
-            <li>Micro-tubes : étiq. « 1 » (ne PAS coller), pochette côté statif bleu, avertir 8100</li>
-            <li>Thermos → statif bleu + avertir TAB chimie</li>
-            <li><strong>Pas sur 8100 si :</strong> matériel insuffisant, surnageant rougeâtre, gel oblique, étiq. fond noir, non conforme, étiq. secondaire</li>
-            <li><strong>Tiroirs :</strong> Non centri. → « Non-Centrifugés » · Centri. → « Centrifugés » · Faux-fond → « B-lines avec bouchons »</li>
-            <li>Faux-fond + brun même patient → faux-fond chaîne, brun statif jaune</li>
-          </ul>
-        </div>
-        <div class="info-card">
-          <h4>🩸 Hématologie</h4>
-          <ul>
-            <li>EDTA sans étiq. sec. + gris foncés → rouleau</li>
-            <li>Bleu clair, stérile, autres → statif rouge</li>
-          </ul>
-        </div>
-        <div class="info-card">
-          <h4>🧫 Immuno-sérologie</h4>
-          <ul>
-            <li>Sérum conforme → 8100 si assez matériel</li>
-            <li>Autres sérum → statif bleu · Autre tube → statif orange</li>
-          </ul>
-        </div>
-        <div class="info-card">
-          <h4>🧬 MM</h4>
-          <ul><li>Tous → statif violet</li></ul>
-        </div>
-        <div class="info-card">
-          <h4>🦠 Bactério</h4>
-          <ul><li>Pochette+feuille → bac noir · LCR → tél. (heures ouverture)</li></ul>
-        </div>
-        <div class="info-card">
-          <h4>🧪 Génétique</h4>
-          <ul><li>T° ambiante → panier blanc · Sinon → chambre froide · « Tel gen » → contacter</li></ul>
-        </div>
-        <div class="info-card">
-          <h4>📦 Envois</h4>
-          <ul>
-            <li>Selon étiq.: chaîne, frigo, congélateur ou T° ambiante · ANASPB si besoin</li>
-            <li>WE/nuit : frigo statif gris · Congelés → congélateur envois · T° amb. → bac Centralisation</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== TAB: CAS PARTICULIERS ========== -->
-    <div class="tab-panel" id="tab-cas">
-      <div class="info-cards">
-        <div class="info-card"><h4>🔬 Cytologie</h4><p>Tubes coniques jaunes → <strong>codes CXXX</strong> (pas FXXX).</p></div>
-        <div class="info-card"><h4>🏥 CHUV neuro-immuno</h4><p>Si seul → pochette <strong>frigo</strong> + message bac feuilles à problème.</p></div>
-        <div class="info-card"><h4>💰 LAI, LAA, LAM</h4><p>Maternité, invalidité, accident, militaire → <strong>enregistrer</strong> + bac feuilles à problème.</p></div>
-        <div class="info-card"><h4>🚑 Accidents professionnels</h4><p>→ <strong>Procédure Wiki</strong></p></div>
-      </div>
-    </div>
-
-  </div><!-- /tabs -->
-</div><!-- /main -->
-
-<!-- ==================== FOOTER ==================== -->
-<footer class="footer">
-  Site créé par Damien Malherbe | Dernière mise à jour : 21 mars 2026
-</footer>
-
-<!-- ==================== MODAL ==================== -->
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal" id="modal"></div>
-</div>
-
-<!-- ==================== JAVASCRIPT ==================== -->
-<script>
-
-  // ==================== TUBES DATA ====================
-
-  const T = {
-    "sang": [
-      {
-        "id": "brun",
-        "name": "Brun",
-        "sub": "Sérum",
-        "etiq": "1 ou 1XXX",
-        "color": "#6D4C2A",
-        "tc": "#fff",
-        "c": "oui",
-        "cl": "Peut être centrifugé",
-        "d": [
-          {"l": "8100", "dt": "Centrifugé → tiroir Centrifugés", "t": "dest-8100"},
-          {"l": "8100", "dt": "Non centrifugé → tiroir Non-Centrifugés", "t": "dest-8100"},
-          {"l": "Statif bleu", "dt": "Non conforme ou étiq. secondaire", "t": "dest-bleu"}
-        ],
-        "sup": "S-SUP / S-SUP2",
-        "tub": "S-TUB",
-        "res": "SRES",
-        "n": [
-          "Plusieurs S-SUP/S-SUP2 → « D » sur chaque tube",
-          "Faux-fond + brun même patient → faux-fond chaîne, brun statif jaune"
-        ],
-        "a": [],
-        "s": [],
-        "kw": "brun sérum serum s-sup s-tub sres"
-      },
-      {
-        "id": "corail",
-        "name": "Corail / Blanc",
-        "sub": "Sérum sans gel",
-        "etiq": "80 ou 1",
-        "color": "#E8734A",
-        "tc": "#fff",
-        "c": "oui",
-        "cl": "Peut être centrifugé",
-        "d": [
-          {"l": "8100", "dt": "Centrifugé → tiroir Centrifugés", "t": "dest-8100"},
-          {"l": "8100", "dt": "Non centrifugé → tiroir Non-Centrifugés", "t": "dest-8100"},
-          {"l": "Statif bleu", "dt": "Non conforme ou étiq. secondaire", "t": "dest-bleu"}
-        ],
-        "sup": "S-SUPSG (pédia→S-SUP)",
-        "tub": "S-TUBSG (pédia→S-TUB)",
-        "res": "",
-        "n": [
-          "Plusieurs S-SUPSG → « D »",
-          "Tube abri lumière → TAB chimie"
-        ],
-        "a": [],
-        "s": [],
-        "kw": "corail blanc sérum sans gel s-supsg pédiatrie"
-      },
-      {
-        "id": "vert",
-        "name": "Vert",
-        "sub": "Plasma hépariné",
-        "etiq": "80 ou 1",
-        "color": "#2E7D32",
-        "tc": "#fff",
-        "c": "oui",
-        "cl": "Peut être centrifugé",
-        "d": [
-          {"l": "8100", "dt": "Étiq. chiffre blanc sans sec.", "t": "dest-8100"},
-          {"l": "Statif bleu", "dt": "Étiq. chiffre noir ou sec.", "t": "dest-bleu"},
-          {"l": "Hémato", "dt": "", "t": "dest-hemato"},
-          {"l": "Envoi", "dt": "", "t": "dest-envoi"}
-        ],
-        "sup": "PHSUP (tox→BHTOX)",
-        "tub": "PHTUB",
-        "res": "",
-        "n": ["Plusieurs PHSUP → « D »"],
-        "a": [],
-        "s": [],
-        "kw": "vert hépariné plasma phsup phtub bhtox"
-      },
-      {
-        "id": "gris-clair",
-        "name": "Gris clair",
-        "sub": "Plasma fluoré",
-        "etiq": "4 ou 4TXX",
-        "color": "#90A4AE",
-        "tc": "#1a1a1a",
-        "c": "obligatoire",
-        "cl": "Obligatoirement centrifugé",
-        "d": [
-          {"l": "8100", "dt": "", "t": "dest-8100"}
-        ],
-        "sup": "PFSUP",
-        "tub": "PFTUB",
-        "res": "",
-        "n": [],
-        "a": [],
-        "s": [],
-        "kw": "gris clair fluoré pfsup pftub"
-      },
-      {
-        "id": "violet-petit",
-        "name": "Violet petit",
-        "sub": "EDTA 2,6mL",
-        "etiq": "6",
-        "color": "#7B1FA2",
-        "tc": "#fff",
-        "c": "oui",
-        "cl": "Peut être centrifugé",
-        "d": [
-          {"l": "8100", "dt": "Étiq. chiffre blanc sans sec.", "t": "dest-8100"},
-          {"l": "Statif bleu", "dt": "Étiq. chiffre noir ou sec.", "t": "dest-bleu"},
-          {"l": "Hémato", "dt": "Rouleau (pas sec.) · Statif rouge sinon", "t": "dest-hemato"},
-          {"l": "Génétique", "dt": "", "t": "dest-genetique"},
-          {"l": "Envoi", "dt": "", "t": "dest-envoi"}
-        ],
-        "sup": "BESUP",
-        "tub": "BETUB",
-        "res": "",
-        "n": [],
-        "a": [],
-        "s": [
-          "1 tube hémato+chimie/tox → en hémato, noter « hémato » sur étiq. chimie → statif bleu",
-          "1 EDTA + 1 thromboexact → les 2 en hémato + même marquage",
-          "1 EDTA + autres labos → voir TABs, sinon contacter requérant"
-        ],
-        "kw": "violet petit edta besup betub hémato"
-      },
-      {
-        "id": "violet-grand",
-        "name": "Violet grand",
-        "sub": "EDTA 7,5mL",
-        "etiq": "7",
-        "color": "#6A1B9A",
-        "tc": "#fff",
-        "c": "variable",
-        "cl": "Selon destination et volume",
-        "d": [
-          {"l": "Hémato", "dt": "", "t": "dest-hemato"},
-          {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
-          {"l": "Envoi", "dt": "Bac/Frigo/Congélateur", "t": "dest-envoi"}
-        ],
-        "sup": "BESUP (urg/ext)",
-        "tub": "CE-00",
-        "res": "",
-        "n": [
-          "Feuilles lecteur optique → signature préleveur",
-          "Étiq. 6 collable sur grand si pas petit EDTA"
-        ],
-        "a": [
-          "Urgences/externes → BESUP (pas CE-00) si déjà petit EDTA/BETUB"
-        ],
-        "s": [
-          "Envoi Cery 7,5ml → 8100 ok",
-          "Envoi Cery 2,6ml → centrifuger+décanter manuellement"
-        ],
-        "kw": "violet grand edta ce-00 besup cery envoi mm hémato"
-      },
-      {
-        "id": "rouge",
-        "name": "Rouge foncé",
-        "sub": "Thromboexact",
-        "etiq": "6",
-        "color": "#8B0000",
-        "tc": "#fff",
-        "c": "non",
-        "cl": "Ne peut pas être centrifugé",
-        "d": [
-          {"l": "Hémato", "dt": "", "t": "dest-hemato"}
-        ],
-        "sup": "",
-        "tub": "",
-        "res": "",
-        "n": ["Thromboexact + petit EDTA chimie+hémato → 2 en hémato, indiquer chimie"],
-        "a": [],
-        "s": [],
-        "kw": "rouge foncé thromboexact hémato"
-      },
-      {
-        "id": "bleu",
-        "name": "Bleu",
-        "sub": "Plasma citraté",
-        "etiq": "5",
-        "color": "#1565C0",
-        "tc": "#fff",
-        "c": "non",
-        "cl": "Ne peut pas être centrifugé",
-        "d": [
-          {"l": "Hémato", "dt": "Statif rouge", "t": "dest-hemato"}
-        ],
-        "sup": "PCSUP",
-        "tub": "PCTUB",
-        "res": "",
-        "n": [
-          "Plusieurs PCSUP → marque bouchons",
-          "Fenêtre visible au collage"
-        ],
-        "a": [],
-        "s": [],
-        "kw": "bleu citraté pcsup pctub hémato"
-      },
-      {
-        "id": "gris-fonce",
-        "name": "Gris foncé / Noir",
-        "sub": "Sang citraté (VS)",
-        "etiq": "8",
-        "color": "#37474F",
-        "tc": "#fff",
-        "c": "non",
-        "cl": "Ne peut pas être centrifugé",
-        "d": [
-          {"l": "Hémato", "dt": "Rouleau", "t": "dest-hemato"}
-        ],
-        "sup": "BCSUP",
-        "tub": "BCTUB",
-        "res": "",
-        "n": [],
-        "a": ["NE PAS coller étiq. « 8 ». Donner « 8 » + « Hv » en hémato."],
-        "s": [],
-        "kw": "gris foncé noir sang citraté bcsup bctub hv"
-      },
-      {
-        "id": "lcr",
-        "name": "LCR",
-        "sub": "Liquide céphalo-rachidien",
-        "etiq": "10",
-        "color": "#00838F",
-        "tc": "#fff",
-        "c": "non",
-        "cl": "Ne peut pas être centrifugé",
-        "d": [
-          {"l": "Chimie", "dt": "Tube N°1", "t": "dest-chimie"},
-          {"l": "Bactério/MM/IS", "dt": "Tube N°2", "t": "dest-mm"},
-          {"l": "Hémato", "dt": "Tube N°3", "t": "dest-hemato"},
-          {"l": "Immunochimie", "dt": "N°4 (« C Pl> ») → statif bleu", "t": "dest-bleu"},
-          {"l": "IS", "dt": "Tube N°5", "t": "dest-is"},
-          {"l": "Statif violet", "dt": "Suppl. → LQRES", "t": "dest-mm"}
-        ],
-        "sup": "LQRES",
-        "tub": "",
-        "res": "LQRES",
-        "n": ["Tube stérile PP → FP-7711", "Répartition → FP-11538"],
-        "a": [
-          "Cytologie 07h30-16h30 → téléphoner",
-          "Après 16h30 → feuille+tube en hémato",
-          "Tube abri lumière → TAB chimie rapidement"
-        ],
-        "s": [],
-        "kw": "lcr liquide céphalo rachidien lqres cytologie"
-      },
-      {
-        "id": "urine",
-        "name": "Urine (Vacutainer)",
-        "sub": "",
-        "etiq": "30",
-        "color": "#9E9D24",
-        "tc": "#fff",
-        "c": "oui",
-        "cl": "Peut être centrifugé",
-        "d": [
-          {"l": "8100", "dt": "Si centrifugeable", "t": "dest-8100"},
-          {"l": "Statif bleu", "dt": "Début 8100", "t": "dest-bleu"},
-          {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
-          {"l": "Bactério", "dt": "", "t": "dest-bacterio"}
-        ],
-        "sup": "U-SUP",
-        "tub": "U-TUB",
-        "res": "",
-        "n": [],
-        "a": [],
-        "s": [
-          "Sédiment (30 SED) → statif bleu + étiq. réserve",
-          "Dosages+sédiment → répartir selon étiquettes",
-          "1 tube / étiq. pH → statif bleu",
-          "Commun chimie+bactério → si rapide sinon 2ème tube",
-          "Urines 24h → volume+période. Clearance → poids+taille → table 8100"
-        ],
-        "kw": "urine vacutainer sédiment u-sup u-tub clearance 24h"
+    function toggleFavorite(id, event) {
+      event.stopPropagation();
+      var favs = getFavorites();
+      var idx = favs.indexOf(id);
+      if (idx >= 0) {
+        favs.splice(idx, 1);
+      } else {
+        favs.push(id);
       }
-    ],
+      saveFavorites(favs);
+      renderTubes(document.getElementById('searchInput').value);
+    }
 
-    "autres": [
-      {
-        "id": "urine-st",
-        "name": "Urine (Flacon stérile)",
-        "sub": "",
-        "etiq": "30",
-        "color": "#827717",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [
-          {"l": "Chimie", "dt": "Statif bleu", "t": "dest-chimie"},
-          {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
-          {"l": "Bactério", "dt": "", "t": "dest-bacterio"}
-        ],
-        "sup": "", "tub": "", "res": "",
-        "n": [], "a": [], "s": [],
-        "kw": "urine flacon stérile chimie mm bactério"
-      },
-      {
-        "id": "urine-24h",
-        "name": "Urine 24h",
-        "sub": "Flacon brun",
-        "etiq": "39",
-        "color": "#5D4037",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [{"l": "Chimie", "dt": "Statif bleu", "t": "dest-chimie"}],
-        "sup": "", "tub": "", "res": "",
-        "n": ["Vérifier volume+période", "Clearance → poids+taille"],
-        "a": [], "s": [],
-        "kw": "urine 24h flacon brun 39 chimie clearance"
-      },
-      {
-        "id": "urine-bor",
-        "name": "Urine ac. borique",
-        "sub": "Vacutrainer",
-        "etiq": "65",
-        "color": "#F57F17",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [{"l": "Bactério", "dt": "", "t": "dest-bacterio"}],
-        "sup": "", "tub": "", "res": "",
-        "n": [], "a": [], "s": [],
-        "kw": "urine acide borique 65 bactériologie"
-      },
-      {
-        "id": "selles",
-        "name": "Pot à selles",
-        "sub": "Selles",
-        "etiq": "45",
-        "color": "#6D4C41",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [
-          {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
-          {"l": "Bactério", "dt": "", "t": "dest-bacterio"}
-        ],
-        "sup": "", "tub": "", "res": "",
-        "n": [], "a": [], "s": [],
-        "kw": "selles pot 45 mm bactério"
-      },
-      {
-        "id": "occulte",
-        "name": "Sang occulte",
-        "sub": "Selles",
-        "etiq": "50",
-        "color": "#4E342E",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [{"l": "MM", "dt": "", "t": "dest-mm"}],
-        "sup": "", "tub": "", "res": "",
-        "n": [], "a": [], "s": [],
-        "kw": "sang occulte selles 50 mm"
-      },
-      {
-        "id": "buvard",
-        "name": "Buvard",
-        "sub": "Spot sang séché",
-        "etiq": "60",
-        "color": "#BF360C",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [{"l": "Envoi", "dt": "", "t": "dest-envoi"}],
-        "sup": "", "tub": "", "res": "",
-        "n": [], "a": [], "s": [],
-        "kw": "buvard spot sang séché 60 envoi"
-      },
-      {
-        "id": "jcv",
-        "name": "JC Virus",
-        "sub": "Sang",
-        "etiq": "49",
-        "color": "#880E4F",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [{"l": "Envoi", "dt": "", "t": "dest-envoi"}],
-        "sup": "", "tub": "", "res": "",
-        "n": [], "a": [], "s": [],
-        "kw": "jc virus sang 49 envoi"
-      },
-      {
-        "id": "perch",
-        "name": "Sang perchloré",
-        "sub": "Tube pyr/lac",
-        "etiq": "3",
-        "color": "#B71C1C",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [{"l": "Envoi", "dt": "Chambre froide", "t": "dest-envoi"}],
-        "sup": "", "tub": "", "res": "",
-        "n": ["Protocole+tube chambre froide"],
-        "a": [], "s": [],
-        "kw": "perchloré pyr lac 3 envoi chambre froide"
-      },
-      {
-        "id": "azath",
-        "name": "Azathioprine",
-        "sub": "Sg hép+DTT+Hémogr.",
-        "etiq": "12",
-        "color": "#311B92",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [{"l": "Envoi", "dt": "Congélateur", "t": "dest-envoi"}],
-        "sup": "", "tub": "", "res": "",
-        "n": ["Imurek"],
-        "a": [], "s": [],
-        "kw": "azathioprine imurek 12 envoi congélateur"
-      },
-      {
-        "id": "streck",
-        "name": "Streck Cell-Free DNA",
-        "sub": "Sang Streck",
-        "etiq": "70",
-        "color": "#1A237E",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [{"l": "Envoi", "dt": "Pour DPNI", "t": "dest-envoi"}],
-        "sup": "", "tub": "", "res": "",
-        "n": [], "a": [], "s": [],
-        "kw": "streck cell-free dna 70 envoi dpni"
-      },
-      {
-        "id": "tau",
-        "name": "Protéine Tau/14-3-3",
-        "sub": "LCR (tube PP)",
-        "etiq": "22",
-        "color": "#004D40",
-        "tc": "#fff",
-        "c": "na",
-        "cl": "Non applicable",
-        "d": [{"l": "Envoi", "dt": "FP-7711 · TAB pour microtubes", "t": "dest-envoi"}],
-        "sup": "", "tub": "", "res": "",
-        "n": [], "a": [], "s": [],
-        "kw": "protéine tau 14-3-3 lcr pp 22 envoi"
+    // ==================== RENDER TUBES ====================
+
+    function renderTubes(f) {
+      f = (f || '').toLowerCase();
+      var gs = document.getElementById('tubesGridSang');
+      var ga = document.getElementById('tubesGridAutres');
+      var gf = document.getElementById('tubesGridFav');
+      var favSection = document.getElementById('favSection');
+      gs.innerHTML = '';
+      ga.innerHTML = '';
+      gf.innerHTML = '';
+
+      var favs = getFavorites();
+      var allTubes = T.sang.concat(T.autres);
+      var favTubes = allTubes.filter(function(t) { return favs.indexOf(t.id) >= 0; });
+
+      function mk(t, g) {
+        if (f && !t.kw.includes(f) && !t.name.toLowerCase().includes(f) && !(t.sub || '').toLowerCase().includes(f)) return false;
+        var c = document.createElement('div');
+        c.className = 'tube-card';
+        c.style.background = t.color;
+        c.style.color = t.tc;
+        c.onclick = function() { openModal(t); };
+
+        var isFav = favs.indexOf(t.id) >= 0;
+        c.innerHTML =
+          '<button class="fav-star ' + (isFav ? 'is-fav' : '') + '" onclick="toggleFavorite(\'' + t.id + '\', event)">' + (isFav ? '⭐' : '☆') + '</button>' +
+          '<div class="tube-name">' + t.name + '</div>' +
+          (t.sub ? '<div class="tube-sub">' + t.sub + '</div>' : '') +
+          '<div class="tube-etiq">Étiq: ' + t.etiq + '</div>';
+        g.appendChild(c);
+        return true;
       }
-    ]
-  };
 
-  // ==================== RENDER TUBES ====================
+      // Render favorites
+      var favCount = 0;
+      favTubes.forEach(function(t) { if (mk(t, gf)) favCount++; });
+      favSection.style.display = favCount > 0 ? '' : 'none';
 
-  function renderTubes(f) {
-    f = (f || '').toLowerCase();
-    var gs = document.getElementById('tubesGridSang');
-    var ga = document.getElementById('tubesGridAutres');
-    gs.innerHTML = '';
-    ga.innerHTML = '';
-
-    function mk(t, g) {
-      if (f && !t.kw.includes(f) && !t.name.toLowerCase().includes(f) && !(t.sub || '').toLowerCase().includes(f)) return;
-      var c = document.createElement('div');
-      c.className = 'tube-card';
-      c.style.background = t.color;
-      c.style.color = t.tc;
-      c.onclick = function() { openModal(t); };
-      c.innerHTML = '<div class="tube-name">' + t.name + '</div>' +
-              (t.sub ? '<div class="tube-sub">' + t.sub + '</div>' : '') +
-              '<div class="tube-etiq">Étiq: ' + t.etiq + '</div>';
-      g.appendChild(c);
+      // Render main grids
+      T.sang.forEach(function(t) { mk(t, gs); });
+      T.autres.forEach(function(t) { mk(t, ga); });
     }
 
-    T.sang.forEach(function(t) { mk(t, gs); });
-    T.autres.forEach(function(t) { mk(t, ga); });
-  }
+    // ==================== MODAL ====================
 
-  // ==================== MODAL ====================
+    function openModal(t) {
+      var m = document.getElementById('modal');
+      var o = document.getElementById('modalOverlay');
 
-  function openModal(t) {
-    var m = document.getElementById('modal');
-    var o = document.getElementById('modalOverlay');
+      // Centrifugation badge
+      var cc, ci;
+      if (t.c === 'oui') { cc = 'centri-oui'; ci = '✓ OUI'; }
+      else if (t.c === 'obligatoire') { cc = 'centri-obligatoire'; ci = '⬤ OBLIGATOIRE'; }
+      else if (t.c === 'non') { cc = 'centri-non'; ci = '✗ NON'; }
+      else if (t.c === 'na') { cc = 'centri-na'; ci = '— N/A'; }
+      else { cc = 'centri-var'; ci = '⚠ VARIABLE'; }
 
-    // Centrifugation badge
-    var cc, ci;
-    if (t.c === 'oui') { cc = 'centri-oui'; ci = '✓ OUI'; }
-    else if (t.c === 'obligatoire') { cc = 'centri-obligatoire'; ci = '⬤ OBLIGATOIRE'; }
-    else if (t.c === 'non') { cc = 'centri-non'; ci = '✗ NON'; }
-    else if (t.c === 'na') { cc = 'centri-na'; ci = '— N/A'; }
-    else { cc = 'centri-var'; ci = '⚠ VARIABLE'; }
+      // Build modal HTML
+      var h = '';
+      h += '<div class="modal-header" style="background:' + t.color + ';color:' + t.tc + '">';
+      h += '  <div>';
+      h += '    <h2>' + t.name + (t.sub ? ' — ' + t.sub : '') + '</h2>';
+      h += '    <div class="modal-etiq">Étiquette : ' + t.etiq + '</div>';
+      h += '  </div>';
+      h += '  <button class="modal-close" onclick="closeModal()">✕</button>';
+      h += '</div>';
+      h += '<div class="modal-body">';
 
-    // Build modal HTML
-    var h = '';
-    h += '<div class="modal-header" style="background:' + t.color + ';color:' + t.tc + '">';
-    h += '  <div>';
-    h += '    <h2>' + t.name + (t.sub ? ' — ' + t.sub : '') + '</h2>';
-    h += '    <div class="modal-etiq">Étiquette : ' + t.etiq + '</div>';
-    h += '  </div>';
-    h += '  <button class="modal-close" onclick="closeModal()">✕</button>';
-    h += '</div>';
-    h += '<div class="modal-body">';
+      // Centrifugation
+      h += '  <div class="info-row">';
+      h += '    <div class="info-label">Centrifuger</div>';
+      h += '    <div class="info-value">';
+      h += '      <span class="centri-badge ' + cc + '">' + ci + '</span>';
+      h += '      <span style="margin-left:6px;font-size:.82rem;color:var(--text-secondary)">' + t.cl + '</span>';
+      h += '    </div>';
+      h += '  </div>';
+      h += '  <hr class="modal-separator">';
 
-    // Centrifugation
-    h += '  <div class="info-row">';
-    h += '    <div class="info-label">Centrifuger</div>';
-    h += '    <div class="info-value">';
-    h += '      <span class="centri-badge ' + cc + '">' + ci + '</span>';
-    h += '      <span style="margin-left:6px;font-size:.82rem;color:var(--text-secondary)">' + t.cl + '</span>';
-    h += '    </div>';
-    h += '  </div>';
-    h += '  <hr class="modal-separator">';
+      // Destinations
+      h += '  <div class="info-row">';
+      h += '    <div class="info-label">Destinations</div>';
+      h += '    <div class="info-value"><div class="dest-list">';
+      t.d.forEach(function(d) {
+        h += '<div class="dest-badge ' + d.t + '"><strong>' + d.l + '</strong>' + (d.dt ? ' · ' + d.dt : '') + '</div>';
+      });
+      h += '    </div></div>';
+      h += '  </div>';
+      h += '  <hr class="modal-separator">';
 
-    // Destinations
-    h += '  <div class="info-row">';
-    h += '    <div class="info-label">Destinations</div>';
-    h += '    <div class="info-value"><div class="dest-list">';
-    t.d.forEach(function(d) {
-      h += '<div class="dest-badge ' + d.t + '"><strong>' + d.l + '</strong>' + (d.dt ? ' · ' + d.dt : '') + '</div>';
+      // Codes
+      if (t.sup) {
+        h += '  <div class="info-row"><div class="info-label">Tubes excès</div>';
+        h += '  <div class="info-value"><span class="code">' + t.sup + '</span></div></div>';
+      }
+      if (t.tub) {
+        h += '  <div class="info-row"><div class="info-label">Sans analyses</div>';
+        h += '  <div class="info-value"><span class="code">' + t.tub + '</span></div></div>';
+      }
+      if (t.res) {
+        h += '  <div class="info-row"><div class="info-label">Réserve</div>';
+        h += '  <div class="info-value"><span class="code">' + t.res + '</span></div></div>';
+      }
+
+      // Alerts
+      if (t.a.length) {
+        h += '  <div class="alert-box"><div class="alert-title">⚠ ATTENTION</div><ul>';
+        t.a.forEach(function(x) { h += '<li>' + x + '</li>'; });
+        h += '  </ul></div>';
+      }
+
+      // Specials
+      if (t.s.length) {
+        h += '  <div class="special-box"><h4>📋 Cas particuliers</h4><ul>';
+        t.s.forEach(function(x) { h += '<li>' + x + '</li>'; });
+        h += '  </ul></div>';
+      }
+
+      // Notes
+      if (t.n.length) {
+        h += '  <div class="note-box"><h4>📝 Notes</h4><ul>';
+        t.n.forEach(function(x) { h += '<li>' + x + '</li>'; });
+        h += '  </ul></div>';
+      }
+
+      h += '</div>'; // /modal-body
+
+      m.innerHTML = h;
+      o.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
     });
-    h += '    </div></div>';
-    h += '  </div>';
-    h += '  <hr class="modal-separator">';
 
-    // Codes
-    if (t.sup) {
-      h += '  <div class="info-row"><div class="info-label">Tubes excès</div>';
-      h += '  <div class="info-value"><span class="code">' + t.sup + '</span></div></div>';
-    }
-    if (t.tub) {
-      h += '  <div class="info-row"><div class="info-label">Sans analyses</div>';
-      h += '  <div class="info-value"><span class="code">' + t.tub + '</span></div></div>';
-    }
-    if (t.res) {
-      h += '  <div class="info-row"><div class="info-label">Réserve</div>';
-      h += '  <div class="info-value"><span class="code">' + t.res + '</span></div></div>';
+    // ==================== SEARCH ====================
+
+    function filterTubes() {
+      renderTubes(document.getElementById('searchInput').value);
     }
 
-    // Alerts
-    if (t.a.length) {
-      h += '  <div class="alert-box"><div class="alert-title">⚠ ATTENTION</div><ul>';
-      t.a.forEach(function(x) { h += '<li>' + x + '</li>'; });
-      h += '  </ul></div>';
+    // ==================== PHONES FILTER ====================
+
+    function filterPhones() {
+      var f = document.getElementById('phoneSearch').value.toLowerCase();
+      var rows = document.querySelectorAll('#phoneTable tbody tr');
+      rows.forEach(function(row) {
+        var text = row.textContent.toLowerCase();
+        row.style.display = text.includes(f) ? '' : 'none';
+      });
     }
 
-    // Specials
-    if (t.s.length) {
-      h += '  <div class="special-box"><h4>📋 Cas particuliers</h4><ul>';
-      t.s.forEach(function(x) { h += '<li>' + x + '</li>'; });
-      h += '  </ul></div>';
+    // ==================== TABS ====================
+
+    function switchTab(id, btn) {
+      document.querySelectorAll('.tab-panel').forEach(function(p) {
+        p.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+      });
+      document.getElementById('tab-' + id).classList.add('active');
+      btn.classList.add('active');
     }
 
-    // Notes
-    if (t.n.length) {
-      h += '  <div class="note-box"><h4>📝 Notes</h4><ul>';
-      t.n.forEach(function(x) { h += '<li>' + x + '</li>'; });
-      h += '  </ul></div>';
+    // ==================== THEME ====================
+
+    function toggleTheme() {
+      var d = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', d ? '' : 'dark');
+      document.getElementById('themeBtn').textContent = d ? '🌙 Mode sombre' : '☀️ Mode clair';
     }
 
-    h += '</div>'; // /modal-body
+    // ==================== CONTROLES TOGGLE ====================
 
-    m.innerHTML = h;
-    o.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
+    function toggleControles(el) {
+      el.classList.toggle('open');
+      document.getElementById('controlesContent').classList.toggle('show');
+    }
 
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('show');
-    document.body.style.overflow = '';
-  }
+    // ==================== ACCORDION ====================
 
-  // Close modal on Escape
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeModal();
-  });
+    function toggleAccordion(el) {
+      var b = el.nextElementSibling;
+      b.classList.toggle('show');
+      el.querySelector('span').textContent = b.classList.contains('show') ? '▼' : '▶';
+    }
 
-  // ==================== SEARCH ====================
+    // ==================== CHANGELOG ====================
 
-  function filterTubes() {
-    renderTubes(document.getElementById('searchInput').value);
-  }
+    function toggleChangelog() {
+      var body = document.getElementById('changelogBody');
+      var chev = document.getElementById('clChevron');
+      body.classList.toggle('show');
+      chev.textContent = body.classList.contains('show') ? '▼' : '▶';
+    }
 
-  // ==================== TABS ====================
+    // ==================== INIT ====================
 
-  function switchTab(id, btn) {
-    document.querySelectorAll('.tab-panel').forEach(function(p) {
-      p.classList.remove('active');
-    });
-    document.querySelectorAll('.tab-btn').forEach(function(b) {
-      b.classList.remove('active');
-    });
-    document.getElementById('tab-' + id).classList.add('active');
-    btn.classList.add('active');
-  }
+    renderTubes();
 
-  // ==================== THEME ====================
-
-  function toggleTheme() {
-    var d = document.documentElement.getAttribute('data-theme') === 'dark';
-    document.documentElement.setAttribute('data-theme', d ? '' : 'dark');
-    document.getElementById('themeBtn').textContent = d ? '🌙 Mode sombre' : '☀️ Mode clair';
-  }
-
-  // ==================== CONTROLES TOGGLE ====================
-
-  function toggleControles(el) {
-    el.classList.toggle('open');
-    document.getElementById('controlesContent').classList.toggle('show');
-  }
-
-  // ==================== ACCORDION ====================
-
-  function toggleAccordion(el) {
-    var b = el.nextElementSibling;
-    b.classList.toggle('show');
-    el.querySelector('span').textContent = b.classList.contains('show') ? '▼' : '▶';
-  }
-
-  // ==================== INIT ====================
-
-  renderTubes();
-
-</script>
+  </script>
 </body>
 </html>
