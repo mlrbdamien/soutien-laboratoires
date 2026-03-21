@@ -3,532 +3,591 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestion des échantillons au soutien laboratoire</title>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <title>Gestion des échantillons — Soutien Laboratoire HVS</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
-    /* ==================== VARIABLES ==================== */
+    /* ==================== DESIGN TOKENS ==================== */
     :root {
-      --bg: #F4F5F7;
-      --surface: #FFFFFF;
-      --surface-alt: #F0F1F3;
-      --text: #1A1D23;
-      --text-secondary: #5F6672;
-      --text-muted: #8E95A2;
-      --border: #E2E4E9;
-      --accent: #2C3E50;
-      --alert: #C0392B;
-      --alert-bg: #FDEDEC;
-      --success: #27AE60;
-      --success-bg: #EAFAF1;
-      --info: #2980B9;
-      --info-bg: #EBF5FB;
-      --warning: #F39C12;
-      --warning-bg: #FEF9E7;
-      --code-bg: #EDF2F4;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
-      --radius: 10px;
-      --radius-sm: 6px;
-      --font: 'Source Sans 3', -apple-system, sans-serif;
-      --mono: 'JetBrains Mono', monospace;
-      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      /* Surface */
+      --bg:            #F7F8FA;
+      --surface:       #FFFFFF;
+      --surface-raised: #FFFFFF;
+      --surface-muted: #EEF0F4;
+      --border:        #E3E6EC;
+      --border-strong: #CBD0DA;
+
+      /* Text */
+      --text:          #111827;
+      --text-secondary:#4B5563;
+      --text-muted:    #9CA3AF;
+      --text-invert:   #FFFFFF;
+
+      /* Brand */
+      --brand:         #1C3F6E;
+      --brand-light:   #E8EEF7;
+
+      /* Semantic */
+      --success:       #16A34A;
+      --success-bg:    #F0FDF4;
+      --success-border:#BBF7D0;
+      --danger:        #DC2626;
+      --danger-bg:     #FEF2F2;
+      --danger-border: #FECACA;
+      --warn:          #D97706;
+      --warn-bg:       #FFFBEB;
+      --warn-border:   #FDE68A;
+      --info:          #2563EB;
+      --info-bg:       #EFF6FF;
+      --info-border:   #BFDBFE;
+      --neutral-bg:    #F3F4F6;
+      --neutral-border:#D1D5DB;
+
+      /* Misc */
+      --radius-xs:  4px;
+      --radius-sm:  6px;
+      --radius:     10px;
+      --radius-lg:  14px;
+      --radius-xl:  18px;
+      --shadow-xs:  0 1px 2px rgba(0,0,0,.05);
+      --shadow-sm:  0 1px 4px rgba(0,0,0,.07), 0 2px 8px rgba(0,0,0,.04);
+      --shadow-md:  0 4px 16px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.04);
+      --shadow-lg:  0 12px 40px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.06);
+      --shadow-xl:  0 24px 64px rgba(0,0,0,.16);
+      --trans:      0.18s cubic-bezier(.4,0,.2,1);
+      --font:       'DM Sans', -apple-system, sans-serif;
+      --mono:       'DM Mono', monospace;
     }
 
     /* ==================== DARK THEME ==================== */
     [data-theme="dark"] {
-      --bg: #0F1117;
-      --surface: #1A1D27;
-      --surface-alt: #232733;
-      --text: #E8EAED;
-      --text-secondary: #9AA0AC;
-      --text-muted: #6B7280;
-      --border: #2D3140;
-      --accent: #5B9BD5;
-      --alert: #E74C3C;
-      --alert-bg: #2A1215;
-      --success: #2ECC71;
-      --success-bg: #122A1B;
-      --info: #3498DB;
-      --info-bg: #11202D;
-      --warning: #F1C40F;
-      --warning-bg: #2A2510;
-      --code-bg: #232733;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,0.4);
+      --bg:            #0D1117;
+      --surface:       #161B22;
+      --surface-raised:#1F2937;
+      --surface-muted: #1C2230;
+      --border:        #2D3748;
+      --border-strong: #4A5568;
+      --text:          #F0F4F8;
+      --text-secondary:#A0AEC0;
+      --text-muted:    #718096;
+      --brand:         #60A5FA;
+      --brand-light:   #1E3A5F;
+      --success:       #34D399;
+      --success-bg:    #0D2818;
+      --success-border:#065F46;
+      --danger:        #F87171;
+      --danger-bg:     #2D0A0A;
+      --danger-border: #7F1D1D;
+      --warn:          #FBBF24;
+      --warn-bg:       #1C1505;
+      --warn-border:   #78350F;
+      --info:          #60A5FA;
+      --info-bg:       #0F1F3D;
+      --info-border:   #1E3A5F;
+      --neutral-bg:    #1F2937;
+      --neutral-border:#374151;
+      --shadow-xs:  0 1px 2px rgba(0,0,0,.2);
+      --shadow-sm:  0 1px 4px rgba(0,0,0,.3), 0 2px 8px rgba(0,0,0,.2);
+      --shadow-md:  0 4px 16px rgba(0,0,0,.35), 0 1px 4px rgba(0,0,0,.2);
+      --shadow-lg:  0 12px 40px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.25);
+      --shadow-xl:  0 24px 64px rgba(0,0,0,.55);
     }
 
-    /* ==================== RESET ==================== */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* ==================== RESET & BASE ==================== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: var(--font);
       background: var(--bg);
       color: var(--text);
+      font-size: 14px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
     }
 
     /* ==================== HEADER ==================== */
     .header {
-      background: var(--accent);
-      color: #fff;
-      padding: 16px 24px;
+      background: var(--brand);
+      color: var(--text-invert);
+      padding: 0 28px;
+      height: 52px;
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      box-shadow: 0 1px 0 rgba(0,0,0,.15), var(--shadow-sm);
     }
 
     .header-inner {
-      max-width: 1200px;
+      width: 100%;
+      max-width: 1280px;
       margin: 0 auto;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
+      gap: 20px;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .header-logo .logo-mark {
+      width: 28px;
+      height: 28px;
+      background: rgba(255,255,255,.18);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -.02em;
     }
 
     .header h1 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: -.01em;
+      white-space: nowrap;
     }
 
     .header-meta {
-      font-size: 0.75rem;
-      opacity: 0.7;
+      font-size: .72rem;
+      opacity: .55;
+      white-space: nowrap;
+    }
+
+    .header-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255,255,255,.18);
+      flex-shrink: 0;
     }
 
     .header-actions {
       display: flex;
-      gap: 8px;
+      gap: 6px;
+      margin-left: auto;
     }
 
-    .header-actions button {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: #fff;
-      padding: 6px 12px;
+    .header-btn {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.9);
+      padding: 5px 12px;
       border-radius: var(--radius-sm);
       font-family: var(--font);
-      font-size: 0.8rem;
+      font-size: .78rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: var(--transition);
+      transition: var(--trans);
+      white-space: nowrap;
     }
 
-    .header-actions button:hover {
-      background: rgba(255,255,255,0.2);
+    .header-btn:hover {
+      background: rgba(255,255,255,.18);
+      color: #fff;
     }
 
-    /* ==================== CONTROLES BANNER ==================== */
-    .controles-banner {
-      background: var(--info-bg);
+    /* ==================== CONTROLS BANNER ==================== */
+    .controls-strip {
+      background: var(--surface);
       border-bottom: 1px solid var(--border);
     }
 
-    .controles-toggle {
-      max-width: 1200px;
+    .controls-trigger {
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 10px 24px;
-      cursor: pointer;
+      padding: 0 28px;
+      height: 38px;
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--info);
+      cursor: pointer;
       user-select: none;
     }
 
-    .controles-toggle .chevron {
-      transition: var(--transition);
-      font-size: 0.7rem;
+    .controls-trigger .ct-pill {
+      background: var(--info-bg);
+      border: 1px solid var(--info-border);
+      color: var(--info);
+      font-size: .72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      letter-spacing: .02em;
+      text-transform: uppercase;
     }
 
-    .controles-toggle.open .chevron {
-      transform: rotate(90deg);
-    }
-
-    .controles-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px 14px;
-      display: none;
-      font-size: 0.82rem;
+    .controls-trigger .ct-label {
+      font-size: .82rem;
+      font-weight: 500;
       color: var(--text-secondary);
-      line-height: 1.7;
     }
 
-    .controles-content.show {
-      display: block;
+    .controls-trigger .ct-chevron {
+      margin-left: auto;
+      color: var(--text-muted);
+      font-size: .65rem;
+      transition: var(--trans);
     }
 
-    .controles-content ul {
-      list-style: none;
+    .controls-trigger.open .ct-chevron { transform: rotate(90deg); }
+
+    .controls-body {
+      display: none;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 28px 16px;
+    }
+
+    .controls-body.show { display: block; }
+
+    .controls-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 6px 20px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 3px 24px;
     }
 
-    .controles-content li {
-      padding-left: 18px;
-      position: relative;
+    .controls-item {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 4px 0;
+      font-size: .8rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
     }
 
-    .controles-content li::before {
-      content: '\2713';
-      position: absolute;
-      left: 0;
-      color: var(--success);
-      font-weight: 700;
+    .controls-item::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+      flex-shrink: 0;
+      margin-top: 5px;
     }
 
     /* ==================== SEARCH ==================== */
-    .search-bar {
-      max-width: 1200px;
+    .search-area {
+      max-width: 1280px;
       margin: 20px auto 0;
-      padding: 0 24px;
+      padding: 0 28px;
     }
 
-    .search-bar .search-wrap {
+    .search-inner {
       position: relative;
+      max-width: 520px;
     }
 
-    .search-bar .search-icon {
+    .search-icon-el {
       position: absolute;
-      left: 14px;
+      left: 12px;
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-muted);
-      font-size: 1rem;
+      font-size: .9rem;
+      pointer-events: none;
     }
 
-    .search-bar input {
+    .search-input {
       width: 100%;
-      padding: 12px 16px 12px 42px;
+      height: 40px;
+      padding: 0 14px 0 38px;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       font-family: var(--font);
-      font-size: 0.95rem;
+      font-size: .88rem;
       background: var(--surface);
       color: var(--text);
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition);
+      box-shadow: var(--shadow-xs);
+      transition: var(--trans);
       outline: none;
     }
 
-    .search-bar input:focus {
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-input:focus {
       border-color: var(--info);
-      box-shadow: 0 0 0 3px rgba(41,128,185,0.15);
+      box-shadow: 0 0 0 3px var(--info-bg), var(--shadow-xs);
     }
 
-    /* ==================== MAIN & SECTIONS ==================== */
+    /* ==================== MAIN ==================== */
     .main {
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 20px auto;
-      padding: 0 24px 40px;
+      padding: 0 28px 60px;
     }
 
-    .section-title {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    /* ==================== SECTION HEADER ==================== */
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin: 24px 0 12px;
     }
 
-    /* ==================== TUBES GRID ==================== */
+    .section-head h2 {
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .section-head::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ==================== FAVORITES ==================== */
+    .fav-section { margin-bottom: 4px; }
+
+    .fav-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .fav-head .fav-label {
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--warn);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .fav-head::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--warn-border);
+    }
+
+    /* ==================== TUBE GRID ==================== */
     .tubes-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+      gap: 10px;
     }
 
     .tube-card {
       border-radius: var(--radius);
-      padding: 14px;
+      padding: 14px 14px 12px;
       cursor: pointer;
-      transition: var(--transition);
+      transition: transform var(--trans), box-shadow var(--trans);
       position: relative;
       overflow: hidden;
       box-shadow: var(--shadow-sm);
-      min-height: 90px;
+      height: 100px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
     }
 
-    .tube-card::before {
+    /* Subtle top-right shimmer */
+    .tube-card::after {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(0,0,0,0.1));
+      top: 0; right: 0;
+      width: 60px; height: 60px;
+      background: radial-gradient(circle at top right, rgba(255,255,255,.22), transparent 70%);
       pointer-events: none;
     }
 
     .tube-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
 
-    .tube-card .tube-name {
-      font-size: 0.95rem;
+    .tube-card:active { transform: translateY(0); }
+
+    /* Centrifugation mini-indicator */
+    .tube-centri {
+      position: absolute;
+      top: 9px;
+      left: 12px;
+      font-size: .6rem;
       font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      opacity: .75;
+      background: rgba(0,0,0,.18);
+      padding: 2px 6px;
+      border-radius: 20px;
+    }
+
+    .tube-name {
+      font-size: .92rem;
+      font-weight: 700;
+      line-height: 1.25;
       position: relative;
       z-index: 1;
     }
 
-    .tube-card .tube-sub {
-      font-size: 0.75rem;
-      opacity: 0.85;
+    .tube-sub {
+      font-size: .72rem;
+      opacity: .82;
       position: relative;
       z-index: 1;
       margin-top: 2px;
     }
 
-    .tube-card .tube-etiq {
+    .tube-etiq {
       font-family: var(--mono);
-      font-size: 0.68rem;
-      opacity: 0.75;
+      font-size: .62rem;
+      opacity: .65;
       position: relative;
       z-index: 1;
-      margin-top: 4px;
+      margin-top: 5px;
     }
 
-    /* ==================== MODAL ==================== */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 200;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 40px 20px;
-      overflow-y: auto;
-      backdrop-filter: blur(4px);
+    /* Fav star */
+    .fav-star {
+      position: absolute;
+      top: 7px;
+      right: 9px;
+      z-index: 2;
+      font-size: .85rem;
+      cursor: pointer;
+      opacity: .35;
+      transition: opacity var(--trans), transform var(--trans);
+      background: none;
+      border: none;
+      color: inherit;
+      padding: 3px;
+      line-height: 1;
     }
 
-    .modal-overlay.show {
-      display: flex;
-    }
+    .fav-star:hover, .fav-star.is-fav { opacity: 1; }
+    .fav-star.is-fav { transform: scale(1.1); }
 
-    .modal {
-      background: var(--surface);
-      border-radius: 14px;
-      max-width: 680px;
-      width: 100%;
-      box-shadow: var(--shadow-lg);
+    /* ==================== ACCORDION ==================== */
+    .accordion-block {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       overflow: hidden;
-      animation: modalIn 0.3s ease;
+      margin-bottom: 10px;
+      background: var(--surface);
+      box-shadow: var(--shadow-xs);
     }
 
-    @keyframes modalIn {
-      from { opacity: 0; transform: translateY(20px) scale(0.97); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .modal-header {
-      padding: 20px 24px;
+    .accordion-trigger {
+      padding: 13px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    .modal-header h2 {
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-
-    .modal-header .modal-etiq {
-      font-family: var(--mono);
-      font-size: 0.8rem;
-      opacity: 0.8;
-      margin-top: 2px;
-    }
-
-    .modal-close {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: inherit;
-      font-size: 1.4rem;
       cursor: pointer;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
+      user-select: none;
+      transition: background var(--trans);
     }
 
-    .modal-close:hover {
-      background: rgba(255,255,255,0.3);
-    }
+    .accordion-trigger:hover { background: var(--surface-muted); }
 
-    .modal-body {
-      padding: 16px 24px 24px;
-    }
-
-    .modal-separator {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 14px 0;
-    }
-
-    /* ==================== INFO ROWS & BADGES ==================== */
-    .info-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 10px;
-      align-items: flex-start;
-    }
-
-    .info-label {
-      font-size: 0.75rem;
+    .accordion-trigger h2,
+    .accordion-trigger h3 {
+      font-size: .88rem;
       font-weight: 600;
+      color: var(--text);
+    }
+
+    .accordion-arrow {
       color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      min-width: 110px;
-      padding-top: 2px;
+      font-size: .65rem;
+      transition: transform var(--trans);
+      flex-shrink: 0;
     }
 
-    .info-value {
-      font-size: 0.9rem;
-      flex: 1;
+    .accordion-arrow.open { transform: rotate(90deg); }
+
+    .accordion-content {
+      display: none;
+      padding: 14px 18px 18px;
+      border-top: 1px solid var(--border);
     }
 
-    .code {
-      font-family: var(--mono);
-      font-weight: 600;
-      background: var(--code-bg);
-      padding: 2px 7px;
-      border-radius: 4px;
-      font-size: 0.82rem;
+    .accordion-content.show { display: block; }
+
+    /* ==================== PHONE GRID ==================== */
+    .phones-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 8px;
     }
 
-    /* Centrifugation badges */
-    .centri-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 0.82rem;
-      font-weight: 600;
-    }
-
-    .centri-oui { background: var(--success-bg); color: var(--success); }
-    .centri-obligatoire { background: #E8F5E9; color: #1B5E20; border: 1px solid #1B5E20; }
-    .centri-non { background: var(--alert-bg); color: var(--alert); }
-    .centri-var { background: var(--warning-bg); color: var(--warning); }
-    .centri-na { background: var(--surface-alt); color: var(--text-muted); }
-
-    /* Destination badges */
-    .dest-list {
+    .phone-card {
+      background: var(--color, #2C3E50);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      text-decoration: none;
+      color: #fff;
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+      flex-direction: column;
+      gap: 2px;
+      box-shadow: var(--shadow-xs);
+      transition: transform var(--trans), box-shadow var(--trans);
+      position: relative;
+      overflow: hidden;
     }
 
-    .dest-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 10px;
-      border-radius: var(--radius-sm);
-      font-size: 0.82rem;
-      font-weight: 500;
-      border: 1px solid var(--border);
-      background: var(--surface-alt);
+    .phone-card::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 50px; height: 50px;
+      background: radial-gradient(circle at top right, rgba(255,255,255,.15), transparent 70%);
+      pointer-events: none;
     }
 
-    .dest-badge.dest-8100 { background: #E8F5E9; color: #2E7D32; border-color: #A5D6A7; }
-    .dest-badge.dest-bleu { background: #E3F2FD; color: #1565C0; border-color: #90CAF9; }
-    .dest-badge.dest-hemato { background: #FCE4EC; color: #C62828; border-color: #EF9A9A; }
-    .dest-badge.dest-mm { background: #F3E5F5; color: #7B1FA2; border-color: #CE93D8; }
-    .dest-badge.dest-envoi { background: #ECEFF1; color: #455A64; border-color: #B0BEC5; }
-    .dest-badge.dest-is { background: #FFF3E0; color: #E65100; border-color: #FFCC80; }
-    .dest-badge.dest-chimie { background: #E3F2FD; color: #0D47A1; border-color: #90CAF9; }
-    .dest-badge.dest-bacterio { background: #FFF8E1; color: #F57F17; border-color: #FFE082; }
-    .dest-badge.dest-genetique { background: #E8F5E9; color: #1B5E20; border-color: #A5D6A7; }
-
-    /* ==================== ALERT / NOTE / SPECIAL BOXES ==================== */
-    .alert-box {
-      background: var(--alert-bg);
-      border-left: 3px solid var(--alert);
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      margin-top: 12px;
-      font-size: 0.85rem;
+    .phone-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
 
-    .alert-box .alert-title {
+    .phone-labo {
+      font-size: .82rem;
       font-weight: 700;
-      color: var(--alert);
-      margin-bottom: 4px;
+      line-height: 1.3;
     }
 
-    .note-box {
-      background: var(--warning-bg);
-      border-left: 3px solid var(--warning);
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      margin-top: 10px;
-      font-size: 0.85rem;
+    .phone-contact {
+      font-size: .68rem;
+      opacity: .7;
     }
 
-    .special-box {
-      background: var(--info-bg);
-      border-left: 3px solid var(--info);
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      margin-top: 10px;
-      font-size: 0.85rem;
-    }
-
-    .special-box h4,
-    .note-box h4 {
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .special-box ul,
-    .note-box ul,
-    .alert-box ul {
-      margin-left: 16px;
-      font-size: 0.83rem;
-      line-height: 1.6;
+    .phone-num {
+      font-family: var(--mono);
+      font-size: .75rem;
+      opacity: .9;
+      margin-top: 4px;
+      letter-spacing: .02em;
     }
 
     /* ==================== TABS ==================== */
-    .tabs {
-      margin-top: 32px;
-    }
+    .tabs-wrapper { margin-top: 28px; }
 
-    .tab-headers {
+    .tabs-nav {
       display: flex;
-      gap: 4px;
+      gap: 2px;
       border-bottom: 2px solid var(--border);
       overflow-x: auto;
       scrollbar-width: none;
     }
 
-    .tab-headers::-webkit-scrollbar {
-      display: none;
-    }
+    .tabs-nav::-webkit-scrollbar { display: none; }
 
     .tab-btn {
-      padding: 10px 16px;
+      padding: 9px 16px;
       font-family: var(--font);
-      font-size: 0.82rem;
+      font-size: .8rem;
       font-weight: 500;
       color: var(--text-muted);
       background: none;
@@ -537,12 +596,11 @@
       white-space: nowrap;
       border-bottom: 2px solid transparent;
       margin-bottom: -2px;
-      transition: var(--transition);
+      transition: color var(--trans), border-color var(--trans);
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
     }
 
-    .tab-btn:hover {
-      color: var(--text);
-    }
+    .tab-btn:hover { color: var(--text-secondary); }
 
     .tab-btn.active {
       color: var(--info);
@@ -553,1444 +611,1064 @@
     .tab-panel {
       display: none;
       padding: 20px 0;
+      animation: fadeTab .18s ease;
     }
 
-    .tab-panel.active {
-      display: block;
+    .tab-panel.active { display: block; }
+
+    @keyframes fadeTab {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ==================== TABLES ==================== */
+    /* ==================== MODAL ==================== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 500;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 48px 20px 32px;
+      overflow-y: auto;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius-xl);
+      max-width: 620px;
+      width: 100%;
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      animation: modalIn .22s cubic-bezier(.34,1.3,.64,1);
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(.94) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      padding: 20px 22px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .modal-title-block {}
+
+    .modal-title-block h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.25;
+    }
+
+    .modal-title-block .modal-sub {
+      font-size: .78rem;
+      opacity: .75;
+      margin-top: 2px;
+    }
+
+    .modal-title-block .modal-etiq {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      background: rgba(0,0,0,.15);
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-family: var(--mono);
+      font-size: .7rem;
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.12);
+      border: none;
+      color: inherit;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background var(--trans);
+      flex-shrink: 0;
+    }
+
+    .modal-close:hover { background: rgba(0,0,0,.22); }
+
+    .modal-body {
+      padding: 0 22px 22px;
+    }
+
+    .modal-section {
+      padding: 14px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .modal-section:first-child { border-top: none; }
+
+    .modal-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .modal-label {
+      font-size: .7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      min-width: 100px;
+      padding-top: 3px;
+      flex-shrink: 0;
+    }
+
+    .modal-value { font-size: .88rem; flex: 1; }
+
+    /* Centrifugation badge */
+    .centri-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: .78rem;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+
+    .centri-oui        { background: var(--success-bg); color: var(--success); border-color: var(--success-border); }
+    .centri-obligatoire{ background: #DCFCE7; color: #14532D; border-color: #86EFAC; }
+    .centri-non        { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }
+    .centri-var        { background: var(--warn-bg); color: var(--warn); border-color: var(--warn-border); }
+    .centri-na         { background: var(--neutral-bg); color: var(--text-muted); border-color: var(--neutral-border); }
+
+    .centri-detail {
+      font-size: .78rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Destination chips */
+    .dest-list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .dest-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: .78rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--surface-muted);
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+
+    .dest-chip strong { color: var(--text); font-weight: 600; }
+    .dest-chip .dest-detail { color: var(--text-muted); font-size: .72rem; }
+
+    .dest-8100   { background: #F0FDF4; border-color: #BBF7D0; }
+    .dest-8100 strong { color: #15803D; }
+    .dest-bleu   { background: #EFF6FF; border-color: #BFDBFE; }
+    .dest-bleu strong { color: #1D4ED8; }
+    .dest-hemato { background: #FFF1F2; border-color: #FECDD3; }
+    .dest-hemato strong { color: #BE123C; }
+    .dest-mm     { background: #FAF5FF; border-color: #E9D5FF; }
+    .dest-mm strong { color: #7C3AED; }
+    .dest-envoi  { background: #F8FAFC; border-color: #CBD5E1; }
+    .dest-envoi strong { color: #475569; }
+    .dest-is     { background: #FFF7ED; border-color: #FED7AA; }
+    .dest-is strong { color: #C2410C; }
+    .dest-chimie { background: #EFF6FF; border-color: #BFDBFE; }
+    .dest-chimie strong { color: #1E40AF; }
+    .dest-bacterio { background: #FFFBEB; border-color: #FDE68A; }
+    .dest-bacterio strong { color: #92400E; }
+    .dest-genetique { background: #F0FDF4; border-color: #BBF7D0; }
+    .dest-genetique strong { color: #166534; }
+
+    /* Code pills */
+    .code-pill {
+      font-family: var(--mono);
+      font-size: .78rem;
+      font-weight: 500;
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 2px 8px;
+      border-radius: var(--radius-xs);
+      display: inline-block;
+    }
+
+    /* Alert / Note / Special boxes */
+    .msg-box {
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-size: .82rem;
+      line-height: 1.6;
+      border-left: 3px solid transparent;
+    }
+
+    .msg-box h4 {
+      font-size: .75rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .msg-box ul { margin-left: 14px; }
+    .msg-box li { margin-bottom: 2px; }
+
+    .msg-danger { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+    .msg-danger h4 { color: var(--danger); }
+    .msg-danger li { color: var(--text); }
+    .msg-warn   { background: var(--warn-bg); border-color: var(--warn); }
+    .msg-warn h4 { color: var(--warn); }
+    .msg-warn li { color: var(--text-secondary); }
+    .msg-info   { background: var(--info-bg); border-color: var(--info); }
+    .msg-info h4 { color: var(--info); }
+    .msg-info li { color: var(--text-secondary); }
+
+    /* ==================== DATA TABLE ==================== */
     .data-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.83rem;
+      font-size: .8rem;
     }
 
     .data-table th {
       text-align: left;
-      padding: 10px 12px;
-      background: var(--surface-alt);
+      padding: 9px 12px;
+      background: var(--surface-muted);
       font-weight: 600;
-      color: var(--text-secondary);
-      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-size: .7rem;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: .06em;
       border-bottom: 2px solid var(--border);
     }
 
     .data-table td {
-      padding: 10px 12px;
+      padding: 9px 12px;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
+      color: var(--text-secondary);
     }
 
-    .data-table tr:last-child td {
-      border-bottom: none;
-    }
+    .data-table td:first-child { color: var(--text); font-weight: 500; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--surface-muted); }
 
     /* ==================== INFO CARDS ==================== */
     .info-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
     }
 
     .info-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 14px 16px;
     }
 
     .info-card h4 {
-      font-size: 0.85rem;
+      font-size: .82rem;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      color: var(--text);
     }
 
-    .info-card p,
-    .info-card li {
-      font-size: 0.83rem;
+    .info-card p, .info-card li {
+      font-size: .8rem;
       color: var(--text-secondary);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
-    .info-card ul {
-      margin-left: 16px;
-    }
+    .info-card ul { margin-left: 14px; }
 
     /* ==================== STATIFS ==================== */
     .statifs-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 10px;
+      gap: 8px;
     }
 
     .statif-card {
-      padding: 14px;
+      padding: 14px 16px;
       border-radius: var(--radius);
-      text-align: center;
       color: #fff;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: .85rem;
       box-shadow: var(--shadow-sm);
     }
 
     .statif-card .statif-dest {
       font-weight: 400;
-      font-size: 0.75rem;
-      opacity: 0.9;
+      font-size: .72rem;
+      opacity: .85;
       margin-top: 4px;
-    }
-
-    /* ==================== ACCORDION ==================== */
-    .accordion {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 8px;
-      overflow: hidden;
-    }
-
-    .accordion-header {
-      padding: 12px 16px;
-      background: var(--surface-alt);
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.85rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      user-select: none;
-    }
-
-    .accordion-header:hover {
-      background: var(--border);
-    }
-
-    .accordion-body {
-      padding: 12px 16px;
-      display: none;
-      font-size: 0.83rem;
-      line-height: 1.7;
-      color: var(--text-secondary);
-    }
-
-    .accordion-body.show {
-      display: block;
-    }
-
-    .accordion-body ul,
-    .accordion-body ol {
-      margin-left: 16px;
-      margin-top: 4px;
-    }
-
-    .accordion-body li {
-      margin-bottom: 4px;
-    }
-
-    /* ==================== FOOTER ==================== */
-    .footer {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px 24px;
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-    }
-
-    /* ==================== FAVORITES ==================== */
-    .fav-star {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      z-index: 2;
-      font-size: 1rem;
-      cursor: pointer;
-      opacity: 0.4;
-      transition: var(--transition);
-      background: none;
-      border: none;
-      color: inherit;
-      padding: 2px;
-    }
-
-    .fav-star:hover,
-    .fav-star.is-fav {
-      opacity: 1;
-    }
-
-    .fav-section {
-      margin-bottom: 8px;
-    }
-
-    .fav-divider {
-      font-size: 0.78rem;
-      color: var(--warning);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* ==================== PHONE CARDS ==================== */
-    .phone-card-item {
-      border-radius: var(--radius);
-      padding: 12px 14px;
-      cursor: pointer;
-      transition: var(--transition);
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-      min-height: 70px;
-    }
-
-    .phone-card-item::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(0,0,0,0.08));
-      pointer-events: none;
-    }
-
-    .phone-card-item:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .phone-card-item .phone-icon {
-      font-size: 1.4rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .phone-card-item .phone-info {
-      position: relative;
-      z-index: 1;
-    }
-
-    .phone-card-item .phone-labo {
-      font-weight: 700;
-      font-size: 0.88rem;
-    }
-
-    .phone-card-item .phone-contact {
-      font-size: 0.72rem;
-      opacity: 0.8;
-    }
-
-    .phone-card-item .phone-num {
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      opacity: 0.9;
-      margin-top: 2px;
+      line-height: 1.4;
     }
 
     /* ==================== CHANGELOG ==================== */
-    .changelog {
-      max-width: 1200px;
+    .changelog-wrap {
+      max-width: 1280px;
       margin: 0 auto 20px;
-      padding: 0 24px;
+      padding: 0 28px;
     }
 
-    .changelog-toggle {
-      font-size: 0.78rem;
+    .changelog-trigger {
+      font-size: .75rem;
       color: var(--text-muted);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       user-select: none;
+      transition: color var(--trans);
     }
 
-    .changelog-toggle:hover {
-      color: var(--text-secondary);
-    }
+    .changelog-trigger:hover { color: var(--text-secondary); }
 
     .changelog-body {
       display: none;
       margin-top: 8px;
-      padding: 12px 16px;
+      padding: 14px 16px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
-      font-size: 0.8rem;
+      font-size: .78rem;
       color: var(--text-secondary);
       line-height: 1.7;
     }
 
-    .changelog-body.show {
-      display: block;
-    }
-
-    .changelog-body .cl-date {
-      font-weight: 700;
-      color: var(--text);
-      margin-top: 8px;
-    }
-
-    .changelog-body .cl-date:first-child {
-      margin-top: 0;
-    }
-
-    .changelog-body ul {
-      margin-left: 16px;
-      margin-bottom: 6px;
-    }
+    .changelog-body.show { display: block; }
+    .changelog-body .cl-date { font-weight: 700; color: var(--text); margin-top: 10px; }
+    .changelog-body .cl-date:first-child { margin-top: 0; }
+    .changelog-body ul { margin-left: 14px; margin-bottom: 4px; }
 
     /* ==================== PRINT ==================== */
     @media print {
-      .header-actions,
-      .search-bar,
-      .controles-banner,
-      .modal-overlay {
-        display: none !important;
-      }
+      .header-actions, .search-area, .controls-strip, .modal-overlay { display: none !important; }
       .header { position: static; }
       body { background: #fff; }
     }
 
-    /* ==================== MOBILE ==================== */
-    @media (max-width: 600px) {
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 640px) {
       .tubes-grid { grid-template-columns: repeat(2, 1fr); }
-      .header h1 { font-size: 1rem; }
-      .tab-btn { font-size: 0.75rem; padding: 8px 10px; }
+      .header h1 { font-size: .78rem; }
+      .main, .search-area { padding-left: 16px; padding-right: 16px; }
+      .header { padding: 0 16px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- ==================== HEADER ==================== -->
-  <header class="header">
-    <div class="header-inner">
-      <div>
-        <h1>Gestion des échantillons au soutien laboratoires</h1>
-        <div class="header-meta">Basé sur PR-6387 & Mémo Poste C</div>
-      </div>
-      <div class="header-actions">
-        <button onclick="document.getElementById('titlePhones').scrollIntoView({behavior:'smooth'})">📞 Téléphones</button>
-        <button onclick="toggleTheme()" id="themeBtn">🌙 Mode sombre</button>
-      </div>
+<!-- ==================== HEADER ==================== -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-logo">
+      <div class="logo-mark">SL</div>
+      <h1>Soutien Laboratoire — HVS Sion</h1>
     </div>
-  </header>
+    <div class="header-divider"></div>
+    <div class="header-actions">
+      <button class="header-btn" onclick="document.getElementById('accordionPhones').querySelector('.accordion-content').classList.add('show'); document.getElementById('accordionPhones').querySelector('.accordion-arrow').classList.add('open'); document.getElementById('titlePhones').scrollIntoView({behavior:'smooth'})">📞 Annuaire</button>
+      <button class="header-btn" onclick="toggleTheme()" id="themeBtn">🌙 Mode sombre</button>
+    </div>
+  </div>
+</header>
 
-  <!-- ==================== CONTROLES BANNER ==================== -->
-  <div class="controles-banner">
-    <div class="controles-toggle" onclick="toggleControles(this)">
-      <span class="chevron">▶</span> Contrôles avant enregistrement — rappel rapide
+<!-- ==================== CONTROLS STRIP ==================== -->
+<div class="controls-strip">
+  <div class="controls-trigger" onclick="toggleControles(this)">
+    <span class="ct-pill">Contrôles</span>
+    <span class="ct-label">Avant enregistrement — rappel rapide</span>
+    <span class="ct-chevron">▶</span>
+  </div>
+  <div class="controls-body" id="controlesContent">
+    <div class="controls-grid">
+      <div class="controls-item">Vérifier identité tubes = feuille de demande (y.c. micro-tubes)</div>
+      <div class="controls-item">Lecteur optique : nb codes enregistrés = nb coches sur la feuille</div>
+      <div class="controls-item">Prescription connectée : nb tubes reçus = nb notés/écran</div>
+      <div class="controls-item">Étiquettes bien collées, sans pli, bon tube, bon sens, bon état</div>
+      <div class="controls-item">NLab de l'étiquette = NLab de la feuille</div>
+      <div class="controls-item">Annotations manuscrites → Données cliniques > Libellé</div>
+      <div class="controls-item">Texte illisible → transmettre la feuille au labo concerné</div>
+      <div class="controls-item">Visa HAUT feuille = étiquetage · Visa BAS feuille = enregistrement</div>
+      <div class="controls-item">Vérifier Post-it actif (billet jaune) dans le patient</div>
+      <div class="controls-item">Codes manuscrits → ajouter manuellement. Si doute → voir labo</div>
+      <div class="controls-item">Code introuvable DGLab → fichier Excel « envois ANASPB »</div>
+      <div class="controls-item">Hôpitaux : vérifier nom, prénom, DDN (facturation requérant)</div>
+      <div class="controls-item">Privé : vérifier nom, prénom, DDN + adresse (facturation patient)</div>
+      <div class="controls-item">Vérifier le remplissage des tubes</div>
+      <div class="controls-item">Échantillon manquant → prévenir requérant, imprimer étiquette, inscrire ∅</div>
     </div>
-    <div class="controles-content" id="controlesContent">
-      <ul>
-        <li>Vérifier identité tubes = feuille de demande (y.c. micro-tubes)</li>
-        <li>Lecteur optique : nb codes enregistrés = nb coches sur la feuille</li>
-        <li>Prescription connectée : nb tubes reçus = nb notés/écran</li>
-        <li>Étiquettes bien collées, sans pli, bon tube, bon sens, bon état</li>
-        <li>NLab de l'étiquette = NLab de la feuille</li>
-        <li>Annotations manuscrites → Données cliniques > Libellé</li>
-        <li>Texte illisible → transmettre la feuille au labo concerné</li>
-        <li>Visa HAUT feuille = étiquetage · Visa BAS feuille = enregistrement</li>
-        <li>Vérifier Post-it actif (billet jaune) dans le patient</li>
-        <li>Codes manuscrits → ajouter manuellement. Si doute → voir labo</li>
-        <li>Code introuvable DGLab → fichier Excel « envois ANASPB »</li>
-        <li>Hôpitaux : vérifier nom, prénom, DDN (facturation requérant)</li>
-        <li>Privé : vérifier nom, prénom, DDN + adresse (facturation patient)</li>
-        <li>Vérifier le remplissage des tubes</li>
-        <li>Échantillon manquant → prévenir requérant, imprimer étiquette, inscrire ∅</li>
-      </ul>
+  </div>
+</div>
+
+<!-- ==================== SEARCH ==================== -->
+<div class="search-area">
+  <div class="search-inner">
+    <span class="search-icon-el">🔍</span>
+    <input class="search-input" type="text" id="searchInput" placeholder="Rechercher un tube, un service, un numéro…" oninput="filterAll()">
+  </div>
+</div>
+
+<!-- ==================== MAIN ==================== -->
+<div class="main">
+
+  <!-- Favoris -->
+  <div class="fav-section" id="favSection" style="display:none">
+    <div class="fav-head">
+      <span>⭐</span>
+      <span class="fav-label">Favoris</span>
+    </div>
+    <div class="tubes-grid" id="tubesGridFav"></div>
+  </div>
+
+  <!-- Tubes fréquents -->
+  <div class="section-head"><h2>Échantillons fréquents</h2></div>
+  <div class="tubes-grid" id="tubesGridSang"></div>
+
+  <!-- Autres -->
+  <div style="margin-top:16px" id="titleAutres">
+    <div class="accordion-block">
+      <div class="accordion-trigger" onclick="toggleAccordion(this)">
+        <h2>Autres échantillons</h2>
+        <span class="accordion-arrow">▶</span>
+      </div>
+      <div class="accordion-content">
+        <div class="tubes-grid" id="tubesGridAutres" style="margin-top:4px"></div>
+      </div>
     </div>
   </div>
 
-  <!-- ==================== SEARCH BAR ==================== -->
-  <div class="search-bar">
-    <div class="search-wrap">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Rechercher un tube, un numéro, un labo..." oninput="filterAll()">
+  <!-- Annuaire -->
+  <div style="margin-top:10px" id="titlePhones">
+    <div class="accordion-block" id="accordionPhones">
+      <div class="accordion-trigger" onclick="toggleAccordion(this)">
+        <h3>Annuaire téléphonique</h3>
+        <span class="accordion-arrow">▶</span>
+      </div>
+      <div class="accordion-content">
+        <div class="phones-grid" id="phonesGrid" style="margin-top:4px"></div>
+      </div>
     </div>
   </div>
 
-  <!-- ==================== MAIN CONTENT ==================== -->
-  <div class="main">
-
-    <!-- Favorites -->
-    <div class="fav-section" id="favSection" style="display:none">
-      <div class="fav-divider">⭐ Favoris</div>
-      <div class="tubes-grid" id="tubesGridFav"></div>
+  <!-- ==================== TABS ==================== -->
+  <div class="tabs-wrapper">
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('enregistrement',this)">Enregistrement</button>
+      <button class="tab-btn" onclick="switchTab('feuilles',this)">Feuilles à transmettre</button>
+      <button class="tab-btn" onclick="switchTab('statifs',this)">Statifs de tri</button>
+      <button class="tab-btn" onclick="switchTab('etiquettes',this)">Étiquettes</button>
+      <button class="tab-btn" onclick="switchTab('checkin',this)">Check-in</button>
+      <button class="tab-btn" onclick="switchTab('serotheque',this)">Sérothèque</button>
+      <button class="tab-btn" onclick="switchTab('gestion',this)">Gestion par labo</button>
+      <button class="tab-btn" onclick="switchTab('cas',this)">Cas particuliers</button>
     </div>
 
-    <!-- Tubes sanguins -->
-    <div class="section-title" id="titleSang">Tubes sanguins</div>
-    <div class="tubes-grid" id="tubesGridSang"></div>
-
-    <!-- Autres échantillons -->
-    <div class="section-title" id="titleAutres">Autres échantillons</div>
-    <div class="tubes-grid" id="tubesGridAutres"></div>
-
-    <!-- Téléphones -->
-    <div class="section-title" id="titlePhones">📞 Téléphones internes</div>
-    <div class="tubes-grid" id="phonesGrid"></div>
-
-    <!-- ==================== TABS ==================== -->
-    <div class="tabs">
-      <div class="tab-headers">
-        <button class="tab-btn active" onclick="switchTab('enregistrement',this)">Enregistrement</button>
-        <button class="tab-btn" onclick="switchTab('feuilles',this)">Feuilles à transmettre</button>
-        <button class="tab-btn" onclick="switchTab('statifs',this)">Statifs de tri</button>
-        <button class="tab-btn" onclick="switchTab('etiquettes',this)">Étiquettes</button>
-        <button class="tab-btn" onclick="switchTab('checkin',this)">Check-in</button>
-        <button class="tab-btn" onclick="switchTab('serotheque',this)">Sérothèque</button>
-        <button class="tab-btn" onclick="switchTab('gestion',this)">Gestion par labo</button>
-        <button class="tab-btn" onclick="switchTab('cas',this)">Cas particuliers</button>
+    <!-- ========== TAB: ENREGISTREMENT ========== -->
+    <div class="tab-panel active" id="tab-enregistrement">
+      <div class="accordion-block">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">
+          <h2>1.1 Demande des hôpitaux</h2><span class="accordion-arrow">▶</span>
+        </div>
+        <div class="accordion-content">
+          <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:8px">Un dito doit être lu informatiquement. Si ce n'est pas le cas :</p>
+          <ul style="font-size:.82rem;color:var(--text-secondary);margin-left:16px;line-height:1.7">
+            <li>Vérifier que l'établissement soit correct (ex. Hôpital de Sion = RCEN CHCVs)</li>
+            <li>Si incorrect → dérouler le menu, chercher l'établissement correct, doucher le n° d'admission</li>
+          </ul>
+        </div>
       </div>
-
-      <!-- ========== TAB: ENREGISTREMENT ========== -->
-      <div class="tab-panel active" id="tab-enregistrement">
-
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            1.1 Demande des hôpitaux <span>▶</span>
-          </div>
-          <div class="accordion-body">
-            <p>Un dito doit être lu informatiquement. Si ce n'est pas le cas :</p>
-            <ul>
-              <li>Vérifier que l'établissement soit correct (ex. hop. Sion : RCEN CHCVs)</li>
-              <li>Si incorrect → dérouler le menu, chercher l'établissement correct, doucher le n° d'admission</li>
-            </ul>
-          </div>
+      <div class="accordion-block">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">
+          <h2>1.2 Demande requérant privé</h2><span class="accordion-arrow">▶</span>
         </div>
-
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            1.2 Demande requérant privé <span>▶</span>
-          </div>
-          <div class="accordion-body">
-            <ul>
-              <li>Ligne de cas existe déjà (écran 309) → sélectionner celle-là</li>
-              <li>Petits ditos (liste dans Établissements) → sélectionner établissement, doucher code-barre ou N° patient</li>
-              <li>N°admission avec # → modifier et changer avec N° patient du dito</li>
-              <li>Labo privé avec N° référence → écran 100, Généralité → Référence</li>
-            </ul>
-          </div>
+        <div class="accordion-content">
+          <ul style="font-size:.82rem;color:var(--text-secondary);margin-left:16px;line-height:1.7">
+            <li>Ligne de cas existe déjà (écran 309) → sélectionner celle-là</li>
+            <li>Petits ditos (liste dans Établissements) → sélectionner établissement, doucher code-barre ou N° patient</li>
+            <li>N°admission avec # → modifier et changer avec N° patient du dito</li>
+            <li>Labo privé avec N° référence → écran 100, Généralité → Référence</li>
+          </ul>
         </div>
-
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            1.4 Rajout d'analyses <span>▶</span>
-          </div>
-          <div class="accordion-body">
-            <p>Feuilles sans prélèvement = rajout. Toujours sur demande contenant le matériel.</p>
-            <p><strong>Non facturée :</strong></p>
-            <ul>
-              <li>Prescr. connectée : ajouter codes, enregistrer, imprimer étoile, tracer NLab, coller</li>
-              <li>Lecteur optique : cocher « B », passer au lecteur, choisir demande avec matériel</li>
-            </ul>
-            <p><strong>Facturée :</strong></p>
-            <ul>
-              <li>Nouvelle demande, même date prélèvement</li>
-              <li>« rajout sur NLAB XXX-XXXXX » dans Données cliniques > Libellé</li>
-              <li>Transmettre étiquettes au labo</li>
-            </ul>
-            <p><em>Requérant différent → mettre en copie. Étiq. « rajout » pour hémato et MM uniquement.</em></p>
-          </div>
-        </div>
-
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            1.5 Demande activée ou inexistante <span>▶</span>
-          </div>
-          <div class="accordion-body">
-            <ol>
-              <li>Pré-demandes (écran 114) ou effacées (écran 117)</li>
-              <li>Appeler service : &lt;5-6 analyses → nouvelle demande · &gt;5-6 → nouvelle feuille ou tubes en réserve</li>
-              <li>Requérant injoignable → sérum <span class="code">S-TUB</span>, tube hémato → voir hématologie</li>
-            </ol>
-          </div>
-        </div>
-
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            1.6 Copies <span>▶</span>
-          </div>
-          <div class="accordion-body">
-            <ul>
-              <li><strong>Par mail</strong> : Diffusion → croix jaune → « + ». Introuvable → copies libres</li>
-              <li><strong>Privé → méd. hospitalier</strong> : copie libre + mail annuaire</li>
-              <li><strong>Service → méd. hospitalier</strong> : pas nécessaire</li>
-              <li><strong>Service → privé</strong> : « + ». Introuvable → bac feuilles à problème</li>
-              <li><strong>Copie patient</strong> : « 1 » sous Patient, onglet Diffusion</li>
-              <li><strong>Patient par mail</strong> : écran 310, Transmission résultats, Diffusion 1 = mail</li>
-            </ul>
-            <p><em>Introuvable → enregistrer sans copie + bac vert feuilles à problème.</em></p>
-          </div>
-        </div>
-
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            ⚠ Demandes à NE PAS enregistrer <span>▶</span>
-          </div>
-          <div class="accordion-body">
-            <ul>
-              <li>Bactériologie (sauf codes GeneXpert)</li>
-              <li>Produits sanguins sans tube → Immunohématologie</li>
-            </ul>
-            <p><em>Doute requérant → temporaire 02 + bac vert. Attention multiples feuilles.</em></p>
-          </div>
-        </div>
-
       </div>
+      <div class="accordion-block">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">
+          <h2>1.4 Rajout d'analyses</h2><span class="accordion-arrow">▶</span>
+        </div>
+        <div class="accordion-content">
+          <p style="font-size:.82rem;color:var(--text-secondary);margin-bottom:8px">Feuilles sans prélèvement = rajout. Toujours sur demande contenant le matériel.</p>
+          <p style="font-size:.82rem;font-weight:600;margin-bottom:4px">Non facturée :</p>
+          <ul style="font-size:.82rem;color:var(--text-secondary);margin-left:16px;line-height:1.7;margin-bottom:8px">
+            <li>Prescr. connectée : ajouter codes, enregistrer, imprimer étoile, tracer NLab, coller</li>
+            <li>Lecteur optique : cocher « B », passer au lecteur, choisir demande avec matériel</li>
+          </ul>
+          <p style="font-size:.82rem;font-weight:600;margin-bottom:4px">Facturée :</p>
+          <ul style="font-size:.82rem;color:var(--text-secondary);margin-left:16px;line-height:1.7">
+            <li>Nouvelle demande, même date prélèvement</li>
+            <li>« rajout sur NLAB XXX-XXXXX » dans Données cliniques > Libellé</li>
+            <li>Transmettre étiquettes au labo</li>
+          </ul>
+          <p style="font-size:.78rem;color:var(--text-muted);margin-top:8px;font-style:italic">Requérant différent → mettre en copie. Étiq. « rajout » pour hémato et MM uniquement.</p>
+        </div>
+      </div>
+      <div class="accordion-block">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">
+          <h2>1.5 Demande activée ou inexistante</h2><span class="accordion-arrow">▶</span>
+        </div>
+        <div class="accordion-content">
+          <ol style="font-size:.82rem;color:var(--text-secondary);margin-left:16px;line-height:1.7">
+            <li>Pré-demandes (écran 114) ou effacées (écran 117)</li>
+            <li>Appeler service : &lt;5-6 analyses → nouvelle demande · &gt;5-6 → nouvelle feuille ou tubes en réserve</li>
+            <li>Requérant injoignable → sérum <span class="code-pill">S-TUB</span>, tube hémato → voir hématologie</li>
+          </ol>
+        </div>
+      </div>
+      <div class="accordion-block">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)">
+          <h2>1.6 Copies</h2><span class="accordion-arrow">▶</span>
+        </div>
+        <div class="accordion-content">
+          <ul style="font-size:.82rem;color:var(--text-secondary);margin-left:16px;line-height:1.7">
+            <li><strong>Par mail</strong> : Diffusion → croix jaune → « + ». Introuvable → copies libres</li>
+            <li><strong>Privé → méd. hospitalier</strong> : copie libre + mail annuaire</li>
+            <li><strong>Service → méd. hospitalier</strong> : pas nécessaire</li>
+            <li><strong>Service → privé</strong> : « + ». Introuvable → bac feuilles à problème</li>
+            <li><strong>Copie patient</strong> : « 1 » sous Patient, onglet Diffusion</li>
+            <li><strong>Patient par mail</strong> : écran 310, Transmission résultats, Diffusion 1 = mail</li>
+          </ul>
+          <p style="font-size:.78rem;color:var(--text-muted);margin-top:8px;font-style:italic">Introuvable → enregistrer sans copie + bac vert feuilles à problème.</p>
+        </div>
+      </div>
+      <div class="accordion-block" style="border-color:var(--danger-border)">
+        <div class="accordion-trigger" onclick="toggleAccordion(this)" style="background:var(--danger-bg)">
+          <h2 style="color:var(--danger)">⚠ Demandes à NE PAS enregistrer</h2><span class="accordion-arrow">▶</span>
+        </div>
+        <div class="accordion-content">
+          <ul style="font-size:.82rem;color:var(--text-secondary);margin-left:16px;line-height:1.7">
+            <li>Bactériologie (sauf codes GeneXpert)</li>
+            <li>Produits sanguins sans tube → Immunohématologie</li>
+          </ul>
+          <p style="font-size:.78rem;color:var(--text-muted);margin-top:8px;font-style:italic">Doute requérant → temporaire 02 + bac vert. Attention multiples feuilles.</p>
+        </div>
+      </div>
+    </div>
 
-      <!-- ========== TAB: FEUILLES À TRANSMETTRE ========== -->
-      <div class="tab-panel" id="tab-feuilles">
+    <!-- ========== TAB: FEUILLES ========== -->
+    <div class="tab-panel" id="tab-feuilles">
+      <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface)">
         <table class="data-table">
           <thead>
             <tr>
-              <th>Labo</th>
-              <th>Condition</th>
-              <th>Où déposer</th>
-              <th>Action spéciale</th>
+              <th>Labo</th><th>Condition</th><th>Où déposer</th><th>Action spéciale</th>
             </tr>
           </thead>
           <tbody>
             <tr><td><strong>HÉMATO</strong></td><td>Commande produits sanguins</td><td>Entrée labo hémato</td><td>Pas de tube → transmettre sans enregistrer</td></tr>
-            <tr><td><strong>HÉMATO</strong></td><td>Étiquette He></td><td>Entrée labo hémato</td><td>Copie + originale en hémato</td></tr>
+            <tr><td><strong>HÉMATO</strong></td><td>Étiquette He&gt;</td><td>Entrée labo hémato</td><td>Copie + originale en hémato</td></tr>
             <tr><td><strong>HÉMATO</strong></td><td>Immunohémato + commande PSL</td><td>Entrée labo hémato</td><td>⚠ Vérifier signature ! Sinon copie + renvoyer + incident</td></tr>
             <tr><td><strong>CHIMIE</strong></td><td>LCR, micro-tubes, temps prélèv., tests spéciaux</td><td>Table du 8100</td><td>Micro-tubes : dans pochette</td></tr>
             <tr><td><strong>MM</strong></td><td>Toujours</td><td>Bac sous statif violet</td><td>—</td></tr>
             <tr><td><strong>IS</strong></td><td>Toujours</td><td>Bac sous statif orange</td><td>—</td></tr>
-            <tr><td><strong>TOXICOLOGIE</strong></td><td>Étiq. « C Copie> » « Tox ! »</td><td>Bac Toxicologie</td><td>—</td></tr>
+            <tr><td><strong>TOXICOLOGIE</strong></td><td>Étiq. « C Copie&gt; » « Tox ! »</td><td>Bac Toxicologie</td><td>—</td></tr>
             <tr><td><strong>FERTILITÉ</strong></td><td>Dépistages prénataux 1er+2ème trim.</td><td>Bac prénataux</td><td>Copie → bac feuilles à contrôler</td></tr>
             <tr><td><strong>GÉNÉTIQUE</strong></td><td>Toujours</td><td>Bac génétique frigo côté 8100</td><td>T° ambiante → panier blanc. Commun → copie</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
 
-      <!-- ========== TAB: STATIFS DE TRI ========== -->
-      <div class="tab-panel" id="tab-statifs">
-        <div class="statifs-grid">
-          <div class="statif-card" style="background:#2196F3"><div>🔵 Bleu</div><div class="statif-dest">Non 8100 → table du 8100</div></div>
-          <div class="statif-card" style="background:#9C27B0"><div>🟣 Violet</div><div class="statif-dest">MM → poste 1 enreg.</div></div>
-          <div class="statif-card" style="background:#FF9800"><div>🟠 Orange</div><div class="statif-dest">IS → poste 1 enreg.</div></div>
-          <div class="statif-card" style="background:#F44336"><div>🔴 Rouge</div><div class="statif-dest">Hémato → entrée labo</div></div>
-          <div class="statif-card" style="background:#FDD835; color:#333"><div>🟡 Jaune</div><div class="statif-dest">Archivage → table poste 1</div></div>
-          <div class="statif-card" style="background:#78909C"><div>⚪ Gris</div><div class="statif-dest">Envois → frigo côté 8100</div></div>
-        </div>
+    <!-- ========== TAB: STATIFS ========== -->
+    <div class="tab-panel" id="tab-statifs">
+      <div class="statifs-grid">
+        <div class="statif-card" style="background:#1E88E5"><div>🔵 Bleu</div><div class="statif-dest">Non 8100 → table du 8100</div></div>
+        <div class="statif-card" style="background:#8E24AA"><div>🟣 Violet</div><div class="statif-dest">MM → poste 1 enreg.</div></div>
+        <div class="statif-card" style="background:#FB8C00"><div>🟠 Orange</div><div class="statif-dest">IS → poste 1 enreg.</div></div>
+        <div class="statif-card" style="background:#E53935"><div>🔴 Rouge</div><div class="statif-dest">Hémato → entrée labo</div></div>
+        <div class="statif-card" style="background:#F9A825;color:#333"><div>🟡 Jaune</div><div class="statif-dest">Archivage → table poste 1</div></div>
+        <div class="statif-card" style="background:#607D8B"><div>⚪ Gris</div><div class="statif-dest">Envois → frigo côté 8100</div></div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: ÉTIQUETTES ========== -->
+    <div class="tab-panel" id="tab-etiquettes">
+      <div class="section-head" style="margin-top:0"><h2>Description des étiquettes (FP-7679 v3)</h2></div>
+      <div class="info-cards">
+        <div class="info-card"><h4>Chiffre → Tube primaire</h4><p>Les tubes mères sont étiquetés avec des étiquettes commençant par un <strong>chiffre</strong> (1, 4, 5, 6, 7, 8…)</p></div>
+        <div class="info-card"><h4>Lettre → Tube secondaire</h4><p>Indique le labo destinataire : <span class="code-pill">H</span> Hémato · <span class="code-pill">C</span> Chimie · <span class="code-pill">IS</span> Immuno · <span class="code-pill">MM</span> MM · <span class="code-pill">G</span> Génétique</p></div>
+        <div class="info-card"><h4>Avec <span class="code-pill">&gt;</span> → Ne pas décanter</h4><p>Transférer l'étiquette à l'unité concernée (pour Sion).</p></div>
+        <div class="info-card"><h4>Avec <span class="code-pill">!</span> → Avertir</h4><p>Avertir le laboratoire concerné <strong>oralement ou par téléphone</strong> immédiatement.</p></div>
+        <div class="info-card"><h4>Transferts par labo</h4><p><span class="code-pill">C XXX&gt;</span> Chimie &nbsp;·&nbsp; <span class="code-pill">H XXX&gt;</span> Hémato &nbsp;·&nbsp; <span class="code-pill">IS XXX&gt;</span> IS &nbsp;·&nbsp; <span class="code-pill">MM XXX&gt;</span> MM &nbsp;·&nbsp; <span class="code-pill">G XXX&gt;</span> Génétique</p></div>
+        <div class="info-card"><h4><span class="code-pill">LSITE</span></h4><p>Site exécutant des analyses liées à cette étiquette.</p></div>
+        <div class="info-card"><h4>Infos diverses</h4><p>Au fond à gauche : textes d'info (<span class="code-pill">LCR</span>, <span class="code-pill">Pas_8100</span>, etc.)</p></div>
       </div>
 
-      <!-- ========== TAB: ÉTIQUETTES (FP-7679) ========== -->
-      <div class="tab-panel" id="tab-etiquettes">
+      <div class="section-head"><h2>Format visuel</h2></div>
+      <div class="info-cards">
+        <div class="info-card"><h4>✅ À centrifuger</h4><p>Format standard, chiffres sur fond blanc.</p></div>
+        <div class="info-card"><h4>⛔ Ne pas centrifuger</h4><p>N° d'étiquette sur <strong>fond noir</strong>.</p></div>
+        <div class="info-card"><h4>❄ Centrifuger à froid</h4><p><span class="code-pill">***</span> visible sur l'étiquette.</p></div>
+        <div class="info-card"><h4>🌑 Abri de la lumière</h4><p>Identité sur fond noir.</p></div>
+        <div class="info-card"><h4>🌑⛔ Ne pas centri. + Abri lumière</h4><p>Identité + N° d'étiquette sur fond noir.</p></div>
+        <div class="info-card"><h4>🔄 Décantage</h4><p>Étiquette spécifique de décantage.</p></div>
+        <div class="info-card"><h4>📦 Envois</h4><p>Étiquette spécifique pour les envois externes.</p></div>
+        <div class="info-card"><h4>ℹ️ Information</h4><p>Étiquette d'information (ex : FORMULAIRE/COPIE).</p></div>
+      </div>
 
-        <div class="section-title" style="margin-top:0">Description des étiquettes (FP-7679 v3)</div>
-        <div class="info-cards">
-          <div class="info-card"><h4>Chiffre → Tube primaire</h4><p>Les tubes mères sont étiquetés avec des étiquettes commençant par un <strong>chiffre</strong> (1, 4, 5, 6, 7, 8...)</p></div>
-          <div class="info-card"><h4>Lettre → Tube secondaire</h4><p>Indique le labo destinataire :<br><span class="code">H</span> Hémato · <span class="code">C</span> Chimie (plateforme automates) · <span class="code">IS</span> Immuno · <span class="code">MM</span> Microbio mol. · <span class="code">G</span> Génétique<br>L'extension sur le tube (XXXXX.61) aide à identifier quelle étiquette secondaire va avec quel tube.</p></div>
-          <div class="info-card"><h4>Avec <span class="code">></span> → Ne pas décanter</h4><p>Transférer l'étiquette à l'unité concernée (pour Sion).</p></div>
-          <div class="info-card"><h4>Avec <span class="code">!</span> → Avertir</h4><p>Avertir le laboratoire concerné <strong>oralement ou par téléphone</strong> immédiatement.</p></div>
-          <div class="info-card"><h4>Transferts par labo</h4><p><span class="code">C XXX></span> → Chimie<br><span class="code">H XXX></span> → Hématologie<br><span class="code">IS XXX></span> → Immuno-Sérologie<br><span class="code">MM XXX></span> → Microbiologie moléculaire<br><span class="code">G XXX></span> → Génétique</p></div>
-          <div class="info-card"><h4><span class="code">LSITE</span></h4><p>Site exécutant des analyses liées à cette étiquette.</p></div>
-          <div class="info-card"><h4>Infos diverses</h4><p>Au fond à gauche de l'étiquette : textes d'info (<span class="code">LCR</span>, <span class="code">Pas_8100</span>, etc.)</p></div>
-        </div>
-
-        <div class="section-title">Format visuel des étiquettes</div>
-        <div class="info-cards">
-          <div class="info-card"><h4>✅ À centrifuger</h4><p>Format standard, chiffres sur fond blanc.</p></div>
-          <div class="info-card"><h4>⛔ Ne pas centrifuger</h4><p>N° d'étiquette sur <strong>fond noir</strong>.</p></div>
-          <div class="info-card"><h4>❄ Centrifuger à froid</h4><p><span class="code">***</span> visible sur l'étiquette.</p></div>
-          <div class="info-card"><h4>🌑 Abri de la lumière</h4><p><strong>Identité sur fond noir</strong>.</p></div>
-          <div class="info-card"><h4>🌑⛔ Ne pas centrifuger + Abri lumière</h4><p><strong>Identité + N° d'étiquette sur fond noir</strong>.</p></div>
-          <div class="info-card"><h4>🔄 Décantage</h4><p>Étiquette spécifique de décantage.</p></div>
-          <div class="info-card"><h4>📦 Envois</h4><p>Étiquette spécifique pour les envois externes.</p></div>
-          <div class="info-card"><h4>ℹ️ Information</h4><p>Étiquette d'information (ex : FORMULAIRE/COPIE).</p></div>
-        </div>
-
-        <div class="section-title">Ré-impression d'étiquettes sur DGLab (écran 105)</div>
+      <div class="section-head"><h2>Ré-impression (écran 105 DGLab)</h2></div>
+      <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface)">
         <table class="data-table">
           <thead><tr><th>Étiquette</th><th>N° à saisir</th></tr></thead>
           <tbody>
-            <tr><td><span class="code">1</span></td><td>101</td></tr>
-            <tr><td><span class="code">1'</span></td><td>115</td></tr>
-            <tr><td><span class="code">2</span></td><td>102</td></tr>
-            <tr><td><span class="code">5</span></td><td>150</td></tr>
-            <tr><td><span class="code">6 non centri</span></td><td>161</td></tr>
-            <tr><td><span class="code">6 centri</span></td><td>160</td></tr>
-            <tr><td><span class="code">SERO 9</span></td><td>909</td></tr>
-            <tr><td><span class="code">IS AUT</span></td><td>901</td></tr>
-            <tr><td><span class="code">IS PRUN</span></td><td>902</td></tr>
-            <tr><td><span class="code">IS IF</span></td><td>903</td></tr>
-            <tr><td><span class="code">M-AER</span></td><td>951</td></tr>
-            <tr><td><span class="code">M-ANA</span></td><td>952</td></tr>
+            <tr><td><span class="code-pill">1</span></td><td>101</td></tr>
+            <tr><td><span class="code-pill">1'</span></td><td>115</td></tr>
+            <tr><td><span class="code-pill">2</span></td><td>102</td></tr>
+            <tr><td><span class="code-pill">5</span></td><td>150</td></tr>
+            <tr><td><span class="code-pill">6 non centri</span></td><td>161</td></tr>
+            <tr><td><span class="code-pill">6 centri</span></td><td>160</td></tr>
+            <tr><td><span class="code-pill">SERO 9</span></td><td>909</td></tr>
+            <tr><td><span class="code-pill">IS AUT</span></td><td>901</td></tr>
+            <tr><td><span class="code-pill">IS PRUN</span></td><td>902</td></tr>
+            <tr><td><span class="code-pill">IS IF</span></td><td>903</td></tr>
+            <tr><td><span class="code-pill">M-AER</span></td><td>951</td></tr>
+            <tr><td><span class="code-pill">M-ANA</span></td><td>952</td></tr>
           </tbody>
         </table>
-        <p style="margin-top:12px; font-size:0.78rem; color:var(--text-muted)">Cocher « Seul. suppl. » et saisir le N° dans le champ « Supplémentaires ».</p>
-
-        <div class="section-title">Règles de collage & vérifications</div>
-        <div class="info-cards">
-          <div class="info-card"><h4>📌 Positionnement</h4><p>Coller en laissant visibles le <strong>nom et prénom</strong> inscrits sur le tube. Tubes <strong>bleu clair → laisser une fenêtre visible</strong>.</p></div>
-          <div class="info-card"><h4>✱ Feuille lecteur optique</h4><p>Coller une étiquette ✱ sur la demande (verticalement en haut à gauche).</p></div>
-          <div class="info-card"><h4>∅ Échantillon manquant</h4><p><strong>Prévenir immédiatement le requérant</strong> → imprimer l'étiquette du tube manquant, inscrire « ∅ » → transmettre au labo concerné.</p></div>
-          <div class="info-card"><h4>🗑 Confidentialité</h4><p>Étiquettes surnuméraires + ruban encreur → <strong>poubelles jaunes</strong>.</p></div>
-          <div class="info-card"><h4>✓ Vérifications</h4><p>Concordance <strong>nom, prénom et NLab</strong> entre étiquettes, feuille et tube. <strong>Vérifier le remplissage des tubes</strong>. Viser la feuille de demande.</p></div>
-        </div>
-
       </div>
+      <p style="margin-top:10px;font-size:.75rem;color:var(--text-muted)">Cocher « Seul. suppl. » et saisir le N° dans le champ « Supplémentaires ».</p>
 
-      <!-- ========== TAB: CHECK-IN ========== -->
-      <div class="tab-panel" id="tab-checkin">
-        <div class="info-cards">
-          <div class="info-card"><h4>✓ Automatique</h4><p>Tubes conformes 8100 sans pré-analytique particulière.</p></div>
-          <div class="info-card"><h4>✋ Manuel</h4><p>Tous les autres tubes.</p></div>
-          <div class="info-card"><h4>❄ Congelés IS/MM/Tox</h4><p>Sortir sagex → congélateur poste envois → étiq. au labo.</p></div>
-          <div class="info-card"><h4>❄ Congelés Chimie/Hémato</h4><p>Laisser dans sagex → statif du labo.</p></div>
-        </div>
+      <div class="section-head"><h2>Règles de collage & vérifications</h2></div>
+      <div class="info-cards">
+        <div class="info-card"><h4>📌 Positionnement</h4><p>Coller en laissant visibles le <strong>nom et prénom</strong> inscrits sur le tube. Tubes <strong>bleu clair → laisser une fenêtre visible</strong>.</p></div>
+        <div class="info-card"><h4>✱ Feuille lecteur optique</h4><p>Coller une étiquette ✱ sur la demande (verticalement en haut à gauche).</p></div>
+        <div class="info-card"><h4>∅ Échantillon manquant</h4><p><strong>Prévenir immédiatement le requérant</strong> → imprimer l'étiquette du tube manquant, inscrire « ∅ » → transmettre au labo concerné.</p></div>
+        <div class="info-card"><h4>🗑 Confidentialité</h4><p>Étiquettes surnuméraires + ruban encreur → <strong>poubelles jaunes</strong>.</p></div>
+        <div class="info-card"><h4>✓ Vérifications</h4><p>Concordance <strong>nom, prénom et NLab</strong> entre étiquettes, feuille et tube. Vérifier le remplissage. Viser la feuille de demande.</p></div>
       </div>
-
-      <!-- ========== TAB: SÉROTHÈQUE ========== -->
-      <div class="tab-panel" id="tab-serotheque">
-        <div class="info-cards">
-          <div class="info-card"><h4>Sérum réserve</h4><p><span class="code">SRES</span></p></div>
-          <div class="info-card"><h4>LCR réserve</h4><p><span class="code">LQRES</span></p></div>
-          <div class="info-card"><h4>Tous tubes sérum</h4><p>(Neuro, Hôp. jour) <span class="code">SREST</span> · Étiq. « 1 » + feuille/étiq/tubes → poste 8100.</p></div>
-        </div>
-      </div>
-
-      <!-- ========== TAB: GESTION PAR LABO ========== -->
-      <div class="tab-panel" id="tab-gestion">
-        <div class="info-cards">
-          <div class="info-card">
-            <h4>🔬 Chimie</h4>
-            <ul>
-              <li>Conformes → 8100 (sauf: pas centri., pré-analytique spéc., étiq. sec., matériel insuffisant)</li>
-              <li>Non conformes → statif bleu</li>
-              <li>Micro-tubes : étiq. « 1 » (ne PAS coller), pochette côté statif bleu, avertir 8100</li>
-              <li>Thermos → statif bleu + avertir TAB chimie</li>
-              <li><strong>Pas sur 8100 si :</strong> matériel insuffisant, surnageant rougeâtre, gel oblique, étiq. fond noir, non conforme, étiq. secondaire</li>
-              <li><strong>Tiroirs :</strong> Non centri. → « Non-Centrifugés » · Centri. → « Centrifugés » · Faux-fond → « B-lines avec bouchons »</li>
-              <li>Faux-fond + brun même patient → faux-fond chaîne, brun statif jaune</li>
-            </ul>
-          </div>
-          <div class="info-card">
-            <h4>🩸 Hématologie</h4>
-            <ul>
-              <li>EDTA sans étiq. sec. + gris foncés → rouleau</li>
-              <li>Bleu clair, stérile, autres → statif rouge</li>
-            </ul>
-          </div>
-          <div class="info-card">
-            <h4>🧫 Immuno-sérologie</h4>
-            <ul>
-              <li>Sérum conforme → 8100 si assez matériel</li>
-              <li>Autres sérum → statif bleu · Autre tube → statif orange</li>
-            </ul>
-          </div>
-          <div class="info-card">
-            <h4>🧬 MM</h4>
-            <ul><li>Tous → statif violet</li></ul>
-          </div>
-          <div class="info-card">
-            <h4>🦠 Bactério</h4>
-            <ul><li>Pochette+feuille → bac noir · LCR → tél. (heures ouverture)</li></ul>
-          </div>
-          <div class="info-card">
-            <h4>🧪 Génétique</h4>
-            <ul><li>T° ambiante → panier blanc · Sinon → chambre froide · « Tel gen » → contacter</li></ul>
-          </div>
-          <div class="info-card">
-            <h4>📦 Envois</h4>
-            <ul>
-              <li>Selon étiq.: chaîne, frigo, congélateur ou T° ambiante · ANASPB si besoin</li>
-              <li>WE/nuit : frigo statif gris · Congelés → congélateur envois · T° amb. → bac Centralisation</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- ========== TAB: CAS PARTICULIERS ========== -->
-      <div class="tab-panel" id="tab-cas">
-        <div class="info-cards">
-          <div class="info-card"><h4>🔬 Cytologie</h4><p>Tubes coniques jaunes → <strong>codes CXXX</strong> (pas FXXX).</p></div>
-          <div class="info-card"><h4>🏥 CHUV neuro-immuno</h4><p>Si seul → pochette <strong>frigo</strong> + message bac feuilles à problème.</p></div>
-          <div class="info-card"><h4>💰 LAI, LAA, LAM</h4><p>Maternité, invalidité, accident, militaire → <strong>enregistrer</strong> + bac feuilles à problème.</p></div>
-          <div class="info-card"><h4>🚑 Accidents professionnels</h4><p>→ <strong>Procédure Wiki</strong></p></div>
-        </div>
-      </div>
-
-    </div><!-- /tabs -->
-  </div><!-- /main -->
-
-  <!-- ==================== CHANGELOG ==================== -->
-  <div class="changelog">
-    <div class="changelog-toggle" onclick="toggleChangelog()">
-      <span id="clChevron">▶</span> Historique des modifications
     </div>
-    <div class="changelog-body" id="changelogBody">
-      <div class="cl-date">21.03.2026 — v1.3</div>
-      <ul>
-        <li>Ajout des cartes téléphones internes (section dédiée, filtrables)</li>
-        <li>Ajout du système de favoris (épingler les tubes fréquents)</li>
-        <li>Ajout du changelog</li>
-      </ul>
-      <div class="cl-date">20.03.2026 — v1.2</div>
-      <ul>
-        <li>Intégration du contenu FP-7679 (étiquettes DGLab) dans l'onglet Étiquettes</li>
-        <li>Séparation centrifugation / destinations dans les fiches tubes</li>
-        <li>Police changée en Source Sans 3</li>
-      </ul>
-      <div class="cl-date">20.03.2026 — v1.1</div>
-      <ul>
-        <li>Intégration complète du Mémo Poste C (enregistrement, transmission chimie, cas particuliers)</li>
-        <li>Ajout des échantillons spéciaux (selles, buvard, JC Virus, etc.)</li>
-      </ul>
-      <div class="cl-date">20.03.2026 — v1.0</div>
-      <ul>
-        <li>Version initiale basée sur PR-6387 v4</li>
-        <li>11 tubes courants + 7 onglets d'information</li>
-      </ul>
+
+    <!-- ========== TAB: CHECK-IN ========== -->
+    <div class="tab-panel" id="tab-checkin">
+      <div class="info-cards">
+        <div class="info-card"><h4>✓ Automatique</h4><p>Tubes conformes 8100 sans pré-analytique particulière.</p></div>
+        <div class="info-card"><h4>✋ Manuel</h4><p>Tous les autres tubes.</p></div>
+        <div class="info-card"><h4>❄ Congelés IS/MM/Tox</h4><p>Sortir sagex → congélateur poste envois → étiq. au labo.</p></div>
+        <div class="info-card"><h4>❄ Congelés Chimie/Hémato</h4><p>Laisser dans sagex → statif du labo.</p></div>
+      </div>
     </div>
+
+    <!-- ========== TAB: SÉROTHÈQUE ========== -->
+    <div class="tab-panel" id="tab-serotheque">
+      <div class="info-cards">
+        <div class="info-card"><h4>Sérum réserve</h4><p><span class="code-pill">SRES</span></p></div>
+        <div class="info-card"><h4>LCR réserve</h4><p><span class="code-pill">LQRES</span></p></div>
+        <div class="info-card"><h4>Tous tubes sérum</h4><p>(Neuro, Hôp. jour) <span class="code-pill">SREST</span> · Étiq. « 1 » + feuille/étiq/tubes → poste 8100.</p></div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: GESTION PAR LABO ========== -->
+    <div class="tab-panel" id="tab-gestion">
+      <div class="info-cards">
+        <div class="info-card">
+          <h4>🔬 Chimie</h4>
+          <ul>
+            <li>Conformes → 8100 (sauf: pas centri., pré-analytique spéc., étiq. sec., matériel insuffisant)</li>
+            <li>Non conformes → statif bleu</li>
+            <li>Micro-tubes : étiq. « 1 » (ne PAS coller), pochette côté statif bleu, avertir 8100</li>
+            <li>Thermos → statif bleu + avertir TAB chimie</li>
+            <li><strong>Pas sur 8100 si :</strong> matériel insuffisant, surnageant rougeâtre, gel oblique, étiq. fond noir, non conforme, étiq. secondaire</li>
+            <li><strong>Tiroirs :</strong> Non centri. → « Non-Centrifugés » · Centri. → « Centrifugés » · Faux-fond → « B-lines avec bouchons »</li>
+            <li>Faux-fond + brun même patient → faux-fond chaîne, brun statif jaune</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>🩸 Hématologie</h4>
+          <ul>
+            <li>EDTA sans étiq. sec. + gris foncés → rouleau</li>
+            <li>Bleu clair, stérile, autres → statif rouge</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>🧫 Immuno-sérologie</h4>
+          <ul>
+            <li>Sérum conforme → 8100 si assez matériel</li>
+            <li>Autres sérum → statif bleu · Autre tube → statif orange</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>🧬 MM</h4>
+          <ul><li>Tous → statif violet</li></ul>
+        </div>
+        <div class="info-card">
+          <h4>🦠 Bactério</h4>
+          <ul><li>Pochette+feuille → bac noir · LCR → tél. (heures ouverture)</li></ul>
+        </div>
+        <div class="info-card">
+          <h4>🧪 Génétique</h4>
+          <ul><li>T° ambiante → panier blanc · Sinon → chambre froide · « Tel gen » → contacter</li></ul>
+        </div>
+        <div class="info-card">
+          <h4>📦 Envois</h4>
+          <ul>
+            <li>Selon étiq.: chaîne, frigo, congélateur ou T° ambiante · ANASPB si besoin</li>
+            <li>WE/nuit : frigo statif gris · Congelés → congélateur envois · T° amb. → bac Centralisation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: CAS PARTICULIERS ========== -->
+    <div class="tab-panel" id="tab-cas">
+      <div class="info-cards">
+        <div class="info-card"><h4>🔬 Cytologie</h4><p>Tubes coniques jaunes → <strong>codes CXXX</strong> (pas FXXX).</p></div>
+        <div class="info-card"><h4>🏥 CHUV neuro-immuno</h4><p>Si seul → pochette <strong>frigo</strong> + message bac feuilles à problème.</p></div>
+        <div class="info-card"><h4>💰 LAI, LAA, LAM</h4><p>Maternité, invalidité, accident, militaire → <strong>enregistrer</strong> + bac feuilles à problème.</p></div>
+        <div class="info-card"><h4>🚑 Accidents professionnels</h4><p>→ <strong>Procédure Wiki</strong></p></div>
+      </div>
+    </div>
+
+  </div><!-- /tabs -->
+</div><!-- /main -->
+
+<!-- ==================== CHANGELOG ==================== -->
+<div class="changelog-wrap">
+  <div class="changelog-trigger" onclick="toggleChangelog()">
+    <span id="clChevron">▶</span> Historique des modifications
   </div>
-
-  <!-- ==================== MODAL ==================== -->
-  <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
-    <div class="modal" id="modal"></div>
+  <div class="changelog-body" id="changelogBody">
+    <div class="cl-date">21.03.2026 — v1.4</div>
+    <ul>
+      <li>Refonte complète de l'interface (typographie DM Sans/DM Mono, tokens unifiés, dark mode amélioré)</li>
+      <li>Cartes tubes : hauteur fixe, indicateur centrifugation intégré, shimmer subtil</li>
+      <li>Modales : layout restructuré, badges sémantiques cohérents, animation springy</li>
+      <li>Accordéons unifiés, table styles cohérents, chips destinations</li>
+    </ul>
+    <div class="cl-date">21.03.2026 — v1.3</div>
+    <ul>
+      <li>Ajout des cartes téléphones internes (section dédiée, filtrables)</li>
+      <li>Ajout du système de favoris (épingler les tubes fréquents)</li>
+      <li>Ajout du changelog</li>
+    </ul>
+    <div class="cl-date">20.03.2026 — v1.2</div>
+    <ul>
+      <li>Intégration du contenu FP-7679 (étiquettes DGLab) dans l'onglet Étiquettes</li>
+      <li>Séparation centrifugation / destinations dans les fiches tubes</li>
+    </ul>
+    <div class="cl-date">20.03.2026 — v1.1</div>
+    <ul><li>Intégration complète du Mémo Poste C</li></ul>
+    <div class="cl-date">20.03.2026 — v1.0</div>
+    <ul><li>Version initiale basée sur PR-6387 v4</li></ul>
   </div>
+</div>
 
-  <!-- ==================== JAVASCRIPT ==================== -->
-  <script>
+<!-- ==================== MODAL ==================== -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
 
-    // ==================== TUBES DATA ====================
+<!-- ==================== JS ==================== -->
+<script>
+  /* ========== DATA ========== */
+  const T = {
+    "sang": [
+      { "id":"brun","name":"Brun","sub":"Sérum","etiq":"1 ou 1XXX","color":"#6D4C2A","tc":"#fff","c":"oui","cl":"Peut être centrifugé","d":[{"l":"8100","dt":"Centrifugé → tiroir Centrifugés","t":"dest-8100"},{"l":"8100","dt":"Non centrifugé → tiroir Non-Centrifugés","t":"dest-8100"},{"l":"Statif bleu","dt":"Non conforme ou étiq. secondaire","t":"dest-bleu"}],"sup":"S-SUP / S-SUP2","tub":"S-TUB","res":"SRES","n":["Plusieurs S-SUP/S-SUP2 → « D » sur chaque tube","Faux-fond + brun même patient → faux-fond chaîne, brun statif jaune"],"a":[],"s":[],"kw":"brun sérum serum s-sup s-tub sres" },
+      { "id":"corail","name":"Corail / Blanc","sub":"Sérum sans gel","etiq":"80 ou 1","color":"#C0623A","tc":"#fff","c":"oui","cl":"Peut être centrifugé","d":[{"l":"8100","dt":"Centrifugé → tiroir Centrifugés","t":"dest-8100"},{"l":"8100","dt":"Non centrifugé → tiroir Non-Centrifugés","t":"dest-8100"},{"l":"Statif bleu","dt":"Non conforme ou étiq. secondaire","t":"dest-bleu"}],"sup":"S-SUPSG (pédia→S-SUP)","tub":"S-TUBSG (pédia→S-TUB)","res":"","n":["Plusieurs S-SUPSG → « D »","Tube abri lumière → TAB chimie"],"a":[],"s":[],"kw":"corail blanc sérum sans gel s-supsg pédiatrie" },
+      { "id":"vert","name":"Vert","sub":"Plasma hépariné","etiq":"80 ou 1","color":"#2E7D32","tc":"#fff","c":"oui","cl":"Peut être centrifugé","d":[{"l":"8100","dt":"Étiq. chiffre blanc sans sec.","t":"dest-8100"},{"l":"Statif bleu","dt":"Étiq. chiffre noir ou sec.","t":"dest-bleu"},{"l":"Hémato","dt":"","t":"dest-hemato"},{"l":"Envoi","dt":"","t":"dest-envoi"}],"sup":"PHSUP (tox→BHTOX)","tub":"PHTUB","res":"","n":["Plusieurs PHSUP → « D »"],"a":[],"s":[],"kw":"vert hépariné plasma phsup phtub bhtox" },
+      { "id":"gris-clair","name":"Gris clair","sub":"Plasma fluoré","etiq":"4 ou 4TXX","color":"#7B8C98","tc":"#fff","c":"obligatoire","cl":"Obligatoirement centrifugé","d":[{"l":"8100","dt":"","t":"dest-8100"}],"sup":"PFSUP","tub":"PFTUB","res":"","n":[],"a":[],"s":[],"kw":"gris clair fluoré pfsup pftub" },
+      { "id":"violet-petit","name":"Violet petit","sub":"EDTA 2,6 mL","etiq":"6","color":"#6A1B9A","tc":"#fff","c":"oui","cl":"Peut être centrifugé","d":[{"l":"8100","dt":"Étiq. chiffre blanc sans sec.","t":"dest-8100"},{"l":"Statif bleu","dt":"Étiq. chiffre noir ou sec.","t":"dest-bleu"},{"l":"Hémato","dt":"Rouleau (pas sec.) · Statif rouge sinon","t":"dest-hemato"},{"l":"Génétique","dt":"","t":"dest-genetique"},{"l":"Envoi","dt":"","t":"dest-envoi"}],"sup":"BESUP","tub":"BETUB","res":"","n":[],"a":[],"s":["1 tube hémato+chimie/tox → en hémato, noter « hémato » sur étiq. chimie → statif bleu","1 EDTA + 1 thromboexact → les 2 en hémato + même marquage","1 EDTA + autres labos → voir TABs, sinon contacter requérant"],"kw":"violet petit edta besup betub hémato" },
+      { "id":"violet-grand","name":"Violet grand","sub":"EDTA 7,5 mL","etiq":"7","color":"#4A148C","tc":"#fff","c":"variable","cl":"Selon destination et volume","d":[{"l":"Hémato","dt":"","t":"dest-hemato"},{"l":"MM","dt":"Statif violet","t":"dest-mm"},{"l":"Envoi","dt":"Bac/Frigo/Congélateur","t":"dest-envoi"}],"sup":"BESUP (urg/ext)","tub":"CE-00","res":"","n":["Feuilles lecteur optique → signature préleveur","Étiq. 6 collable sur grand si pas petit EDTA"],"a":["Urgences/externes → BESUP (pas CE-00) si déjà petit EDTA/BETUB"],"s":["Envoi Cery 7,5ml → 8100 ok","Envoi Cery 2,6ml → centrifuger+décanter manuellement"],"kw":"violet grand edta ce-00 besup cery envoi mm hémato" },
+      { "id":"rouge","name":"Rouge foncé","sub":"Thromboexact","etiq":"6","color":"#7F0000","tc":"#fff","c":"non","cl":"Ne peut pas être centrifugé","d":[{"l":"Hémato","dt":"","t":"dest-hemato"}],"sup":"","tub":"","res":"","n":["Thromboexact + petit EDTA chimie+hémato → 2 en hémato, indiquer chimie"],"a":[],"s":[],"kw":"rouge foncé thromboexact hémato" },
+      { "id":"bleu","name":"Bleu","sub":"Plasma citraté","etiq":"5","color":"#1565C0","tc":"#fff","c":"non","cl":"Ne peut pas être centrifugé","d":[{"l":"Hémato","dt":"Statif rouge","t":"dest-hemato"}],"sup":"PCSUP","tub":"PCTUB","res":"","n":["Plusieurs PCSUP → marque bouchons","Fenêtre visible au collage"],"a":[],"s":[],"kw":"bleu citraté pcsup pctub hémato" },
+      { "id":"gris-fonce","name":"Gris foncé / Noir","sub":"Sang citraté (VS)","etiq":"8","color":"#37474F","tc":"#fff","c":"non","cl":"Ne peut pas être centrifugé","d":[{"l":"Hémato","dt":"Rouleau","t":"dest-hemato"}],"sup":"BCSUP","tub":"BCTUB","res":"","n":[],"a":["NE PAS coller étiq. « 8 ». Donner « 8 » + « Hv » en hémato."],"s":[],"kw":"gris foncé noir sang citraté bcsup bctub hv" },
+      { "id":"lcr","name":"LCR","sub":"Liquide céphalo-rachidien","etiq":"10","color":"#00695C","tc":"#fff","c":"non","cl":"Ne peut pas être centrifugé","d":[{"l":"Chimie","dt":"Tube N°1","t":"dest-chimie"},{"l":"Bactério/MM/IS","dt":"Tube N°2","t":"dest-mm"},{"l":"Hémato","dt":"Tube N°3","t":"dest-hemato"},{"l":"Immunochimie","dt":"N°4 (« C Pl> ») → statif bleu","t":"dest-bleu"},{"l":"IS","dt":"Tube N°5","t":"dest-is"},{"l":"Statif violet","dt":"Suppl. → LQRES","t":"dest-mm"}],"sup":"LQRES","tub":"","res":"LQRES","n":["Tube stérile PP → FP-7711","Répartition → FP-11538"],"a":["Cytologie 07h30-16h30 → téléphoner","Après 16h30 → feuille+tube en hémato","Tube abri lumière → TAB chimie rapidement"],"s":[],"kw":"lcr liquide céphalo rachidien lqres cytologie" },
+      { "id":"urine","name":"Urine (Vacutainer)","sub":"","etiq":"30","color":"#827717","tc":"#fff","c":"oui","cl":"Peut être centrifugé","d":[{"l":"8100","dt":"Si centrifugeable","t":"dest-8100"},{"l":"Statif bleu","dt":"Début 8100","t":"dest-bleu"},{"l":"MM","dt":"Statif violet","t":"dest-mm"},{"l":"Bactério","dt":"","t":"dest-bacterio"}],"sup":"U-SUP","tub":"U-TUB","res":"","n":[],"a":[],"s":["Sédiment (30 SED) → statif bleu + étiq. réserve","Dosages+sédiment → répartir selon étiquettes","1 tube / étiq. pH → statif bleu","Commun chimie+bactério → si rapide sinon 2ème tube","Urines 24h → volume+période. Clearance → poids+taille → table 8100"],"kw":"urine vacutainer sédiment u-sup u-tub clearance 24h" }
+    ],
+    "autres": [
+      { "id":"urine-st","name":"Urine (Flacon stérile)","sub":"","etiq":"30","color":"#5D4037","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"Chimie","dt":"Statif bleu","t":"dest-chimie"},{"l":"MM","dt":"Statif violet","t":"dest-mm"},{"l":"Bactério","dt":"","t":"dest-bacterio"}],"sup":"","tub":"","res":"","n":[],"a":[],"s":[],"kw":"urine flacon stérile chimie mm bactério" },
+      { "id":"urine-24h","name":"Urine 24h","sub":"Flacon brun","etiq":"39","color":"#4E342E","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"Chimie","dt":"Statif bleu","t":"dest-chimie"}],"sup":"","tub":"","res":"","n":["Vérifier volume+période","Clearance → poids+taille"],"a":[],"s":[],"kw":"urine 24h flacon brun 39 chimie clearance" },
+      { "id":"urine-bor","name":"Urine ac. borique","sub":"Vacutrainer","etiq":"65","color":"#E65100","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"Bactério","dt":"","t":"dest-bacterio"}],"sup":"","tub":"","res":"","n":[],"a":[],"s":[],"kw":"urine acide borique 65 bactériologie" },
+      { "id":"selles","name":"Pot à selles","sub":"Selles","etiq":"45","color":"#6D4C41","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"MM","dt":"Statif violet","t":"dest-mm"},{"l":"Bactério","dt":"","t":"dest-bacterio"}],"sup":"","tub":"","res":"","n":[],"a":[],"s":[],"kw":"selles pot 45 mm bactério" },
+      { "id":"occulte","name":"Sang occulte","sub":"Selles","etiq":"50","color":"#4E342E","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"MM","dt":"","t":"dest-mm"}],"sup":"","tub":"","res":"","n":[],"a":[],"s":[],"kw":"sang occulte selles 50 mm" },
+      { "id":"buvard","name":"Buvard","sub":"Spot sang séché","etiq":"60","color":"#BF360C","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"Envoi","dt":"","t":"dest-envoi"}],"sup":"","tub":"","res":"","n":[],"a":[],"s":[],"kw":"buvard spot sang séché 60 envoi" },
+      { "id":"jcv","name":"JC Virus","sub":"Sang","etiq":"49","color":"#880E4F","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"Envoi","dt":"","t":"dest-envoi"}],"sup":"","tub":"","res":"","n":[],"a":[],"s":[],"kw":"jc virus sang 49 envoi" },
+      { "id":"perch","name":"Sang perchloré","sub":"Tube pyr/lac","etiq":"3","color":"#B71C1C","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"Envoi","dt":"Chambre froide","t":"dest-envoi"}],"sup":"","tub":"","res":"","n":["Protocole+tube chambre froide"],"a":[],"s":[],"kw":"perchloré pyr lac 3 envoi chambre froide" },
+      { "id":"azath","name":"Azathioprine","sub":"Sg hép+DTT+Hémogr.","etiq":"12","color":"#311B92","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"Envoi","dt":"Congélateur","t":"dest-envoi"}],"sup":"","tub":"","res":"","n":["Imurek"],"a":[],"s":[],"kw":"azathioprine imurek 12 envoi congélateur" },
+      { "id":"streck","name":"Streck Cell-Free DNA","sub":"Sang Streck","etiq":"70","color":"#1A237E","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"Envoi","dt":"Pour DPNI","t":"dest-envoi"}],"sup":"","tub":"","res":"","n":[],"a":[],"s":[],"kw":"streck cell-free dna 70 envoi dpni" },
+      { "id":"tau","name":"Protéine Tau/14-3-3","sub":"LCR (tube PP)","etiq":"22","color":"#004D40","tc":"#fff","c":"na","cl":"Non applicable","d":[{"l":"Envoi","dt":"FP-7711 · TAB pour microtubes","t":"dest-envoi"}],"sup":"","tub":"","res":"","n":[],"a":[],"s":[],"kw":"protéine tau 14-3-3 lcr pp 22 envoi" }
+    ]
+  };
 
-    const T = {
-      "sang": [
-        {
-          "id": "brun",
-          "name": "Brun",
-          "sub": "Sérum",
-          "etiq": "1 ou 1XXX",
-          "color": "#6D4C2A",
-          "tc": "#fff",
-          "c": "oui",
-          "cl": "Peut être centrifugé",
-          "d": [
-            {"l": "8100", "dt": "Centrifugé → tiroir Centrifugés", "t": "dest-8100"},
-            {"l": "8100", "dt": "Non centrifugé → tiroir Non-Centrifugés", "t": "dest-8100"},
-            {"l": "Statif bleu", "dt": "Non conforme ou étiq. secondaire", "t": "dest-bleu"}
-          ],
-          "sup": "S-SUP / S-SUP2",
-          "tub": "S-TUB",
-          "res": "SRES",
-          "n": [
-            "Plusieurs S-SUP/S-SUP2 → « D » sur chaque tube",
-            "Faux-fond + brun même patient → faux-fond chaîne, brun statif jaune"
-          ],
-          "a": [],
-          "s": [],
-          "kw": "brun sérum serum s-sup s-tub sres"
-        },
-        {
-          "id": "corail",
-          "name": "Corail / Blanc",
-          "sub": "Sérum sans gel",
-          "etiq": "80 ou 1",
-          "color": "#E8734A",
-          "tc": "#fff",
-          "c": "oui",
-          "cl": "Peut être centrifugé",
-          "d": [
-            {"l": "8100", "dt": "Centrifugé → tiroir Centrifugés", "t": "dest-8100"},
-            {"l": "8100", "dt": "Non centrifugé → tiroir Non-Centrifugés", "t": "dest-8100"},
-            {"l": "Statif bleu", "dt": "Non conforme ou étiq. secondaire", "t": "dest-bleu"}
-          ],
-          "sup": "S-SUPSG (pédia→S-SUP)",
-          "tub": "S-TUBSG (pédia→S-TUB)",
-          "res": "",
-          "n": [
-            "Plusieurs S-SUPSG → « D »",
-            "Tube abri lumière → TAB chimie"
-          ],
-          "a": [],
-          "s": [],
-          "kw": "corail blanc sérum sans gel s-supsg pédiatrie"
-        },
-        {
-          "id": "vert",
-          "name": "Vert",
-          "sub": "Plasma hépariné",
-          "etiq": "80 ou 1",
-          "color": "#2E7D32",
-          "tc": "#fff",
-          "c": "oui",
-          "cl": "Peut être centrifugé",
-          "d": [
-            {"l": "8100", "dt": "Étiq. chiffre blanc sans sec.", "t": "dest-8100"},
-            {"l": "Statif bleu", "dt": "Étiq. chiffre noir ou sec.", "t": "dest-bleu"},
-            {"l": "Hémato", "dt": "", "t": "dest-hemato"},
-            {"l": "Envoi", "dt": "", "t": "dest-envoi"}
-          ],
-          "sup": "PHSUP (tox→BHTOX)",
-          "tub": "PHTUB",
-          "res": "",
-          "n": ["Plusieurs PHSUP → « D »"],
-          "a": [],
-          "s": [],
-          "kw": "vert hépariné plasma phsup phtub bhtox"
-        },
-        {
-          "id": "gris-clair",
-          "name": "Gris clair",
-          "sub": "Plasma fluoré",
-          "etiq": "4 ou 4TXX",
-          "color": "#90A4AE",
-          "tc": "#1a1a1a",
-          "c": "obligatoire",
-          "cl": "Obligatoirement centrifugé",
-          "d": [
-            {"l": "8100", "dt": "", "t": "dest-8100"}
-          ],
-          "sup": "PFSUP",
-          "tub": "PFTUB",
-          "res": "",
-          "n": [],
-          "a": [],
-          "s": [],
-          "kw": "gris clair fluoré pfsup pftub"
-        },
-        {
-          "id": "violet-petit",
-          "name": "Violet petit",
-          "sub": "EDTA 2,6mL",
-          "etiq": "6",
-          "color": "#7B1FA2",
-          "tc": "#fff",
-          "c": "oui",
-          "cl": "Peut être centrifugé",
-          "d": [
-            {"l": "8100", "dt": "Étiq. chiffre blanc sans sec.", "t": "dest-8100"},
-            {"l": "Statif bleu", "dt": "Étiq. chiffre noir ou sec.", "t": "dest-bleu"},
-            {"l": "Hémato", "dt": "Rouleau (pas sec.) · Statif rouge sinon", "t": "dest-hemato"},
-            {"l": "Génétique", "dt": "", "t": "dest-genetique"},
-            {"l": "Envoi", "dt": "", "t": "dest-envoi"}
-          ],
-          "sup": "BESUP",
-          "tub": "BETUB",
-          "res": "",
-          "n": [],
-          "a": [],
-          "s": [
-            "1 tube hémato+chimie/tox → en hémato, noter « hémato » sur étiq. chimie → statif bleu",
-            "1 EDTA + 1 thromboexact → les 2 en hémato + même marquage",
-            "1 EDTA + autres labos → voir TABs, sinon contacter requérant"
-          ],
-          "kw": "violet petit edta besup betub hémato"
-        },
-        {
-          "id": "violet-grand",
-          "name": "Violet grand",
-          "sub": "EDTA 7,5mL",
-          "etiq": "7",
-          "color": "#6A1B9A",
-          "tc": "#fff",
-          "c": "variable",
-          "cl": "Selon destination et volume",
-          "d": [
-            {"l": "Hémato", "dt": "", "t": "dest-hemato"},
-            {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
-            {"l": "Envoi", "dt": "Bac/Frigo/Congélateur", "t": "dest-envoi"}
-          ],
-          "sup": "BESUP (urg/ext)",
-          "tub": "CE-00",
-          "res": "",
-          "n": [
-            "Feuilles lecteur optique → signature préleveur",
-            "Étiq. 6 collable sur grand si pas petit EDTA"
-          ],
-          "a": [
-            "Urgences/externes → BESUP (pas CE-00) si déjà petit EDTA/BETUB"
-          ],
-          "s": [
-            "Envoi Cery 7,5ml → 8100 ok",
-            "Envoi Cery 2,6ml → centrifuger+décanter manuellement"
-          ],
-          "kw": "violet grand edta ce-00 besup cery envoi mm hémato"
-        },
-        {
-          "id": "rouge",
-          "name": "Rouge foncé",
-          "sub": "Thromboexact",
-          "etiq": "6",
-          "color": "#8B0000",
-          "tc": "#fff",
-          "c": "non",
-          "cl": "Ne peut pas être centrifugé",
-          "d": [
-            {"l": "Hémato", "dt": "", "t": "dest-hemato"}
-          ],
-          "sup": "",
-          "tub": "",
-          "res": "",
-          "n": ["Thromboexact + petit EDTA chimie+hémato → 2 en hémato, indiquer chimie"],
-          "a": [],
-          "s": [],
-          "kw": "rouge foncé thromboexact hémato"
-        },
-        {
-          "id": "bleu",
-          "name": "Bleu",
-          "sub": "Plasma citraté",
-          "etiq": "5",
-          "color": "#1565C0",
-          "tc": "#fff",
-          "c": "non",
-          "cl": "Ne peut pas être centrifugé",
-          "d": [
-            {"l": "Hémato", "dt": "Statif rouge", "t": "dest-hemato"}
-          ],
-          "sup": "PCSUP",
-          "tub": "PCTUB",
-          "res": "",
-          "n": [
-            "Plusieurs PCSUP → marque bouchons",
-            "Fenêtre visible au collage"
-          ],
-          "a": [],
-          "s": [],
-          "kw": "bleu citraté pcsup pctub hémato"
-        },
-        {
-          "id": "gris-fonce",
-          "name": "Gris foncé / Noir",
-          "sub": "Sang citraté (VS)",
-          "etiq": "8",
-          "color": "#37474F",
-          "tc": "#fff",
-          "c": "non",
-          "cl": "Ne peut pas être centrifugé",
-          "d": [
-            {"l": "Hémato", "dt": "Rouleau", "t": "dest-hemato"}
-          ],
-          "sup": "BCSUP",
-          "tub": "BCTUB",
-          "res": "",
-          "n": [],
-          "a": ["NE PAS coller étiq. « 8 ». Donner « 8 » + « Hv » en hémato."],
-          "s": [],
-          "kw": "gris foncé noir sang citraté bcsup bctub hv"
-        },
-        {
-          "id": "lcr",
-          "name": "LCR",
-          "sub": "Liquide céphalo-rachidien",
-          "etiq": "10",
-          "color": "#00838F",
-          "tc": "#fff",
-          "c": "non",
-          "cl": "Ne peut pas être centrifugé",
-          "d": [
-            {"l": "Chimie", "dt": "Tube N°1", "t": "dest-chimie"},
-            {"l": "Bactério/MM/IS", "dt": "Tube N°2", "t": "dest-mm"},
-            {"l": "Hémato", "dt": "Tube N°3", "t": "dest-hemato"},
-            {"l": "Immunochimie", "dt": "N°4 (« C Pl> ») → statif bleu", "t": "dest-bleu"},
-            {"l": "IS", "dt": "Tube N°5", "t": "dest-is"},
-            {"l": "Statif violet", "dt": "Suppl. → LQRES", "t": "dest-mm"}
-          ],
-          "sup": "LQRES",
-          "tub": "",
-          "res": "LQRES",
-          "n": ["Tube stérile PP → FP-7711", "Répartition → FP-11538"],
-          "a": [
-            "Cytologie 07h30-16h30 → téléphoner",
-            "Après 16h30 → feuille+tube en hémato",
-            "Tube abri lumière → TAB chimie rapidement"
-          ],
-          "s": [],
-          "kw": "lcr liquide céphalo rachidien lqres cytologie"
-        },
-        {
-          "id": "urine",
-          "name": "Urine (Vacutainer)",
-          "sub": "",
-          "etiq": "30",
-          "color": "#9E9D24",
-          "tc": "#fff",
-          "c": "oui",
-          "cl": "Peut être centrifugé",
-          "d": [
-            {"l": "8100", "dt": "Si centrifugeable", "t": "dest-8100"},
-            {"l": "Statif bleu", "dt": "Début 8100", "t": "dest-bleu"},
-            {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
-            {"l": "Bactério", "dt": "", "t": "dest-bacterio"}
-          ],
-          "sup": "U-SUP",
-          "tub": "U-TUB",
-          "res": "",
-          "n": [],
-          "a": [],
-          "s": [
-            "Sédiment (30 SED) → statif bleu + étiq. réserve",
-            "Dosages+sédiment → répartir selon étiquettes",
-            "1 tube / étiq. pH → statif bleu",
-            "Commun chimie+bactério → si rapide sinon 2ème tube",
-            "Urines 24h → volume+période. Clearance → poids+taille → table 8100"
-          ],
-          "kw": "urine vacutainer sédiment u-sup u-tub clearance 24h"
-        }
-      ],
+  var PHONES = [
+    {"labo":"Bactériologie","contact":"Poste principal","num":"34881","color":"#1C3F6E"},
+    {"labo":"Soutien labo / Envois","contact":"Poste principal","num":"34802 / 34831","color":"#1C3F6E"},
+    {"labo":"Chimie","contact":"Poste principal","num":"34824","color":"#1C3F6E"},
+    {"labo":"Cytologie","contact":"Poste principal","num":"34760","color":"#1C3F6E"},
+    {"labo":"Génétique","contact":"Poste principal","num":"34852","color":"#1C3F6E"},
+    {"labo":"Toxicologie","contact":"Poste principal","num":"34828","color":"#1C3F6E"},
+    {"labo":"Réception ICH","contact":"Poste principal","num":"34700","color":"#1B4B3A"},
+    {"labo":"Sérologie","contact":"Poste principal","num":"34865 / 34868","color":"#1C3F6E"},
+    {"labo":"Laboratoire Sierre","contact":"Poste principal","num":"37668","color":"#1C3F6E"},
+    {"labo":"Laboratoire Brig","contact":"Poste principal","num":"XXXX","color":"#1C3F6E"},
+    {"labo":"Laboratoire Viège","contact":"Poste principal","num":"XXXX","color":"#1C3F6E"},
+    {"labo":"Laboratoire Martigny","contact":"Poste principal","num":"XXXX","color":"#1C3F6E"},
+    {"labo":"Cabinets médicaux","contact":"Poste principal","num":"34550","color":"#2D1B6E"},
+    {"labo":"F3 Chirurgie Générale","contact":"Poste principal","num":"34360","color":"#4A1B2E"},
+    {"labo":"F4 Chirurgie ORL","contact":"Poste principal","num":"34365","color":"#4A1B2E"},
+    {"labo":"G1 Neurochirurgie","contact":"Poste principal","num":"XXXX","color":"#4A1B2E"},
+    {"labo":"G2 Soins continus","contact":"Poste principal","num":"XXXX","color":"#2D1B6E"},
+    {"labo":"G2 Traumatologie","contact":"Poste principal","num":"XXXX","color":"#2D1B6E"},
+    {"labo":"Gynécologie","contact":"Poste principal","num":"34257","color":"#2D1B6E"},
+    {"labo":"H3 Médecine / Oncologie","contact":"Poste principal","num":"34560","color":"#2D1B6E"},
+    {"labo":"H4 Poly. Gyn/Obs","contact":"Poste principal","num":"38522","color":"#2D1B6E"},
+    {"labo":"Hémodialyse","contact":"Poste principal","num":"34040","color":"#1C3F6E"},
+    {"labo":"Hôpital de jour","contact":"Poste principal","num":"38330","color":"#1C3F6E"},
+    {"labo":"J1 Médecine","contact":"Poste principal","num":"34660","color":"#1C3F6E"},
+    {"labo":"J2 Chirurgie cardiaque","contact":"Poste principal","num":"XXXX","color":"#4A1B2E"},
+    {"labo":"Néonat/Prémat","contact":"Poste principal","num":"34175","color":"#3A3A1A"},
+    {"labo":"Pédiatrie","contact":"Poste principal","num":"34165","color":"#3A3A1A"},
+    {"labo":"À REMPLIR","contact":"Poste principal","num":"XXXX","color":"#2A2A2A"},
+    {"labo":"À REMPLIR","contact":"Poste principal","num":"XXXX","color":"#2A2A2A"},
+    {"labo":"À REMPLIR","contact":"Poste principal","num":"XXXX","color":"#2A2A2A"},
+    {"labo":"À REMPLIR","contact":"Poste principal","num":"XXXX","color":"#2A2A2A"},
+    {"labo":"À REMPLIR","contact":"Poste principal","num":"XXXX","color":"#2A2A2A"},
+    {"labo":"À REMPLIR","contact":"Poste principal","num":"XXXX","color":"#2A2A2A"}
+  ];
 
-      "autres": [
-        {
-          "id": "urine-st",
-          "name": "Urine (Flacon stérile)",
-          "sub": "",
-          "etiq": "30",
-          "color": "#827717",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [
-            {"l": "Chimie", "dt": "Statif bleu", "t": "dest-chimie"},
-            {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
-            {"l": "Bactério", "dt": "", "t": "dest-bacterio"}
-          ],
-          "sup": "", "tub": "", "res": "",
-          "n": [], "a": [], "s": [],
-          "kw": "urine flacon stérile chimie mm bactério"
-        },
-        {
-          "id": "urine-24h",
-          "name": "Urine 24h",
-          "sub": "Flacon brun",
-          "etiq": "39",
-          "color": "#5D4037",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [{"l": "Chimie", "dt": "Statif bleu", "t": "dest-chimie"}],
-          "sup": "", "tub": "", "res": "",
-          "n": ["Vérifier volume+période", "Clearance → poids+taille"],
-          "a": [], "s": [],
-          "kw": "urine 24h flacon brun 39 chimie clearance"
-        },
-        {
-          "id": "urine-bor",
-          "name": "Urine ac. borique",
-          "sub": "Vacutrainer",
-          "etiq": "65",
-          "color": "#F57F17",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [{"l": "Bactério", "dt": "", "t": "dest-bacterio"}],
-          "sup": "", "tub": "", "res": "",
-          "n": [], "a": [], "s": [],
-          "kw": "urine acide borique 65 bactériologie"
-        },
-        {
-          "id": "selles",
-          "name": "Pot à selles",
-          "sub": "Selles",
-          "etiq": "45",
-          "color": "#6D4C41",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [
-            {"l": "MM", "dt": "Statif violet", "t": "dest-mm"},
-            {"l": "Bactério", "dt": "", "t": "dest-bacterio"}
-          ],
-          "sup": "", "tub": "", "res": "",
-          "n": [], "a": [], "s": [],
-          "kw": "selles pot 45 mm bactério"
-        },
-        {
-          "id": "occulte",
-          "name": "Sang occulte",
-          "sub": "Selles",
-          "etiq": "50",
-          "color": "#4E342E",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [{"l": "MM", "dt": "", "t": "dest-mm"}],
-          "sup": "", "tub": "", "res": "",
-          "n": [], "a": [], "s": [],
-          "kw": "sang occulte selles 50 mm"
-        },
-        {
-          "id": "buvard",
-          "name": "Buvard",
-          "sub": "Spot sang séché",
-          "etiq": "60",
-          "color": "#BF360C",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [{"l": "Envoi", "dt": "", "t": "dest-envoi"}],
-          "sup": "", "tub": "", "res": "",
-          "n": [], "a": [], "s": [],
-          "kw": "buvard spot sang séché 60 envoi"
-        },
-        {
-          "id": "jcv",
-          "name": "JC Virus",
-          "sub": "Sang",
-          "etiq": "49",
-          "color": "#880E4F",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [{"l": "Envoi", "dt": "", "t": "dest-envoi"}],
-          "sup": "", "tub": "", "res": "",
-          "n": [], "a": [], "s": [],
-          "kw": "jc virus sang 49 envoi"
-        },
-        {
-          "id": "perch",
-          "name": "Sang perchloré",
-          "sub": "Tube pyr/lac",
-          "etiq": "3",
-          "color": "#B71C1C",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [{"l": "Envoi", "dt": "Chambre froide", "t": "dest-envoi"}],
-          "sup": "", "tub": "", "res": "",
-          "n": ["Protocole+tube chambre froide"],
-          "a": [], "s": [],
-          "kw": "perchloré pyr lac 3 envoi chambre froide"
-        },
-        {
-          "id": "azath",
-          "name": "Azathioprine",
-          "sub": "Sg hép+DTT+Hémogr.",
-          "etiq": "12",
-          "color": "#311B92",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [{"l": "Envoi", "dt": "Congélateur", "t": "dest-envoi"}],
-          "sup": "", "tub": "", "res": "",
-          "n": ["Imurek"],
-          "a": [], "s": [],
-          "kw": "azathioprine imurek 12 envoi congélateur"
-        },
-        {
-          "id": "streck",
-          "name": "Streck Cell-Free DNA",
-          "sub": "Sang Streck",
-          "etiq": "70",
-          "color": "#1A237E",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [{"l": "Envoi", "dt": "Pour DPNI", "t": "dest-envoi"}],
-          "sup": "", "tub": "", "res": "",
-          "n": [], "a": [], "s": [],
-          "kw": "streck cell-free dna 70 envoi dpni"
-        },
-        {
-          "id": "tau",
-          "name": "Protéine Tau/14-3-3",
-          "sub": "LCR (tube PP)",
-          "etiq": "22",
-          "color": "#004D40",
-          "tc": "#fff",
-          "c": "na",
-          "cl": "Non applicable",
-          "d": [{"l": "Envoi", "dt": "FP-7711 · TAB pour microtubes", "t": "dest-envoi"}],
-          "sup": "", "tub": "", "res": "",
-          "n": [], "a": [], "s": [],
-          "kw": "protéine tau 14-3-3 lcr pp 22 envoi"
-        }
-      ]
-    };
+  /* ========== FAVORITES ========== */
+  function getFavs() { try { return JSON.parse(localStorage.getItem('tube-favs')||'[]'); } catch(e){ return []; } }
+  function saveFavs(f) { try { localStorage.setItem('tube-favs',JSON.stringify(f)); } catch(e){} }
 
-    // ==================== FAVORITES ====================
+  function toggleFavorite(id, ev) {
+    ev.stopPropagation();
+    var favs = getFavs();
+    var idx = favs.indexOf(id);
+    if (idx>=0) favs.splice(idx,1); else favs.push(id);
+    saveFavs(favs);
+    renderTubes(document.getElementById('searchInput').value);
+  }
 
-    function getFavorites() {
-      try {
-        return JSON.parse(localStorage.getItem('tube-favs') || '[]');
-      } catch(e) { return []; }
+  /* ========== CENTRI LABEL ========== */
+  function centriLabel(c) {
+    if (c==='oui') return 'OUI';
+    if (c==='obligatoire') return 'OBL';
+    if (c==='non') return 'NON';
+    if (c==='variable') return 'VAR';
+    return 'N/A';
+  }
+
+  /* ========== RENDER TUBES ========== */
+  function renderTubes(f) {
+    f = (f||'').toLowerCase();
+    var gs = document.getElementById('tubesGridSang');
+    var ga = document.getElementById('tubesGridAutres');
+    var gf = document.getElementById('tubesGridFav');
+    gs.innerHTML=''; ga.innerHTML=''; gf.innerHTML='';
+
+    var favs = getFavs();
+    var allTubes = T.sang.concat(T.autres);
+
+    function mk(t, g) {
+      if (f && !t.kw.includes(f) && !t.name.toLowerCase().includes(f) && !(t.sub||'').toLowerCase().includes(f)) return false;
+      var isFav = favs.indexOf(t.id)>=0;
+      var c = document.createElement('div');
+      c.className = 'tube-card';
+      c.style.background = t.color;
+      c.style.color = t.tc;
+      c.onclick = function(){ openModal(t); };
+      c.innerHTML =
+        '<span class="tube-centri">'+centriLabel(t.c)+'</span>' +
+        '<button class="fav-star'+(isFav?' is-fav':'')+'" onclick="toggleFavorite(\''+t.id+'\',event)">'+(isFav?'⭐':'☆')+'</button>' +
+        '<div class="tube-name">'+t.name+'</div>' +
+        (t.sub?'<div class="tube-sub">'+t.sub+'</div>':'')+
+        '<div class="tube-etiq">Étiq. '+t.etiq+'</div>';
+      g.appendChild(c);
+      return true;
     }
 
-    function saveFavorites(favs) {
-      try {
-        localStorage.setItem('tube-favs', JSON.stringify(favs));
-      } catch(e) {}
-    }
+    var favCount = 0;
+    allTubes.forEach(function(t){ if(favs.indexOf(t.id)>=0){ if(mk(t,gf)) favCount++; } });
+    document.getElementById('favSection').style.display = favCount>0?'':'none';
 
-    function toggleFavorite(id, event) {
-      event.stopPropagation();
-      var favs = getFavorites();
-      var idx = favs.indexOf(id);
-      if (idx >= 0) {
-        favs.splice(idx, 1);
-      } else {
-        favs.push(id);
-      }
-      saveFavorites(favs);
-      renderTubes(document.getElementById('searchInput').value);
-    }
+    T.sang.forEach(function(t){ mk(t,gs); });
+    T.autres.forEach(function(t){ mk(t,ga); });
+  }
 
-    // ==================== RENDER TUBES ====================
+  /* ========== MODAL ========== */
+  function openModal(t) {
+    var centClass, centIcon;
+    if(t.c==='oui')           { centClass='centri-oui';        centIcon='✓ Oui'; }
+    else if(t.c==='obligatoire'){ centClass='centri-obligatoire'; centIcon='⬤ Obligatoire'; }
+    else if(t.c==='non')      { centClass='centri-non';        centIcon='✗ Non'; }
+    else if(t.c==='na')       { centClass='centri-na';         centIcon='— N/A'; }
+    else                      { centClass='centri-var';        centIcon='⚠ Variable'; }
 
-    function renderTubes(f) {
-      f = (f || '').toLowerCase();
-      var gs = document.getElementById('tubesGridSang');
-      var ga = document.getElementById('tubesGridAutres');
-      var gf = document.getElementById('tubesGridFav');
-      var favSection = document.getElementById('favSection');
-      gs.innerHTML = '';
-      ga.innerHTML = '';
-      gf.innerHTML = '';
+    var h = '';
+    h += '<div class="modal-header" style="background:'+t.color+';color:'+t.tc+'">';
+    h += '  <div class="modal-title-block">';
+    h += '    <h2>'+t.name+'</h2>';
+    if(t.sub) h += '<div class="modal-sub">'+t.sub+'</div>';
+    h += '    <div class="modal-etiq">📋 Étiquette : '+t.etiq+'</div>';
+    h += '  </div>';
+    h += '  <button class="modal-close" onclick="closeModal()">✕</button>';
+    h += '</div>';
+    h += '<div class="modal-body">';
 
-      var favs = getFavorites();
-      var allTubes = T.sang.concat(T.autres);
-      var favTubes = allTubes.filter(function(t) { return favs.indexOf(t.id) >= 0; });
+    // Centrifugation
+    h += '<div class="modal-section"><div class="modal-row">';
+    h += '  <div class="modal-label">Centrifuger</div>';
+    h += '  <div class="modal-value">';
+    h += '    <span class="centri-badge '+centClass+'">'+centIcon+'</span>';
+    h += '    <div class="centri-detail">'+t.cl+'</div>';
+    h += '  </div>';
+    h += '</div></div>';
 
-      function mk(t, g) {
-        if (f && !t.kw.includes(f) && !t.name.toLowerCase().includes(f) && !(t.sub || '').toLowerCase().includes(f)) return false;
-        var c = document.createElement('div');
-        c.className = 'tube-card';
-        c.style.background = t.color;
-        c.style.color = t.tc;
-        c.onclick = function() { openModal(t); };
-
-        var isFav = favs.indexOf(t.id) >= 0;
-        c.innerHTML =
-          '<button class="fav-star ' + (isFav ? 'is-fav' : '') + '" onclick="toggleFavorite(\'' + t.id + '\', event)">' + (isFav ? '⭐' : '☆') + '</button>' +
-          '<div class="tube-name">' + t.name + '</div>' +
-          (t.sub ? '<div class="tube-sub">' + t.sub + '</div>' : '') +
-          '<div class="tube-etiq">Étiq: ' + t.etiq + '</div>';
-        g.appendChild(c);
-        return true;
-      }
-
-      // Render favorites
-      var favCount = 0;
-      favTubes.forEach(function(t) { if (mk(t, gf)) favCount++; });
-      favSection.style.display = favCount > 0 ? '' : 'none';
-
-      // Render main grids
-      T.sang.forEach(function(t) { mk(t, gs); });
-      T.autres.forEach(function(t) { mk(t, ga); });
-    }
-
-    // ==================== MODAL ====================
-
-    function openModal(t) {
-      var m = document.getElementById('modal');
-      var o = document.getElementById('modalOverlay');
-
-      // Centrifugation badge
-      var cc, ci;
-      if (t.c === 'oui') { cc = 'centri-oui'; ci = '✓ OUI'; }
-      else if (t.c === 'obligatoire') { cc = 'centri-obligatoire'; ci = '⬤ OBLIGATOIRE'; }
-      else if (t.c === 'non') { cc = 'centri-non'; ci = '✗ NON'; }
-      else if (t.c === 'na') { cc = 'centri-na'; ci = '— N/A'; }
-      else { cc = 'centri-var'; ci = '⚠ VARIABLE'; }
-
-      // Build modal HTML
-      var h = '';
-      h += '<div class="modal-header" style="background:' + t.color + ';color:' + t.tc + '">';
-      h += '  <div>';
-      h += '    <h2>' + t.name + (t.sub ? ' — ' + t.sub : '') + '</h2>';
-      h += '    <div class="modal-etiq">Étiquette : ' + t.etiq + '</div>';
-      h += '  </div>';
-      h += '  <button class="modal-close" onclick="closeModal()">✕</button>';
+    // Destinations
+    h += '<div class="modal-section"><div class="modal-row">';
+    h += '  <div class="modal-label">Destinations</div>';
+    h += '  <div class="modal-value"><div class="dest-list">';
+    t.d.forEach(function(d){
+      h += '<div class="dest-chip '+d.t+'">';
+      h += '<strong>'+d.l+'</strong>';
+      if(d.dt) h += '<span class="dest-detail"> · '+d.dt+'</span>';
       h += '</div>';
-      h += '<div class="modal-body">';
-
-      // Centrifugation
-      h += '  <div class="info-row">';
-      h += '    <div class="info-label">Centrifuger</div>';
-      h += '    <div class="info-value">';
-      h += '      <span class="centri-badge ' + cc + '">' + ci + '</span>';
-      h += '      <span style="margin-left:6px;font-size:.82rem;color:var(--text-secondary)">' + t.cl + '</span>';
-      h += '    </div>';
-      h += '  </div>';
-      h += '  <hr class="modal-separator">';
-
-      // Destinations
-      h += '  <div class="info-row">';
-      h += '    <div class="info-label">Destinations</div>';
-      h += '    <div class="info-value"><div class="dest-list">';
-      t.d.forEach(function(d) {
-        h += '<div class="dest-badge ' + d.t + '"><strong>' + d.l + '</strong>' + (d.dt ? ' · ' + d.dt : '') + '</div>';
-      });
-      h += '    </div></div>';
-      h += '  </div>';
-      h += '  <hr class="modal-separator">';
-
-      // Codes
-      if (t.sup) {
-        h += '  <div class="info-row"><div class="info-label">Tubes excès</div>';
-        h += '  <div class="info-value"><span class="code">' + t.sup + '</span></div></div>';
-      }
-      if (t.tub) {
-        h += '  <div class="info-row"><div class="info-label">Sans analyses</div>';
-        h += '  <div class="info-value"><span class="code">' + t.tub + '</span></div></div>';
-      }
-      if (t.res) {
-        h += '  <div class="info-row"><div class="info-label">Réserve</div>';
-        h += '  <div class="info-value"><span class="code">' + t.res + '</span></div></div>';
-      }
-
-      // Alerts
-      if (t.a.length) {
-        h += '  <div class="alert-box"><div class="alert-title">⚠ ATTENTION</div><ul>';
-        t.a.forEach(function(x) { h += '<li>' + x + '</li>'; });
-        h += '  </ul></div>';
-      }
-
-      // Specials
-      if (t.s.length) {
-        h += '  <div class="special-box"><h4>📋 Cas particuliers</h4><ul>';
-        t.s.forEach(function(x) { h += '<li>' + x + '</li>'; });
-        h += '  </ul></div>';
-      }
-
-      // Notes
-      if (t.n.length) {
-        h += '  <div class="note-box"><h4>📝 Notes</h4><ul>';
-        t.n.forEach(function(x) { h += '<li>' + x + '</li>'; });
-        h += '  </ul></div>';
-      }
-
-      h += '</div>'; // /modal-body
-
-      m.innerHTML = h;
-      o.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-      document.getElementById('modalOverlay').classList.remove('show');
-      document.body.style.overflow = '';
-    }
-
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeModal();
     });
+    h += '  </div></div>';
+    h += '</div>';
 
-    // ==================== PHONE DATA ====================
-    // POUR AJOUTER UN NUMÉRO : ajouter un objet dans ce tableau
-    // labo = nom du service, contact = détail du poste, num = numéro, color = couleur de la carte
-
-    var PHONES = [
-      { "labo": "Chimie", "contact": "Poste principal", "num": "XXXX", "color": "#0D47A1" },
-      { "labo": "Chimie", "contact": "Poste 8100", "num": "XXXX", "color": "#0D47A1" },
-      { "labo": "Hématologie", "contact": "Poste principal", "num": "XXXX", "color": "#C62828" },
-      { "labo": "Immuno-sérologie", "contact": "Poste principal", "num": "XXXX", "color": "#E65100" },
-      { "labo": "MM", "contact": "Poste principal", "num": "XXXX", "color": "#7B1FA2" },
-      { "labo": "Bactériologie", "contact": "Poste principal", "num": "XXXX", "color": "#F57F17" },
-      { "labo": "Génétique", "contact": "Poste principal", "num": "XXXX", "color": "#00695C" },
-      { "labo": "Toxicologie", "contact": "Poste principal", "num": "XXXX", "color": "#4A148C" },
-      { "labo": "Fertilité", "contact": "Poste principal", "num": "XXXX", "color": "#AD1457" },
-      { "labo": "Envois", "contact": "Poste principal", "num": "XXXX", "color": "#455A64" },
-      { "labo": "Soutien labo", "contact": "Poste 1 enregistrement", "num": "XXXX", "color": "#2C3E50" },
-      { "labo": "Soutien labo", "contact": "Poste 2 enregistrement", "num": "XXXX", "color": "#2C3E50" }
-    ];
-
-    // ==================== RENDER PHONES ====================
-
-    function renderPhones(f) {
-      var gp = document.getElementById('phonesGrid');
-      var titleP = document.getElementById('titlePhones');
-      gp.innerHTML = '';
-      var count = 0;
-
-      PHONES.forEach(function(p) {
-        var searchText = (p.labo + ' ' + p.contact + ' ' + p.num).toLowerCase();
-        if (f && !searchText.includes(f)) return;
-
-        var card = document.createElement('a');
-        card.href = 'tel:' + p.num;
-        card.className = 'phone-card-item';
-        card.style.background = p.color;
-        card.innerHTML =
-          '<div class="phone-icon">📞</div>' +
-          '<div class="phone-info">' +
-          '  <div class="phone-labo">' + p.labo + '</div>' +
-          '  <div class="phone-contact">' + p.contact + '</div>' +
-          '  <div class="phone-num">' + p.num + '</div>' +
-          '</div>';
-        gp.appendChild(card);
-        count++;
-      });
-
-      titleP.style.display = count > 0 ? '' : 'none';
+    // Codes
+    if(t.sup||t.tub||t.res) {
+      h += '<div class="modal-section">';
+      if(t.sup) h += '<div class="modal-row" style="margin-bottom:6px"><div class="modal-label">Tubes excès</div><div class="modal-value"><span class="code-pill">'+t.sup+'</span></div></div>';
+      if(t.tub) h += '<div class="modal-row" style="margin-bottom:6px"><div class="modal-label">Sans analyses</div><div class="modal-value"><span class="code-pill">'+t.tub+'</span></div></div>';
+      if(t.res) h += '<div class="modal-row"><div class="modal-label">Réserve</div><div class="modal-value"><span class="code-pill">'+t.res+'</span></div></div>';
+      h += '</div>';
     }
 
-    // ==================== UNIFIED FILTER ====================
-
-    function filterAll() {
-      var f = (document.getElementById('searchInput').value || '').toLowerCase();
-      renderTubes(f);
-      renderPhones(f);
+    if(t.a.length) {
+      h += '<div class="modal-section"><div class="msg-box msg-danger"><h4>⚠ Attention</h4><ul>';
+      t.a.forEach(function(x){ h+='<li>'+x+'</li>'; });
+      h += '</ul></div></div>';
     }
 
-    // ==================== SEARCH ====================
-
-    function filterTubes() {
-      filterAll();
+    if(t.s.length) {
+      h += '<div class="modal-section"><div class="msg-box msg-info"><h4>📋 Cas particuliers</h4><ul>';
+      t.s.forEach(function(x){ h+='<li>'+x+'</li>'; });
+      h += '</ul></div></div>';
     }
 
-    // ==================== TABS ====================
-
-    function switchTab(id, btn) {
-      document.querySelectorAll('.tab-panel').forEach(function(p) {
-        p.classList.remove('active');
-      });
-      document.querySelectorAll('.tab-btn').forEach(function(b) {
-        b.classList.remove('active');
-      });
-      document.getElementById('tab-' + id).classList.add('active');
-      btn.classList.add('active');
+    if(t.n.length) {
+      h += '<div class="modal-section"><div class="msg-box msg-warn"><h4>📝 Notes</h4><ul>';
+      t.n.forEach(function(x){ h+='<li>'+x+'</li>'; });
+      h += '</ul></div></div>';
     }
 
-    // ==================== THEME ====================
+    h += '</div>';
+    document.getElementById('modal').innerHTML = h;
+    document.getElementById('modalOverlay').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
 
-    function toggleTheme() {
-      var d = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', d ? '' : 'dark');
-      document.getElementById('themeBtn').textContent = d ? '🌙 Mode sombre' : '☀️ Mode clair';
-    }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('show');
+    document.body.style.overflow = '';
+  }
 
-    // ==================== CONTROLES TOGGLE ====================
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
 
-    function toggleControles(el) {
-      el.classList.toggle('open');
-      document.getElementById('controlesContent').classList.toggle('show');
-    }
+  /* ========== PHONES ========== */
+  function renderPhones(f) {
+    var gp = document.getElementById('phonesGrid');
+    var tp = document.getElementById('titlePhones');
+    gp.innerHTML = '';
+    var count = 0;
+    PHONES.forEach(function(p){
+      var st = (p.labo+' '+p.contact+' '+p.num).toLowerCase();
+      if(f && !st.includes(f)) return;
+      var card = document.createElement('a');
+      card.href = 'tel:'+p.num;
+      card.className = 'phone-card';
+      card.style.setProperty('--color', p.color);
+      card.style.background = p.color;
+      card.innerHTML =
+        '<div class="phone-labo">'+p.labo+'</div>'+
+        '<div class="phone-contact">'+p.contact+'</div>'+
+        '<div class="phone-num">'+p.num+'</div>';
+      gp.appendChild(card);
+      count++;
+    });
+    tp.style.display = count>0?'':'none';
+  }
 
-    // ==================== ACCORDION ====================
+  /* ========== FILTER ========== */
+  function filterAll() {
+    var f = (document.getElementById('searchInput').value||'').toLowerCase();
+    renderTubes(f);
+    renderPhones(f);
+  }
 
-    function toggleAccordion(el) {
-      var b = el.nextElementSibling;
-      b.classList.toggle('show');
-      el.querySelector('span').textContent = b.classList.contains('show') ? '▼' : '▶';
-    }
+  /* ========== TABS ========== */
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById('tab-'+id).classList.add('active');
+    btn.classList.add('active');
+  }
 
-    // ==================== CHANGELOG ====================
+  /* ========== THEME ========== */
+  function toggleTheme() {
+    var dark = document.documentElement.getAttribute('data-theme')==='dark';
+    document.documentElement.setAttribute('data-theme', dark?'':'dark');
+    document.getElementById('themeBtn').textContent = dark?'🌙 Mode sombre':'☀️ Mode clair';
+  }
 
-    function toggleChangelog() {
-      var body = document.getElementById('changelogBody');
-      var chev = document.getElementById('clChevron');
-      body.classList.toggle('show');
-      chev.textContent = body.classList.contains('show') ? '▼' : '▶';
-    }
+  /* ========== ACCORDION ========== */
+  function toggleAccordion(el) {
+    var body = el.nextElementSibling;
+    var arrow = el.querySelector('.accordion-arrow');
+    body.classList.toggle('show');
+    if(arrow) arrow.classList.toggle('open');
+  }
 
-    // ==================== INIT ====================
+  /* ========== CONTROLS ========== */
+  function toggleControles(el) {
+    el.classList.toggle('open');
+    document.getElementById('controlesContent').classList.toggle('show');
+  }
 
-    renderTubes();
-    renderPhones('');
+  /* ========== CHANGELOG ========== */
+  function toggleChangelog() {
+    var b = document.getElementById('changelogBody');
+    var ch = document.getElementById('clChevron');
+    b.classList.toggle('show');
+    ch.textContent = b.classList.contains('show')?'▼':'▶';
+  }
 
-  </script>
+  /* ========== INIT ========== */
+  renderTubes();
+  renderPhones('');
+</script>
 </body>
 </html>
