@@ -737,53 +737,62 @@
       gap: 6px;
     }
 
-    /* ==================== PHONE PANEL ==================== */
-    .phone-panel {
-      display: none;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 12px 24px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .phone-panel.show {
-      display: block;
-    }
-
-    .phone-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 8px;
-    }
-
-    .phone-card {
+    /* ==================== PHONE CARDS ==================== */
+    .phone-card-item {
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      background: var(--surface-alt);
       text-decoration: none;
-      color: var(--text);
-      transition: var(--transition);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+      min-height: 70px;
     }
 
-    .phone-card:hover {
-      border-color: var(--info);
-      background: var(--info-bg);
+    .phone-card-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(0,0,0,0.08));
+      pointer-events: none;
     }
 
-    .phone-card .phone-labo {
-      font-weight: 600;
-      font-size: 0.85rem;
+    .phone-card-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
 
-    .phone-card .phone-num {
+    .phone-card-item .phone-icon {
+      font-size: 1.4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .phone-card-item .phone-info {
+      position: relative;
+      z-index: 1;
+    }
+
+    .phone-card-item .phone-labo {
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    .phone-card-item .phone-contact {
+      font-size: 0.72rem;
+      opacity: 0.8;
+    }
+
+    .phone-card-item .phone-num {
       font-family: var(--mono);
-      font-size: 0.82rem;
-      color: var(--info);
+      font-size: 0.78rem;
+      opacity: 0.9;
+      margin-top: 2px;
     }
 
     /* ==================== CHANGELOG ==================== */
@@ -869,7 +878,7 @@
         <div class="header-meta">Basé sur PR-6387 & Mémo Poste C</div>
       </div>
       <div class="header-actions">
-        <button onclick="document.querySelector('[onclick*=telephones]').click(); document.querySelector('.tabs').scrollIntoView({behavior:'smooth'})">📞 Téléphones</button>
+        <button onclick="document.getElementById('titlePhones').scrollIntoView({behavior:'smooth'})">📞 Téléphones</button>
         <button onclick="toggleTheme()" id="themeBtn">🌙 Mode sombre</button>
       </div>
     </div>
@@ -905,7 +914,7 @@
   <div class="search-bar">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Rechercher un tube, une couleur, un code..." oninput="filterTubes()">
+      <input type="text" id="searchInput" placeholder="Rechercher un tube, un numéro, un labo..." oninput="filterAll()">
     </div>
   </div>
 
@@ -923,8 +932,12 @@
     <div class="tubes-grid" id="tubesGridSang"></div>
 
     <!-- Autres échantillons -->
-    <div class="section-title">Autres échantillons</div>
+    <div class="section-title" id="titleAutres">Autres échantillons</div>
     <div class="tubes-grid" id="tubesGridAutres"></div>
+
+    <!-- Téléphones -->
+    <div class="section-title" id="titlePhones">📞 Téléphones internes</div>
+    <div class="tubes-grid" id="phonesGrid"></div>
 
     <!-- ==================== TABS ==================== -->
     <div class="tabs">
@@ -937,7 +950,6 @@
         <button class="tab-btn" onclick="switchTab('serotheque',this)">Sérothèque</button>
         <button class="tab-btn" onclick="switchTab('gestion',this)">Gestion par labo</button>
         <button class="tab-btn" onclick="switchTab('cas',this)">Cas particuliers</button>
-        <button class="tab-btn" onclick="switchTab('telephones',this)">📞 Téléphones</button>
       </div>
 
       <!-- ========== TAB: ENREGISTREMENT ========== -->
@@ -1210,45 +1222,6 @@
         </div>
       </div>
 
-      <!-- ========== TAB: TÉLÉPHONES ========== -->
-      <div class="tab-panel" id="tab-telephones">
-        <div style="margin-bottom:12px">
-          <input type="text" id="phoneSearch" placeholder="Rechercher un labo, un nom, un numéro..."
-            oninput="filterPhones()"
-            style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:0.9rem;background:var(--surface);color:var(--text);outline:none">
-        </div>
-        <!--
-          POUR AJOUTER UN NUMÉRO :
-          Copier une ligne <tr> ci-dessous et modifier le nom, le service et le numéro.
-          Le numéro dans href="tel:XXXX" permet l'appel direct sur mobile.
-        -->
-        <table class="data-table" id="phoneTable">
-          <thead>
-            <tr>
-              <th>Service / Labo</th>
-              <th>Contact</th>
-              <th>Numéro</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- REMPLACER XXXX PAR LES VRAIS NUMÉROS -->
-            <tr><td><strong>Chimie</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Chimie</strong></td><td>Poste 8100</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Hématologie</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Immuno-sérologie</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Microbiologie moléculaire</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Bactériologie</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Génétique</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Toxicologie</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Fertilité</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Envois</strong></td><td>Poste principal</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Soutien laboratoire</strong></td><td>Poste 1 enregistrement</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <tr><td><strong>Soutien laboratoire</strong></td><td>Poste 2 enregistrement</td><td><a href="tel:XXXX" style="color:var(--info);font-family:var(--mono)">XXXX</a></td></tr>
-            <!-- AJOUTER D'AUTRES LIGNES ICI -->
-          </tbody>
-        </table>
-      </div>
-
     </div><!-- /tabs -->
   </div><!-- /main -->
 
@@ -1260,9 +1233,8 @@
     <div class="changelog-body" id="changelogBody">
       <div class="cl-date">21.03.2026 — v1.3</div>
       <ul>
-        <li>Ajout du mode « J'ai un tube dans la main » (filtrage par couleur)</li>
+        <li>Ajout des cartes téléphones internes (section dédiée, filtrables)</li>
         <li>Ajout du système de favoris (épingler les tubes fréquents)</li>
-        <li>Ajout du panneau téléphones internes des labos</li>
         <li>Ajout du changelog</li>
       </ul>
       <div class="cl-date">20.03.2026 — v1.2</div>
@@ -1906,21 +1878,67 @@
       if (e.key === 'Escape') closeModal();
     });
 
+    // ==================== PHONE DATA ====================
+    // POUR AJOUTER UN NUMÉRO : ajouter un objet dans ce tableau
+    // labo = nom du service, contact = détail du poste, num = numéro, color = couleur de la carte
+
+    var PHONES = [
+      { "labo": "Chimie", "contact": "Poste principal", "num": "XXXX", "color": "#0D47A1" },
+      { "labo": "Chimie", "contact": "Poste 8100", "num": "XXXX", "color": "#0D47A1" },
+      { "labo": "Hématologie", "contact": "Poste principal", "num": "XXXX", "color": "#C62828" },
+      { "labo": "Immuno-sérologie", "contact": "Poste principal", "num": "XXXX", "color": "#E65100" },
+      { "labo": "MM", "contact": "Poste principal", "num": "XXXX", "color": "#7B1FA2" },
+      { "labo": "Bactériologie", "contact": "Poste principal", "num": "XXXX", "color": "#F57F17" },
+      { "labo": "Génétique", "contact": "Poste principal", "num": "XXXX", "color": "#00695C" },
+      { "labo": "Toxicologie", "contact": "Poste principal", "num": "XXXX", "color": "#4A148C" },
+      { "labo": "Fertilité", "contact": "Poste principal", "num": "XXXX", "color": "#AD1457" },
+      { "labo": "Envois", "contact": "Poste principal", "num": "XXXX", "color": "#455A64" },
+      { "labo": "Soutien labo", "contact": "Poste 1 enregistrement", "num": "XXXX", "color": "#2C3E50" },
+      { "labo": "Soutien labo", "contact": "Poste 2 enregistrement", "num": "XXXX", "color": "#2C3E50" }
+    ];
+
+    // ==================== RENDER PHONES ====================
+
+    function renderPhones(f) {
+      var gp = document.getElementById('phonesGrid');
+      var titleP = document.getElementById('titlePhones');
+      gp.innerHTML = '';
+      var count = 0;
+
+      PHONES.forEach(function(p) {
+        var searchText = (p.labo + ' ' + p.contact + ' ' + p.num).toLowerCase();
+        if (f && !searchText.includes(f)) return;
+
+        var card = document.createElement('a');
+        card.href = 'tel:' + p.num;
+        card.className = 'phone-card-item';
+        card.style.background = p.color;
+        card.innerHTML =
+          '<div class="phone-icon">📞</div>' +
+          '<div class="phone-info">' +
+          '  <div class="phone-labo">' + p.labo + '</div>' +
+          '  <div class="phone-contact">' + p.contact + '</div>' +
+          '  <div class="phone-num">' + p.num + '</div>' +
+          '</div>';
+        gp.appendChild(card);
+        count++;
+      });
+
+      titleP.style.display = count > 0 ? '' : 'none';
+    }
+
+    // ==================== UNIFIED FILTER ====================
+
+    function filterAll() {
+      var f = (document.getElementById('searchInput').value || '').toLowerCase();
+      renderTubes(f);
+      renderPhones(f);
+    }
+
     // ==================== SEARCH ====================
 
     function filterTubes() {
-      renderTubes(document.getElementById('searchInput').value);
-    }
-
-    // ==================== PHONES FILTER ====================
-
-    function filterPhones() {
-      var f = document.getElementById('phoneSearch').value.toLowerCase();
-      var rows = document.querySelectorAll('#phoneTable tbody tr');
-      rows.forEach(function(row) {
-        var text = row.textContent.toLowerCase();
-        row.style.display = text.includes(f) ? '' : 'none';
-      });
+      filterAll();
     }
 
     // ==================== TABS ====================
@@ -1971,6 +1989,7 @@
     // ==================== INIT ====================
 
     renderTubes();
+    renderPhones('');
 
   </script>
 </body>
