@@ -194,48 +194,93 @@
       color: #fff;
     }
 
-   /* ==================== TICKER BANNER ==================== */
-.ticker-banner {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  overflow: hidden;
-  padding: 8px 0;
-}
+    /* ==================== TICKER BANNER ==================== */
+    .ticker-banner {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      padding: 8px 0;
+    }
 
-.ticker-track {
-  display: flex;
-  width: max-content;
-  animation: tickerScroll 60s linear infinite;
-}
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: tickerScroll 60s linear infinite;
+    }
 
-.ticker-track:hover {
-  animation-play-state: paused;
-}
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
 
-.ticker-content {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  flex-shrink: 0;
-}
+    .ticker-content {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-shrink: 0;
+    }
 
-.ticker-item {
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--info);
-  white-space: nowrap;
-  padding: 0 12px;
-}
+    .ticker-item {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--info);
+      white-space: nowrap;
+      padding: 0 12px;
+    }
 
-.ticker-sep {
-  color: var(--border);
-  font-size: 0.7rem;
-}
+    .ticker-sep {
+      color: var(--border);
+      font-size: 0.7rem;
+    }
 
-@keyframes tickerScroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
+    @keyframes tickerScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ==================== SEARCH ==================== */
+    .search-area {
+      max-width: 1280px;
+      margin: 20px auto 0;
+      padding: 0 28px;
+    }
+
+    .search-inner {
+      position: relative;
+    }
+
+    .search-icon-el {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 46px;
+      padding: 0 18px 0 44px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: .92rem;
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
+      transition: var(--trans);
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-input:focus {
+      border-color: var(--info);
+      box-shadow: 0 0 0 3px var(--info-bg), var(--shadow-sm);
+    }
 
     /* ==================== MAIN ==================== */
     .main {
@@ -1102,20 +1147,20 @@
       <div style="overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface)">
         <table class="data-table">
           <thead>
-            <tr>
-              <th>Labo</th><th>Condition</th><th>Où déposer</th><th>Action spéciale</th>
-            </tr>
+          <tr>
+            <th>Labo</th><th>Condition</th><th>Où déposer</th><th>Action spéciale</th>
+          </tr>
           </thead>
           <tbody>
-            <tr><td><strong>HÉMATO</strong></td><td>Commande produits sanguins</td><td>Entrée labo hémato</td><td>Pas de tube → transmettre sans enregistrer</td></tr>
-            <tr><td><strong>HÉMATO</strong></td><td>Étiquette He&gt;</td><td>Entrée labo hémato</td><td>Copie + originale en hémato</td></tr>
-            <tr><td><strong>HÉMATO</strong></td><td>Immunohémato + commande PSL</td><td>Entrée labo hémato</td><td>⚠ Vérifier signature ! Sinon copie + renvoyer + incident</td></tr>
-            <tr><td><strong>CHIMIE</strong></td><td>LCR, micro-tubes, temps prélèv., tests spéciaux</td><td>Table du 8100</td><td>Micro-tubes : dans pochette</td></tr>
-            <tr><td><strong>MM</strong></td><td>Toujours</td><td>Bac sous statif violet</td><td>—</td></tr>
-            <tr><td><strong>IS</strong></td><td>Toujours</td><td>Bac sous statif orange</td><td>—</td></tr>
-            <tr><td><strong>TOXICOLOGIE</strong></td><td>Étiq. « C Copie&gt; » « Tox ! »</td><td>Bac Toxicologie</td><td>—</td></tr>
-            <tr><td><strong>FERTILITÉ</strong></td><td>Dépistages prénataux 1er+2ème trim.</td><td>Bac prénataux</td><td>Copie → bac feuilles à contrôler</td></tr>
-            <tr><td><strong>GÉNÉTIQUE</strong></td><td>Toujours</td><td>Bac génétique frigo côté 8100</td><td>T° ambiante → panier blanc. Commun → copie</td></tr>
+          <tr><td><strong>HÉMATO</strong></td><td>Commande produits sanguins</td><td>Entrée labo hémato</td><td>Pas de tube → transmettre sans enregistrer</td></tr>
+          <tr><td><strong>HÉMATO</strong></td><td>Étiquette He&gt;</td><td>Entrée labo hémato</td><td>Copie + originale en hémato</td></tr>
+          <tr><td><strong>HÉMATO</strong></td><td>Immunohémato + commande PSL</td><td>Entrée labo hémato</td><td>⚠ Vérifier signature ! Sinon copie + renvoyer + incident</td></tr>
+          <tr><td><strong>CHIMIE</strong></td><td>LCR, micro-tubes, temps prélèv., tests spéciaux</td><td>Table du 8100</td><td>Micro-tubes : dans pochette</td></tr>
+          <tr><td><strong>MM</strong></td><td>Toujours</td><td>Bac sous statif violet</td><td>—</td></tr>
+          <tr><td><strong>IS</strong></td><td>Toujours</td><td>Bac sous statif orange</td><td>—</td></tr>
+          <tr><td><strong>TOXICOLOGIE</strong></td><td>Étiq. « C Copie&gt; » « Tox ! »</td><td>Bac Toxicologie</td><td>—</td></tr>
+          <tr><td><strong>FERTILITÉ</strong></td><td>Dépistages prénataux 1er+2ème trim.</td><td>Bac prénataux</td><td>Copie → bac feuilles à contrôler</td></tr>
+          <tr><td><strong>GÉNÉTIQUE</strong></td><td>Toujours</td><td>Bac génétique frigo côté 8100</td><td>T° ambiante → panier blanc. Commun → copie</td></tr>
           </tbody>
         </table>
       </div>
@@ -1163,18 +1208,18 @@
         <table class="data-table">
           <thead><tr><th>Étiquette</th><th>N° à saisir</th></tr></thead>
           <tbody>
-            <tr><td><span class="code-pill">1</span></td><td>101</td></tr>
-            <tr><td><span class="code-pill">1'</span></td><td>115</td></tr>
-            <tr><td><span class="code-pill">2</span></td><td>102</td></tr>
-            <tr><td><span class="code-pill">5</span></td><td>150</td></tr>
-            <tr><td><span class="code-pill">6 non centri</span></td><td>161</td></tr>
-            <tr><td><span class="code-pill">6 centri</span></td><td>160</td></tr>
-            <tr><td><span class="code-pill">SERO 9</span></td><td>909</td></tr>
-            <tr><td><span class="code-pill">IS AUT</span></td><td>901</td></tr>
-            <tr><td><span class="code-pill">IS PRUN</span></td><td>902</td></tr>
-            <tr><td><span class="code-pill">IS IF</span></td><td>903</td></tr>
-            <tr><td><span class="code-pill">M-AER</span></td><td>951</td></tr>
-            <tr><td><span class="code-pill">M-ANA</span></td><td>952</td></tr>
+          <tr><td><span class="code-pill">1</span></td><td>101</td></tr>
+          <tr><td><span class="code-pill">1'</span></td><td>115</td></tr>
+          <tr><td><span class="code-pill">2</span></td><td>102</td></tr>
+          <tr><td><span class="code-pill">5</span></td><td>150</td></tr>
+          <tr><td><span class="code-pill">6 non centri</span></td><td>161</td></tr>
+          <tr><td><span class="code-pill">6 centri</span></td><td>160</td></tr>
+          <tr><td><span class="code-pill">SERO 9</span></td><td>909</td></tr>
+          <tr><td><span class="code-pill">IS AUT</span></td><td>901</td></tr>
+          <tr><td><span class="code-pill">IS PRUN</span></td><td>902</td></tr>
+          <tr><td><span class="code-pill">IS IF</span></td><td>903</td></tr>
+          <tr><td><span class="code-pill">M-AER</span></td><td>951</td></tr>
+          <tr><td><span class="code-pill">M-ANA</span></td><td>952</td></tr>
           </tbody>
         </table>
       </div>
@@ -1419,11 +1464,11 @@
       c.style.color = t.tc;
       c.onclick = function(){ openModal(t); };
       c.innerHTML =
-        '<span class="tube-centri">'+centriLabel(t.c)+'</span>' +
-        '<button class="fav-star'+(isFav?' is-fav':'')+'" onclick="toggleFavorite(\''+t.id+'\',event)">'+(isFav?'⭐':'☆')+'</button>' +
-        '<div class="tube-name">'+t.name+'</div>' +
-        (t.sub?'<div class="tube-sub">'+t.sub+'</div>':'')+
-        '<div class="tube-etiq">Étiq. '+t.etiq+'</div>';
+              '<span class="tube-centri">'+centriLabel(t.c)+'</span>' +
+              '<button class="fav-star'+(isFav?' is-fav':'')+'" onclick="toggleFavorite(\''+t.id+'\',event)">'+(isFav?'⭐':'☆')+'</button>' +
+              '<div class="tube-name">'+t.name+'</div>' +
+              (t.sub?'<div class="tube-sub">'+t.sub+'</div>':'')+
+              '<div class="tube-etiq">Étiq. '+t.etiq+'</div>';
       g.appendChild(c);
       return true;
     }
@@ -1533,13 +1578,19 @@
       card.style.setProperty('--color', p.color);
       card.style.background = p.color;
       card.innerHTML =
-        '<div class="phone-labo">'+p.labo+'</div>'+
-        '<div class="phone-contact">'+p.contact+'</div>'+
-        '<div class="phone-num">'+p.num+'</div>';
+              '<div class="phone-labo">'+p.labo+'</div>'+
+              '<div class="phone-contact">'+p.contact+'</div>'+
+              '<div class="phone-num">'+p.num+'</div>';
       gp.appendChild(card);
       count++;
     });
     tp.style.display = count>0?'':'none';
+    var accBody = document.querySelector('#accordionPhones .accordion-content');
+    var accArrow = document.querySelector('#accordionPhones .accordion-arrow');
+    if (f && count > 0) {
+      accBody.classList.add('show');
+      if (accArrow) accArrow.classList.add('open');
+    }
   }
 
   /* ========== FILTER ========== */
